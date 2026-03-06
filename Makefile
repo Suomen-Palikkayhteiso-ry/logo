@@ -63,6 +63,20 @@ HZ_RB_R3_SVG = $(HZ_DIR)/horizontal-rainbow-rot3.svg
 HZ_RB_R4_SVG = $(HZ_DIR)/horizontal-rainbow-rot4.svg
 HZ_RB_R5_SVG = $(HZ_DIR)/horizontal-rainbow-rot5.svg
 HZ_RB_R6_SVG = $(HZ_DIR)/horizontal-rainbow-rot6.svg
+HZ_RB_FULL_SVG         = $(HZ_DIR)/horizontal-rainbow-full.svg
+HZ_RB_FULL_R1_SVG      = $(HZ_DIR)/horizontal-rainbow-full-rot1.svg
+HZ_RB_FULL_R2_SVG      = $(HZ_DIR)/horizontal-rainbow-full-rot2.svg
+HZ_RB_FULL_R3_SVG      = $(HZ_DIR)/horizontal-rainbow-full-rot3.svg
+HZ_RB_FULL_R4_SVG      = $(HZ_DIR)/horizontal-rainbow-full-rot4.svg
+HZ_RB_FULL_R5_SVG      = $(HZ_DIR)/horizontal-rainbow-full-rot5.svg
+HZ_RB_FULL_R6_SVG      = $(HZ_DIR)/horizontal-rainbow-full-rot6.svg
+HZ_RB_FULL_DARK_SVG    = $(HZ_DIR)/horizontal-rainbow-full-dark.svg
+HZ_RB_FULL_DARK_R1_SVG = $(HZ_DIR)/horizontal-rainbow-full-dark-rot1.svg
+HZ_RB_FULL_DARK_R2_SVG = $(HZ_DIR)/horizontal-rainbow-full-dark-rot2.svg
+HZ_RB_FULL_DARK_R3_SVG = $(HZ_DIR)/horizontal-rainbow-full-dark-rot3.svg
+HZ_RB_FULL_DARK_R4_SVG = $(HZ_DIR)/horizontal-rainbow-full-dark-rot4.svg
+HZ_RB_FULL_DARK_R5_SVG = $(HZ_DIR)/horizontal-rainbow-full-dark-rot5.svg
+HZ_RB_FULL_DARK_R6_SVG = $(HZ_DIR)/horizontal-rainbow-full-dark-rot6.svg
 
 ALL_SVGS = $(SQ_SVG) $(SQ_LN_SVG) $(SQ_N_SVG) $(SQ_DN_SVG) \
            $(HZ_SVG) $(HZ_R1_SVG) $(HZ_R2_SVG) $(HZ_R3_SVG) \
@@ -70,7 +84,11 @@ ALL_SVGS = $(SQ_SVG) $(SQ_LN_SVG) $(SQ_N_SVG) $(SQ_DN_SVG) \
            $(HZ_FULL_DARK_SVG) $(HZ_FULL_DARK_R1_SVG) $(HZ_FULL_DARK_R2_SVG) $(HZ_FULL_DARK_R3_SVG) \
            $(COLORFUL_SVG) $(RAINBOW_SVG) \
            $(HZ_RB_SVG) $(HZ_RB_R1_SVG) $(HZ_RB_R2_SVG) $(HZ_RB_R3_SVG) \
-           $(HZ_RB_R4_SVG) $(HZ_RB_R5_SVG) $(HZ_RB_R6_SVG)
+           $(HZ_RB_R4_SVG) $(HZ_RB_R5_SVG) $(HZ_RB_R6_SVG) \
+           $(HZ_RB_FULL_SVG) $(HZ_RB_FULL_R1_SVG) $(HZ_RB_FULL_R2_SVG) $(HZ_RB_FULL_R3_SVG) \
+           $(HZ_RB_FULL_R4_SVG) $(HZ_RB_FULL_R5_SVG) $(HZ_RB_FULL_R6_SVG) \
+           $(HZ_RB_FULL_DARK_SVG) $(HZ_RB_FULL_DARK_R1_SVG) $(HZ_RB_FULL_DARK_R2_SVG) $(HZ_RB_FULL_DARK_R3_SVG) \
+           $(HZ_RB_FULL_DARK_R4_SVG) $(HZ_RB_FULL_DARK_R5_SVG) $(HZ_RB_FULL_DARK_R6_SVG)
 
 # ── Generated raster outputs ────────────────────────────────────────────────────
 SQ_PNG_OUT    = $(SQ_PNG)/square.png
@@ -130,6 +148,30 @@ HZ_RB_ANIM_FRAMES = $(HZ_RB_PNG) $(HZ_RB_R1_PNG) $(HZ_RB_R2_PNG) $(HZ_RB_R3_PNG)
                     $(HZ_RB_R4_PNG) $(HZ_RB_R5_PNG) $(HZ_RB_R6_PNG)
 HZ_RB_ANIM_GIF   = $(HZ_PNG)/horizontal-rainbow-animated.gif
 HZ_RB_ANIM_WEBP  = $(HZ_PNG)/horizontal-rainbow-animated.webp
+HZ_RB_FULL_PNG         = $(HZ_PNG)/horizontal-rainbow-full.png
+HZ_RB_FULL_WEBP        = $(HZ_PNG)/horizontal-rainbow-full.webp
+HZ_RB_FULL_R1_PNG      = $(HZ_PNG)/horizontal-rainbow-full-rot1.png
+HZ_RB_FULL_R2_PNG      = $(HZ_PNG)/horizontal-rainbow-full-rot2.png
+HZ_RB_FULL_R3_PNG      = $(HZ_PNG)/horizontal-rainbow-full-rot3.png
+HZ_RB_FULL_R4_PNG      = $(HZ_PNG)/horizontal-rainbow-full-rot4.png
+HZ_RB_FULL_R5_PNG      = $(HZ_PNG)/horizontal-rainbow-full-rot5.png
+HZ_RB_FULL_R6_PNG      = $(HZ_PNG)/horizontal-rainbow-full-rot6.png
+HZ_RB_FULL_ANIM_FRAMES = $(HZ_RB_FULL_PNG) $(HZ_RB_FULL_R1_PNG) $(HZ_RB_FULL_R2_PNG) $(HZ_RB_FULL_R3_PNG) \
+                         $(HZ_RB_FULL_R4_PNG) $(HZ_RB_FULL_R5_PNG) $(HZ_RB_FULL_R6_PNG)
+HZ_RB_FULL_ANIM_GIF    = $(HZ_PNG)/horizontal-rainbow-full-animated.gif
+HZ_RB_FULL_ANIM_WEBP   = $(HZ_PNG)/horizontal-rainbow-full-animated.webp
+HZ_RB_FULL_DARK_PNG         = $(HZ_PNG)/horizontal-rainbow-full-dark.png
+HZ_RB_FULL_DARK_WEBP        = $(HZ_PNG)/horizontal-rainbow-full-dark.webp
+HZ_RB_FULL_DARK_R1_PNG      = $(HZ_PNG)/horizontal-rainbow-full-dark-rot1.png
+HZ_RB_FULL_DARK_R2_PNG      = $(HZ_PNG)/horizontal-rainbow-full-dark-rot2.png
+HZ_RB_FULL_DARK_R3_PNG      = $(HZ_PNG)/horizontal-rainbow-full-dark-rot3.png
+HZ_RB_FULL_DARK_R4_PNG      = $(HZ_PNG)/horizontal-rainbow-full-dark-rot4.png
+HZ_RB_FULL_DARK_R5_PNG      = $(HZ_PNG)/horizontal-rainbow-full-dark-rot5.png
+HZ_RB_FULL_DARK_R6_PNG      = $(HZ_PNG)/horizontal-rainbow-full-dark-rot6.png
+HZ_RB_FULL_DARK_ANIM_FRAMES = $(HZ_RB_FULL_DARK_PNG) $(HZ_RB_FULL_DARK_R1_PNG) $(HZ_RB_FULL_DARK_R2_PNG) $(HZ_RB_FULL_DARK_R3_PNG) \
+                               $(HZ_RB_FULL_DARK_R4_PNG) $(HZ_RB_FULL_DARK_R5_PNG) $(HZ_RB_FULL_DARK_R6_PNG)
+HZ_RB_FULL_DARK_ANIM_GIF    = $(HZ_PNG)/horizontal-rainbow-full-dark-animated.gif
+HZ_RB_FULL_DARK_ANIM_WEBP   = $(HZ_PNG)/horizontal-rainbow-full-dark-animated.webp
 
 ALL_PNGS = $(SQ_PNG_OUT) $(SQ_WEBP) \
            $(SQ_LN_PNG) $(SQ_LN_WEBP) \
@@ -154,7 +196,15 @@ ALL_PNGS = $(SQ_PNG_OUT) $(SQ_WEBP) \
            $(HZ_RB_PNG) $(HZ_RB_WEBP) \
            $(HZ_RB_R1_PNG) $(HZ_RB_R2_PNG) $(HZ_RB_R3_PNG) \
            $(HZ_RB_R4_PNG) $(HZ_RB_R5_PNG) $(HZ_RB_R6_PNG) \
-           $(HZ_RB_ANIM_GIF) $(HZ_RB_ANIM_WEBP)
+           $(HZ_RB_ANIM_GIF) $(HZ_RB_ANIM_WEBP) \
+           $(HZ_RB_FULL_PNG) $(HZ_RB_FULL_WEBP) \
+           $(HZ_RB_FULL_R1_PNG) $(HZ_RB_FULL_R2_PNG) $(HZ_RB_FULL_R3_PNG) \
+           $(HZ_RB_FULL_R4_PNG) $(HZ_RB_FULL_R5_PNG) $(HZ_RB_FULL_R6_PNG) \
+           $(HZ_RB_FULL_ANIM_GIF) $(HZ_RB_FULL_ANIM_WEBP) \
+           $(HZ_RB_FULL_DARK_PNG) $(HZ_RB_FULL_DARK_WEBP) \
+           $(HZ_RB_FULL_DARK_R1_PNG) $(HZ_RB_FULL_DARK_R2_PNG) $(HZ_RB_FULL_DARK_R3_PNG) \
+           $(HZ_RB_FULL_DARK_R4_PNG) $(HZ_RB_FULL_DARK_R5_PNG) $(HZ_RB_FULL_DARK_R6_PNG) \
+           $(HZ_RB_FULL_DARK_ANIM_GIF) $(HZ_RB_FULL_DARK_ANIM_WEBP)
 
 # ── Top-level targets ───────────────────────────────────────────────────────────
 # ── Favicon outputs ─────────────────────────────────────────────────────────────
@@ -312,6 +362,49 @@ $(HZ_RB_R5_SVG): $(DESIGN_HZ_RB_R5) | $(HZ_DIR)
 $(HZ_RB_R6_SVG): $(DESIGN_HZ_RB_R6) | $(HZ_DIR)
 	$(PYTHON) brick_blockify.py $< $@ $(HZ_PX) $(BLK_W) $(BLK_H) auto $(PAD)
 
+# ── Rainbow horizontal full (light + dark) SVGs ──────────────────────────────
+$(HZ_RB_FULL_SVG): $(HZ_RB_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE)
+
+$(HZ_RB_FULL_R1_SVG): $(HZ_RB_R1_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE)
+
+$(HZ_RB_FULL_R2_SVG): $(HZ_RB_R2_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE)
+
+$(HZ_RB_FULL_R3_SVG): $(HZ_RB_R3_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE)
+
+$(HZ_RB_FULL_R4_SVG): $(HZ_RB_R4_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE)
+
+$(HZ_RB_FULL_R5_SVG): $(HZ_RB_R5_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE)
+
+$(HZ_RB_FULL_R6_SVG): $(HZ_RB_R6_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE)
+
+$(HZ_RB_FULL_DARK_SVG): $(HZ_RB_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE) '$(DARK_BG)'
+
+$(HZ_RB_FULL_DARK_R1_SVG): $(HZ_RB_R1_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE) '$(DARK_BG)'
+
+$(HZ_RB_FULL_DARK_R2_SVG): $(HZ_RB_R2_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE) '$(DARK_BG)'
+
+$(HZ_RB_FULL_DARK_R3_SVG): $(HZ_RB_R3_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE) '$(DARK_BG)'
+
+$(HZ_RB_FULL_DARK_R4_SVG): $(HZ_RB_R4_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE) '$(DARK_BG)'
+
+$(HZ_RB_FULL_DARK_R5_SVG): $(HZ_RB_R5_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE) '$(DARK_BG)'
+
+$(HZ_RB_FULL_DARK_R6_SVG): $(HZ_RB_R6_SVG)
+	$(PYTHON) compose_logo.py $< $@ $(TXT_SIZE) '$(DARK_BG)'
+
 # ── Square PNG / WebP ───────────────────────────────────────────────────────────
 $(SQ_PNG):
 	mkdir -p $@
@@ -353,6 +446,18 @@ $(HZ_RB_ANIM_GIF): $(HZ_RB_ANIM_FRAMES) | $(HZ_PNG)
 
 $(HZ_RB_ANIM_WEBP): $(HZ_RB_ANIM_FRAMES) | $(HZ_PNG)
 	$(PYTHON) animate_logo.py $(HZ_RB_ANIM_FRAMES) $@ $(ANIM_MS)
+
+$(HZ_RB_FULL_ANIM_GIF): $(HZ_RB_FULL_ANIM_FRAMES) | $(HZ_PNG)
+	$(PYTHON) animate_logo.py $(HZ_RB_FULL_ANIM_FRAMES) $@ $(ANIM_MS)
+
+$(HZ_RB_FULL_ANIM_WEBP): $(HZ_RB_FULL_ANIM_FRAMES) | $(HZ_PNG)
+	$(PYTHON) animate_logo.py $(HZ_RB_FULL_ANIM_FRAMES) $@ $(ANIM_MS)
+
+$(HZ_RB_FULL_DARK_ANIM_GIF): $(HZ_RB_FULL_DARK_ANIM_FRAMES) | $(HZ_PNG)
+	$(PYTHON) animate_logo.py $(HZ_RB_FULL_DARK_ANIM_FRAMES) $@ $(ANIM_MS)
+
+$(HZ_RB_FULL_DARK_ANIM_WEBP): $(HZ_RB_FULL_DARK_ANIM_FRAMES) | $(HZ_PNG)
+	$(PYTHON) animate_logo.py $(HZ_RB_FULL_DARK_ANIM_FRAMES) $@ $(ANIM_MS)
 
 # ── Horizontal PNG / WebP ───────────────────────────────────────────────────────
 $(HZ_PNG):

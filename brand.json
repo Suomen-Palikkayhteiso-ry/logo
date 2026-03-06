@@ -411,6 +411,78 @@
             "file": "logo/horizontal/png/horizontal-rainbow-animated.webp",
             "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/png/horizontal-rainbow-animated.webp"
           }
+        },
+        {
+          "id": "horizontal-rainbow-full",
+          "description": "Rainbow logo mark with subtitle, light theme",
+          "withText": true,
+          "animated": false,
+          "theme": "light",
+          "svg": {
+            "file": "logo/horizontal/svg/horizontal-rainbow-full.svg",
+            "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/svg/horizontal-rainbow-full.svg"
+          },
+          "png": {
+            "file": "logo/horizontal/png/horizontal-rainbow-full.png",
+            "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/png/horizontal-rainbow-full.png"
+          },
+          "webp": {
+            "file": "logo/horizontal/png/horizontal-rainbow-full.webp",
+            "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/png/horizontal-rainbow-full.webp"
+          }
+        },
+        {
+          "id": "horizontal-rainbow-full-animated",
+          "description": "Animated rainbow logo with subtitle, light theme, 7 colors cycling",
+          "withText": true,
+          "animated": true,
+          "theme": "light",
+          "frameCount": 7,
+          "frameDurationMs": 10000,
+          "gif": {
+            "file": "logo/horizontal/png/horizontal-rainbow-full-animated.gif",
+            "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/png/horizontal-rainbow-full-animated.gif"
+          },
+          "webp": {
+            "file": "logo/horizontal/png/horizontal-rainbow-full-animated.webp",
+            "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/png/horizontal-rainbow-full-animated.webp"
+          }
+        },
+        {
+          "id": "horizontal-rainbow-full-dark",
+          "description": "Rainbow logo mark with subtitle, dark theme",
+          "withText": true,
+          "animated": false,
+          "theme": "dark",
+          "svg": {
+            "file": "logo/horizontal/svg/horizontal-rainbow-full-dark.svg",
+            "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/svg/horizontal-rainbow-full-dark.svg"
+          },
+          "png": {
+            "file": "logo/horizontal/png/horizontal-rainbow-full-dark.png",
+            "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/png/horizontal-rainbow-full-dark.png"
+          },
+          "webp": {
+            "file": "logo/horizontal/png/horizontal-rainbow-full-dark.webp",
+            "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/png/horizontal-rainbow-full-dark.webp"
+          }
+        },
+        {
+          "id": "horizontal-rainbow-full-dark-animated",
+          "description": "Animated rainbow logo with subtitle, dark theme, 7 colors cycling",
+          "withText": true,
+          "animated": true,
+          "theme": "dark",
+          "frameCount": 7,
+          "frameDurationMs": 10000,
+          "gif": {
+            "file": "logo/horizontal/png/horizontal-rainbow-full-dark-animated.gif",
+            "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/png/horizontal-rainbow-full-dark-animated.gif"
+          },
+          "webp": {
+            "file": "logo/horizontal/png/horizontal-rainbow-full-dark-animated.webp",
+            "url": "https://logo.suomenpalikkayhteiso.fi/logo/horizontal/png/horizontal-rainbow-full-dark-animated.webp"
+          }
         }
       ]
     }
