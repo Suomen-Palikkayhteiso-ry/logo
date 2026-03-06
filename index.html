@@ -3,45 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suomen Palikkayhteisö ry</title>
+    <title>Suomen Palikkaharrastajat ry – Brändiopas</title>
     <style>
         @font-face {
             font-family: 'Outfit';
             src: url('fonts/Outfit-VariableFont_wght.ttf') format('truetype');
             font-weight: 100 900;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
             color: #333;
             background: #f5f5f5;
         }
-        
+
         header {
-            color: #200e3a;
             padding: 3rem 2rem;
             text-align: center;
         }
-        
         header h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
+            font-size: 2.6rem;
             font-weight: 500;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            color: #05131D;
         }
-        
         header p {
-            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
             font-weight: 300;
+            color: #555;
         }
-        
+
         nav {
             background: white;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -49,718 +44,374 @@
             top: 0;
             z-index: 100;
         }
-        
         nav ul {
             list-style: none;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            padding: 1rem;
+            padding: 0.75rem 1rem;
         }
-        
         nav a {
-            color: #38419d;
+            color: #05131D;
             text-decoration: none;
-            padding: 0.5rem 1.5rem;
+            padding: 0.5rem 1.25rem;
             font-weight: 500;
-            transition: all 0.3s;
+            transition: color 0.2s;
         }
-        
-        nav a:hover {
-            color: #52d3d8;
-            transform: translateY(-2px);
-        }
-        
+        nav a:hover { color: #F2CD37; }
+
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 2rem;
         }
-        
+
         section {
             background: white;
             margin: 2rem 0;
             padding: 2rem;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
-        
+
         h2 {
-            color: #38419d;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
+            color: #05131D;
+            margin-bottom: 0.5rem;
         }
-        
         h3 {
-            color: #3887be;
-            font-size: 1.5rem;
-            margin: 2rem 0 1rem;
+            font-size: 1.25rem;
             font-weight: 600;
+            color: #555;
+            margin: 2rem 0 1rem;
         }
-        
+        section > p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        /* ── Color palette ── */
         .color-palette {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
         }
-        
         .color-swatch {
             text-align: center;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-width: 140px;
         }
-        
         .color-box {
-            height: 100px;
+            height: 90px;
             border-radius: 8px;
-            margin-bottom: 0.5rem;
-            border: 1px solid #ddd;
+            border: 1px solid rgba(0,0,0,0.12);
+            margin-bottom: 0.6rem;
         }
-        
-        .color-name {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-        
-        .color-hex {
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
+        .color-name  { font-weight: 600; font-size: 0.95rem; }
+        .color-hex   { font-family: 'Courier New', monospace; font-size: 0.85rem; color: #666; }
+        .color-meta  { font-size: 0.8rem; color: #999; margin-top: 0.15rem; }
+
+        /* ── Logo grid ── */
         .logo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.25rem;
         }
-        
         .logo-card {
             border: 1px solid #ddd;
             border-radius: 8px;
             overflow: hidden;
-            transition: transform 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        
         .logo-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         }
-        
         .logo-preview {
             padding: 2rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 150px;
+            min-height: 180px;
         }
-        
-        .logo-preview.dark {
-            background: #200e3a;
-        }
-        
-        .logo-preview.light {
-            background: #f8f8f8;
-        }
-        
-        .logo-preview.gradient {
-            background: linear-gradient(135deg, #52d3d8 0%, #3887be 50%, #38419d 100%);
-        }
-        
-        .logo-preview img {
-            max-width: 100%;
-            height: auto;
-        }
-        
+        .logo-preview.light    { background: #f8f8f8; }
+        .logo-preview.dark     { background: #05131D; }
+        .logo-preview.yellow   { background: #F2CD37; }
+        .logo-preview img { max-width: 100%; max-height: 200px; height: auto; }
+
         .logo-info {
             padding: 1rem;
-            background: #f8f8f8;
-            border-top: 1px solid #ddd;
+            background: #fafafa;
+            border-top: 1px solid #eee;
         }
-        
         .logo-name {
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            margin-bottom: 0.6rem;
         }
-        
+        .badge {
+            display: inline-block;
+            background: #05131D;
+            color: #F2CD37;
+            padding: 0.15rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.4rem;
+            vertical-align: middle;
+        }
+
         .download-btn {
             display: inline-block;
-            background: #52d3d8;
-            color: white;
-            padding: 0.5rem 1rem;
+            background: #F2CD37;
+            color: #05131D;
+            padding: 0.35rem 0.8rem;
             border-radius: 4px;
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: background 0.3s;
-            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.2s;
+            margin-right: 0.3rem;
         }
-        
-        .download-btn:hover {
-            background: #3887be;
-        }
-        
+        .download-btn:hover { background: #e0bc2a; }
+
+        /* ── Typography ── */
         .font-sample {
-            margin: 2rem 0;
-            padding: 2rem;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
             background: #f8f8f8;
             border-radius: 8px;
         }
-        
-        .font-weights {
-            display: grid;
-            gap: 1rem;
-        }
-        
+        .font-weights { display: grid; gap: 0.75rem; }
         .font-weight-sample {
-            padding: 1rem;
-            border-left: 4px solid #52d3d8;
+            padding: 0.75rem 1rem;
+            border-left: 4px solid #F2CD37;
             background: white;
         }
-        
+
         footer {
-            background: #200e3a;
-            color: white;
+            background: #05131D;
+            color: #fff;
             text-align: center;
             padding: 2rem;
             margin-top: 4rem;
         }
-        
-        .badge {
-            display: inline-block;
-            background: #52d3d8;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-left: 0.5rem;
-        }
-        
-        .badge.recommended {
-            background: #38419d;
-        }
+        footer p { opacity: 0.8; font-size: 0.9rem; }
+        footer p + p { margin-top: 0.4rem; opacity: 0.55; font-size: 0.82rem; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Suomen Palikkayhteisö ry</h1>
-    </header>
-    
-        <nav>
-        <ul>
-            <li><a href="#colors">Värit</a></li>
-            <li><a href="#typography">Typografia</a></li>
-            <li><a href="#logos-brick">🧱 Palikkalogot</a></li>
-            <li><a href="#logos-simple">Yksinkertaiset logot</a></li>
-            <li><a href="#logos-full">Täydet logot</a></li>
-            <li><a href="#logos-square">Neliölogot</a></li>
-            <li><a href="#download">Lataa</a></li>
-        </ul>
-    </nav>    <div class="container">
-        <!-- Colors Section -->
-        <section id="colors">
-            <h2>Brändivärit</h2>
-            <p>Väripalettimme yhdistää moderneja, raikkaita sävyjä, jotka heijastavat innovaatiota ja yhteisöllisyyttä.</p>
-            
-            <div class="color-palette">
-                <div class="color-swatch">
-                    <div class="color-box" style="background: #52d3d8;"></div>
-                    <div class="color-name">Akvamariini</div>
-                    <div class="color-hex">#52d3d8</div>
-                    <span class="badge">Ensisijainen</span>
-                </div>
-                
-                <div class="color-swatch">
-                    <div class="color-box" style="background: #3887be;"></div>
-                    <div class="color-name">Sininen</div>
-                    <div class="color-hex">#3887be</div>
-                    <span class="badge">Toissijainen</span>
-                </div>
-                
-                <div class="color-swatch">
-                    <div class="color-box" style="background: #38419d;"></div>
-                    <div class="color-name">Tummanvioletti</div>
-                    <div class="color-hex">#38419d</div>
-                    <span class="badge">Korostus</span>
-                </div>
-                
-                <div class="color-swatch">
-                    <div class="color-box" style="background: #200e3a;"></div>
-                    <div class="color-name">Erittäin tummansininen</div>
-                    <div class="color-hex">#200e3a</div>
-                </div>
-                
-                <div class="color-swatch">
-                    <div class="color-box" style="background: #f2f597;"></div>
-                    <div class="color-name">Kirkkaan keltainen</div>
-                    <div class="color-hex">#f2f597</div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Typography Section -->
-        <section id="typography">
-            <h2>Typografia</h2>
-            <p>Käytämme <strong>Outfit</strong>-fonttia Google Fontsista kaikessa brändikommunikaatiossa.</p>
-            
-            <div class="font-sample">
-                <div class="font-weights">
-                    <div class="font-weight-sample" style="font-weight: 100;">
-                        <strong>Ohut (100):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
-                    </div>
-                    <div class="font-weight-sample" style="font-weight: 300;">
-                        <strong>Kevyt (300):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
-                    </div>
-                    <div class="font-weight-sample" style="font-weight: 400;">
-                        <strong>Normaali (400):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
-                    </div>
-                    <div class="font-weight-sample" style="font-weight: 500;">
-                        <strong>Keskipaksu (500):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
-                    </div>
-                    <div class="font-weight-sample" style="font-weight: 700;">
-                        <strong>Lihavoitu (700):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
-                    </div>
-                    <div class="font-weight-sample" style="font-weight: 800;">
-                        <strong>Erittäin lihavoitu (800):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
-                    </div>
-                    <div class="font-weight-sample" style="font-weight: 900;">
-                        <strong>Musta (900):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Brick Logos -->
-        <section id="logos-brick">
-            <h2>🧱 Palikkalogot</h2>
-            <p>Erikoisversiot logoista, jotka on muotoiltu näyttämään rakennuspalikoilta. Täydellisiä yhteisöllisiin tapahtumiin, leikkisiin konteksteihin ja rakennuspalikoiden parissa tehtävään työhön.</p>
-            
-            <h3>Yksinkertaiset "SPY"-palikkalogot</h3>
-            <div class="logo-grid">
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-simple-black-brick.svg" alt="SPY Brick Black">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Palikka - Musta</div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-simple-black-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-simple-black-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-simple-black-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-simple-white-brick.svg" alt="SPY Brick White">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Palikka - Valkoinen</div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-simple-white-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-simple-white-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-simple-white-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-simple-multicolor-lightbg-brick.svg" alt="SPY Brick Multi-Color Light">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Palikka - Monivärinen (vaalea tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-simple-multicolor-lightbg-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-simple-multicolor-lightbg-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-simple-multicolor-lightbg-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-simple-multicolor-darkbg-brick.svg" alt="SPY Brick Multi-Color Dark">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Palikka - Monivärinen (tumma tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-simple-multicolor-darkbg-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-simple-multicolor-darkbg-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-simple-multicolor-darkbg-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-            </div>
-            
-            <h3>Täydet palikkalogot alaotsikolla</h3>
-            <div class="logo-grid">
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-full-white-brick.svg" alt="SPY Brick Full White">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Kokonaan valkoinen</div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-full-white-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-white-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-white-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-full-multicolor-darkbg-brick.svg" alt="SPY Brick Full Multi-Color Dark">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Monivärinen (tumma tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-full-multicolor-darkbg-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-darkbg-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-darkbg-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-full-multicolor-darkbg-alt-brick.svg" alt="SPY Brick Full Multi-Color Dark Alt">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Monivärinen (tumma tausta, keltainen alaotsikko)</div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-full-multicolor-darkbg-alt-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-darkbg-alt-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-darkbg-alt-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-full-black-brick.svg" alt="SPY Brick Full Black">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Kokonaan musta</div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-full-black-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-black-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-black-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-full-multicolor-lightbg-brick.svg" alt="SPY Brick Full Multi-Color Light">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Monivärinen (vaalea tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-full-multicolor-lightbg-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-full-multicolor-lightbg-alt-brick.svg" alt="SPY Brick Full Multi-Color Light Alt">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Monivärinen (vaalea tausta, sininen alaotsikko)</div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-full-multicolor-lightbg-alt-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg-alt-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg-alt-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/brick/spy-full-multicolor-lightbg-yellow-brick.svg" alt="SPY Brick Full Multi-Color Light Yellow Y">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Monivärinen (vaalea tausta, keltainen Y, musta alaotsikko)</div>
-                        <a href="logo/horizontal/svg/outlined/brick/spy-full-multicolor-lightbg-yellow-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg-yellow-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg-yellow-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-            </div>
-            
-            <h3>Neliöpalikkalogot</h3>
-            <div class="logo-grid">
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/square/svg/outlined/brick/spy-square-black-brick.svg" alt="SPY Square Brick Black" style="max-width: 200px;">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Neliöpalikka - Musta</div>
-                        <a href="logo/square/svg/outlined/brick/spy-square-black-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/square/png/spy-square-black-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/square/png/spy-square-black-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/square/svg/outlined/brick/spy-square-white-brick.svg" alt="SPY Square Brick White" style="max-width: 200px;">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Neliöpalikka - Valkoinen</div>
-                        <a href="logo/square/svg/outlined/brick/spy-square-white-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/square/png/spy-square-white-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/square/png/spy-square-white-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/square/svg/outlined/brick/spy-square-multicolor-lightbg-brick.svg" alt="SPY Square Brick Multi-Color Light" style="max-width: 200px;">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Neliöpalikka - Monivärinen (vaalea tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/square/svg/outlined/brick/spy-square-multicolor-lightbg-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/square/png/spy-square-multicolor-lightbg-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/square/png/spy-square-multicolor-lightbg-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/square/svg/outlined/brick/spy-square-multicolor-darkbg-brick.svg" alt="SPY Square Brick Multi-Color Dark" style="max-width: 200px;">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Neliöpalikka - Monivärinen (tumma tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/square/svg/outlined/brick/spy-square-multicolor-darkbg-brick.svg" download class="download-btn">SVG</a>
-                        <a href="logo/square/png/spy-square-multicolor-darkbg-brick.png" download class="download-btn">PNG</a>
-                        <a href="logo/square/png/spy-square-multicolor-darkbg-brick.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Simple Logos -->
-        <section id="logos-simple">
-            <h2>Yksinkertaiset "SPY"-logot</h2>
-            <p>Selkeät, minimalistiset versiot pieniin kokoihin ja yksinkertaisiin käyttötarkoituksiin.</p>
-            
-            <div class="logo-grid">
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/spy-simple-black.svg" alt="SPY Black">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY - Musta</div>
-                        <a href="logo/horizontal/svg/outlined/spy-simple-black.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-simple-black.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-simple-black.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/horizontal/svg/outlined/spy-simple-white.svg" alt="SPY White">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY - Valkoinen</div>
-                        <a href="logo/horizontal/svg/outlined/spy-simple-white.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-simple-white.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-simple-white.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/spy-simple-multicolor-lightbg.svg" alt="SPY Multi-Color Light">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY - Monivärinen (vaalea tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/horizontal/svg/outlined/spy-simple-multicolor-lightbg.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-simple-multicolor-lightbg.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-simple-multicolor-lightbg.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/horizontal/svg/outlined/spy-simple-multicolor-darkbg.svg" alt="SPY Multi-Color Dark">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY - Monivärinen (tumma tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/horizontal/svg/outlined/spy-simple-multicolor-darkbg.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-simple-multicolor-darkbg.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-simple-multicolor-darkbg.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Full Logos -->
-        <section id="logos-full">
-            <h2>Täydet logot alaotsikolla</h2>
-            <p>Täydelliset logot, joissa on "SPY" ja "Suomen Palikkayhteisö ry" -alaotsikko.</p>
-            
-            <div class="logo-grid">
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/horizontal/svg/outlined/spy-full-white.svg" alt="SPY Full White">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Kokonaan valkoinen</div>
-                        <a href="logo/horizontal/svg/outlined/spy-full-white.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-white.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-white.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/horizontal/svg/outlined/spy-full-multicolor-darkbg.svg" alt="SPY Full Multi-Color Dark">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Monivärinen (tumma tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/horizontal/svg/outlined/spy-full-multicolor-darkbg.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-darkbg.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-darkbg.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/horizontal/svg/outlined/spy-full-multicolor-darkbg-alt.svg" alt="SPY Full Multi-Color Dark Alt">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Monivärinen (tumma tausta, keltainen alaotsikko)</div>
-                        <a href="logo/horizontal/svg/outlined/spy-full-multicolor-darkbg-alt.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-darkbg-alt.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-darkbg-alt.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/spy-full-black.svg" alt="SPY Full Black">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Kokonaan musta</div>
-                        <a href="logo/horizontal/svg/outlined/spy-full-black.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-black.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-black.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/spy-full-multicolor-lightbg.svg" alt="SPY Full Multi-Color Light">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Monivärinen (vaalea tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/horizontal/svg/outlined/spy-full-multicolor-lightbg.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/spy-full-multicolor-lightbg-alt.svg" alt="SPY Full Multi-Color Light Alt">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Monivärinen (vaalea tausta, sininen alaotsikko)</div>
-                        <a href="logo/horizontal/svg/outlined/spy-full-multicolor-lightbg-alt.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg-alt.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg-alt.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/horizontal/svg/outlined/spy-full-multicolor-lightbg-yellow.svg" alt="SPY Full Multi-Color Light Yellow Y">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">Monivärinen (vaalea tausta, keltainen Y, musta alaotsikko)</div>
-                        <a href="logo/horizontal/svg/outlined/spy-full-multicolor-lightbg-yellow.svg" download class="download-btn">SVG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg-yellow.png" download class="download-btn">PNG</a>
-                        <a href="logo/horizontal/png/spy-full-multicolor-lightbg-yellow.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Square Logos -->
-        <section id="logos-square">
-            <h2>Neliölogot</h2>
-            <p>Neliömuotoiset logot, jotka on keskitetty pystysuunnassa. Täydellisiä sosiaalisen median profiileihin, sovelluskuvakkeisiin ja neliön muotoisiin sijoituksiin.</p>
-            
-            <div class="logo-grid">
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/square/svg/outlined/spy-square-black.svg" alt="SPY Square Black" style="max-width: 200px;">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Neliö - Musta</div>
-                        <a href="logo/square/svg/outlined/spy-square-black.svg" download class="download-btn">SVG</a>
-                        <a href="logo/square/png/spy-square-black.png" download class="download-btn">PNG</a>
-                        <a href="logo/square/png/spy-square-black.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/square/svg/outlined/spy-square-white.svg" alt="SPY Square White" style="max-width: 200px;">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Neliö - Valkoinen</div>
-                        <a href="logo/square/svg/outlined/spy-square-white.svg" download class="download-btn">SVG</a>
-                        <a href="logo/square/png/spy-square-white.png" download class="download-btn">PNG</a>
-                        <a href="logo/square/png/spy-square-white.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview light">
-                        <img src="logo/square/svg/outlined/spy-square-multicolor-lightbg.svg" alt="SPY Square Multi-Color Light" style="max-width: 200px;">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Neliö - Monivärinen (vaalea tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/square/svg/outlined/spy-square-multicolor-lightbg.svg" download class="download-btn">SVG</a>
-                        <a href="logo/square/png/spy-square-multicolor-lightbg.png" download class="download-btn">PNG</a>
-                        <a href="logo/square/png/spy-square-multicolor-lightbg.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-                
-                <div class="logo-card">
-                    <div class="logo-preview dark">
-                        <img src="logo/square/svg/outlined/spy-square-multicolor-darkbg.svg" alt="SPY Square Multi-Color Dark" style="max-width: 200px;">
-                    </div>
-                    <div class="logo-info">
-                        <div class="logo-name">SPY Neliö - Monivärinen (tumma tausta) <span class="badge recommended">Suositeltu</span></div>
-                        <a href="logo/square/svg/outlined/spy-square-multicolor-darkbg.svg" download class="download-btn">SVG</a>
-                        <a href="logo/square/png/spy-square-multicolor-darkbg.png" download class="download-btn">PNG</a>
-                        <a href="logo/square/png/spy-square-multicolor-darkbg.webp" download class="download-btn">WebP</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Download Section -->
-        <section id="download">
-            <h2>Lataa kaikki materiaalit</h2>
-            <p>Kaikki logotiedostot ovat saatavilla SVG-muodossa tekstit muunnettuna poluiksi universaalin yhteensopivuuden takaamiseksi.</p>
-            
-            <h3>Sisältö</h3>
-            <ul style="margin-left: 2rem; margin-top: 1rem; line-height: 2;">
-                <li><strong>14 logovariaatiota</strong> - 10 vaakasuoraa + 4 neliötä, kaikki ääriviivallisessa SVG-muodossa</li>
-                <li><strong>14 palikkavariaatiota</strong> - Erikoisversiot, jotka näyttävät rakennuspalikoilta (SVG, PNG, WebP)</li>
-                <li><strong>PNG-viennit</strong> - 1600px (vaakasuora) ja 800px (neliö) läpinäkyvillä taustoilla</li>
-                <li><strong>WebP-viennit</strong> - Modernit, optimoidut webkuvat nopeampaan lataamiseen (95% laatu)</li>
-                <li><strong>Outfit-fonttiperhe</strong> - Muuttuva fontti + 9 staattista leikkaustyyppiä</li>
-                <li><strong>Väripaletti</strong> - 5 brändiväriä heksakoodeilla</li>
-                <li><strong>Dokumentaatio</strong> - Täydelliset käyttöohjeet</li>
-            </ul>
-            
-            <div style="margin-top: 2rem;">
-                <a href="https://github.com/datakurre/spy-brand" class="download-btn" style="font-size: 1.1rem; padding: 0.75rem 2rem;">
-                    Katso GitHubissa
-                </a>
-            </div>
-        </section>
-    </div>
-    
-    <footer>
-        <p>&copy; 2025 Suomen Palikkayhteisö ry | SPY Brändiopas</p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">
-            Fontit: Outfit Google Fontsista (SIL Open Font License)
+
+<header>
+    <h1>Suomen Palikkaharrastajat ry</h1>
+    <p>Brändiopas</p>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="#colors">Värit</a></li>
+        <li><a href="#typography">Typografia</a></li>
+        <li><a href="#logos-square">Neliölogot</a></li>
+        <li><a href="#logos-full">Logot alaotsikolla</a></li>
+        <li><a href="#download">Lataa</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+
+    <!-- ── Colors ── -->
+    <section id="colors">
+        <h2>Brändivärit</h2>
+        <p>
+            Kaikki värit ovat aitoja LEGO®-värejä Rebrickable-palvelussa määriteltynä
+            (colors.csv). Väripalettia muuttamalla väriarvoilla tiedostossa
+            <code>colors.py</code> ja ajamalla <code>make</code> kaikki logot
+            päivittyvät automaattisesti.
         </p>
-    </footer>
+
+        <div class="color-palette">
+            <div class="color-swatch">
+                <div class="color-box" style="background: #F2CD37;"></div>
+                <div class="color-name">Keltainen</div>
+                <div class="color-hex">#F2CD37</div>
+                <div class="color-meta">Rebrickable #14 · LEGO Yellow</div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: #05131D;"></div>
+                <div class="color-name">Musta</div>
+                <div class="color-hex">#05131D</div>
+                <div class="color-meta">Rebrickable #0 · LEGO Black</div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: #FFFFFF;"></div>
+                <div class="color-name">Valkoinen</div>
+                <div class="color-hex">#FFFFFF</div>
+                <div class="color-meta">Rebrickable #15 · LEGO White</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Typography ── -->
+    <section id="typography">
+        <h2>Typografia</h2>
+        <p>Käytämme <strong>Outfit</strong>-fonttia (Google Fonts, SIL Open Font License).</p>
+
+        <div class="font-sample">
+            <div class="font-weights">
+                <div class="font-weight-sample" style="font-weight: 300;">
+                    <strong>Kevyt (300):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
+                </div>
+                <div class="font-weight-sample" style="font-weight: 400;">
+                    <strong>Normaali (400):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
+                </div>
+                <div class="font-weight-sample" style="font-weight: 600;">
+                    <strong>Puolilihavoitu (600):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
+                </div>
+                <div class="font-weight-sample" style="font-weight: 700;">
+                    <strong>Lihavoitu (700):</strong> Nopea ruskea kettu hyppää laiskan koiran yli
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Square logos ── -->
+    <section id="logos-square">
+        <h2>Neliölogot</h2>
+        <p>
+            Tunnuskuva on LEGO-minihahmon pää rakennuspalikoista koottuna.
+            Neliömuoto sopii sosiaalisen median profiileihin ja sovelluskuvakkeisiin.
+            Rakennettu automaattisesti <code>brick_blockify.py</code>-algoritmilla
+            14&thinsp;px leveästä piikseligrafiikasta.
+        </p>
+
+        <div class="logo-grid">
+            <div class="logo-card">
+                <div class="logo-preview light">
+                    <img src="logo/square/png/minifig-yellow.png" alt="Keltainen minifig-pää, vaalea tausta">
+                </div>
+                <div class="logo-info">
+                    <div class="logo-name">Keltainen <span class="badge">Suositeltu</span></div>
+                    <a href="logo/square/svg/minifig-yellow.svg" download class="download-btn">SVG</a>
+                    <a href="logo/square/png/minifig-yellow.png" download class="download-btn">PNG</a>
+                    <a href="logo/square/png/minifig-yellow.webp" download class="download-btn">WebP</a>
+                </div>
+            </div>
+
+            <div class="logo-card">
+                <div class="logo-preview light">
+                    <img src="logo/square/png/minifig-black.png" alt="Musta minifig-pää, vaalea tausta">
+                </div>
+                <div class="logo-info">
+                    <div class="logo-name">Musta (vaalea tausta)</div>
+                    <a href="logo/square/svg/minifig-black.svg" download class="download-btn">SVG</a>
+                    <a href="logo/square/png/minifig-black.png" download class="download-btn">PNG</a>
+                    <a href="logo/square/png/minifig-black.webp" download class="download-btn">WebP</a>
+                </div>
+            </div>
+
+            <div class="logo-card">
+                <div class="logo-preview dark">
+                    <img src="logo/square/png/minifig-white.png" alt="Valkoinen minifig-pää, tumma tausta">
+                </div>
+                <div class="logo-info">
+                    <div class="logo-name">Valkoinen (tumma tausta)</div>
+                    <a href="logo/square/svg/minifig-white.svg" download class="download-btn">SVG</a>
+                    <a href="logo/square/png/minifig-white.png" download class="download-btn">PNG</a>
+                    <a href="logo/square/png/minifig-white.webp" download class="download-btn">WebP</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Full logos ── -->
+    <section id="logos-full">
+        <h2>Logot alaotsikolla</h2>
+        <p>
+            Tunnuskuvan alla teksti "Suomen Palikkaharrastajat ry".
+            Soveltuu esitteisiin, nettisivuille ja muihin konteksteihin,
+            joissa yhdistyksen nimi halutaan näyttää logon yhteydessä.
+        </p>
+
+        <div class="logo-grid">
+            <div class="logo-card">
+                <div class="logo-preview light">
+                    <img src="logo/horizontal/png/minifig-yellow-full.png" alt="Keltainen logo alaotsikolla, vaalea tausta">
+                </div>
+                <div class="logo-info">
+                    <div class="logo-name">Keltainen <span class="badge">Suositeltu</span></div>
+                    <a href="logo/horizontal/svg/minifig-yellow-full.svg" download class="download-btn">SVG</a>
+                    <a href="logo/horizontal/png/minifig-yellow-full.png" download class="download-btn">PNG</a>
+                    <a href="logo/horizontal/png/minifig-yellow-full.webp" download class="download-btn">WebP</a>
+                </div>
+            </div>
+
+            <div class="logo-card">
+                <div class="logo-preview light">
+                    <img src="logo/horizontal/png/minifig-black-full.png" alt="Musta logo alaotsikolla, vaalea tausta">
+                </div>
+                <div class="logo-info">
+                    <div class="logo-name">Musta (vaalea tausta)</div>
+                    <a href="logo/horizontal/svg/minifig-black-full.svg" download class="download-btn">SVG</a>
+                    <a href="logo/horizontal/png/minifig-black-full.png" download class="download-btn">PNG</a>
+                    <a href="logo/horizontal/png/minifig-black-full.webp" download class="download-btn">WebP</a>
+                </div>
+            </div>
+
+            <div class="logo-card">
+                <div class="logo-preview dark">
+                    <img src="logo/horizontal/png/minifig-white-full.png" alt="Valkoinen logo alaotsikolla, tumma tausta">
+                </div>
+                <div class="logo-info">
+                    <div class="logo-name">Valkoinen (tumma tausta)</div>
+                    <a href="logo/horizontal/svg/minifig-white-full.svg" download class="download-btn">SVG</a>
+                    <a href="logo/horizontal/png/minifig-white-full.png" download class="download-btn">PNG</a>
+                    <a href="logo/horizontal/png/minifig-white-full.webp" download class="download-btn">WebP</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Download ── -->
+    <section id="download">
+        <h2>Lataa materiaalit</h2>
+        <p>Kaikki tiedostot generoidaan automaattisesti <code>make</code>-komennolla.</p>
+
+        <h3>Tuotetut tiedostot</h3>
+        <ul style="margin-left: 1.5rem; line-height: 2.2;">
+            <li><strong>3 neliölogoa</strong> – keltainen, musta, valkoinen (SVG + PNG + WebP, 800&thinsp;px)</li>
+            <li><strong>3 logoa alaotsikolla</strong> – sama kolmikko alaotsikon kanssa (SVG + PNG + WebP)</li>
+            <li><strong>Outfit-fontti</strong> – muuttuva fontti (SIL Open Font License)</li>
+        </ul>
+
+        <h3>Värien muuttaminen</h3>
+        <p>
+            Muokkaa tiedostoa <code>colors.py</code> ja aja <code>make</code>.
+            Kaikki logot päivittyvät automaattisesti uusilla väreillä.
+            Rebrickable-värikoodit: <a href="https://rebrickable.com/colors/" style="color:#05131D;">rebrickable.com/colors</a>
+        </p>
+
+        <h3>Build</h3>
+        <pre style="margin-top:0.5rem;background:#f4f4f4;padding:1rem;border-radius:6px;font-size:0.9rem;">make          # build all SVG + PNG/WebP
+make logos    # SVG only
+make designs  # regenerate design SVGs from colors.py
+make clean    # remove all generated files</pre>
+
+        <div style="margin-top: 2rem;">
+            <a href="https://github.com/Suomen-Palikkayhteiso-ry/brand" class="download-btn"
+               style="font-size: 1rem; padding: 0.6rem 1.75rem;">
+                Katso GitHubissa
+            </a>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Suomen Palikkaharrastajat ry | Brändiopas</p>
+    <p>Fontit: Outfit (SIL Open Font License) · Logot: CC BY 4.0</p>
+</footer>
+
 </body>
 </html>

@@ -1,269 +1,110 @@
-# Makefile for SPY logo generation
-# Generates outlined SVG and PNG versions from source SVG files
+PYTHON = python3
 
-# Directories
-HORIZONTAL_SVG_DIR = logo/horizontal/svg
-HORIZONTAL_OUTLINED_DIR = logo/horizontal/svg/outlined
-HORIZONTAL_PNG_DIR = logo/horizontal/png
+# ── Brick parameters ───────────────────────────────────────────────────────────
+SQ_PX  = 14   # raster pixel width for square logos  (lower = blockier)
+HZ_PX  = 14   # raster pixel width for horizontal logos
+BLK_W  = 24   # SVG width of a 2×2 brick (1×1 = half)
+BLK_H  = 20   # SVG height of all bricks
 
-SQUARE_SVG_DIR = logo/square/svg
-SQUARE_OUTLINED_DIR = logo/square/svg/outlined
-SQUARE_PNG_DIR = logo/square/png
+# ── Directories ────────────────────────────────────────────────────────────────
+DESIGN_DIR = design
+SQ_DIR     = logo/square/svg
+HZ_DIR     = logo/horizontal/svg
+SQ_PNG     = logo/square/png
+HZ_PNG     = logo/horizontal/png
 
-# Find all source SVG files (excluding already outlined versions)
-HORIZONTAL_SOURCE_SVGS = $(wildcard $(HORIZONTAL_SVG_DIR)/spy-*.svg)
-HORIZONTAL_SOURCE_NAMES = $(notdir $(HORIZONTAL_SOURCE_SVGS))
+# ── Variant names (stem shared by design SVG and all outputs) ──────────────────
+VARIANTS = minifig-yellow minifig-black minifig-white
 
-SQUARE_SOURCE_SVGS = $(wildcard $(SQUARE_SVG_DIR)/spy-*.svg)
-SQUARE_SOURCE_NAMES = $(notdir $(SQUARE_SOURCE_SVGS))
+# ── Derived file lists ─────────────────────────────────────────────────────────
+DESIGN_SVGS     = $(patsubst %,$(DESIGN_DIR)/%.svg,$(VARIANTS))
 
-# Generate target file lists
-HORIZONTAL_OUTLINED_SVGS = $(addprefix $(HORIZONTAL_OUTLINED_DIR)/, $(HORIZONTAL_SOURCE_NAMES))
-HORIZONTAL_PNG_FILES = $(patsubst %.svg, $(HORIZONTAL_PNG_DIR)/%.png, $(HORIZONTAL_SOURCE_NAMES))
-HORIZONTAL_WEBP_FILES = $(patsubst %.svg, $(HORIZONTAL_PNG_DIR)/%.webp, $(HORIZONTAL_SOURCE_NAMES))
+SQ_SVGS         = $(patsubst %,$(SQ_DIR)/%.svg,$(VARIANTS))
+HZ_SVGS         = $(patsubst %,$(HZ_DIR)/%.svg,$(VARIANTS))
+HZ_FULL_SVGS    = $(patsubst %,$(HZ_DIR)/%-full.svg,$(VARIANTS))
 
-SQUARE_OUTLINED_SVGS = $(addprefix $(SQUARE_OUTLINED_DIR)/, $(SQUARE_SOURCE_NAMES))
-SQUARE_PNG_FILES = $(patsubst %.svg, $(SQUARE_PNG_DIR)/%.png, $(SQUARE_SOURCE_NAMES))
-SQUARE_WEBP_FILES = $(patsubst %.svg, $(SQUARE_PNG_DIR)/%.webp, $(SQUARE_SOURCE_NAMES))
+SQ_PNGS         = $(patsubst %,$(SQ_PNG)/%.png,$(VARIANTS))
+SQ_WEBPS        = $(patsubst %,$(SQ_PNG)/%.webp,$(VARIANTS))
+HZ_PNGS         = $(patsubst %,$(HZ_PNG)/%.png,$(VARIANTS))
+HZ_WEBPS        = $(patsubst %,$(HZ_PNG)/%.webp,$(VARIANTS))
+HZ_FULL_PNGS    = $(patsubst %,$(HZ_PNG)/%-full.png,$(VARIANTS))
+HZ_FULL_WEBPS   = $(patsubst %,$(HZ_PNG)/%-full.webp,$(VARIANTS))
 
-# Default target
-.PHONY: all
-all: outlined png webp brick
+ALL_SVGS  = $(SQ_SVGS) $(HZ_SVGS) $(HZ_FULL_SVGS)
+ALL_PNGS  = $(SQ_PNGS) $(SQ_WEBPS) $(HZ_PNGS) $(HZ_WEBPS) $(HZ_FULL_PNGS) $(HZ_FULL_WEBPS)
 
-# Generate outlined SVG versions
-.PHONY: outlined
-outlined: $(HORIZONTAL_OUTLINED_SVGS) $(SQUARE_OUTLINED_SVGS)
+# ── Top-level targets ──────────────────────────────────────────────────────────
+.PHONY: all logos pngs designs clean help shell develop
 
-$(HORIZONTAL_OUTLINED_DIR)/%.svg: $(HORIZONTAL_SVG_DIR)/%.svg
-	@echo "Generating outlined version: $@"
-	@mkdir -p $(HORIZONTAL_OUTLINED_DIR)
-	@inkscape "$<" --export-text-to-path --export-filename="$@" 2>/dev/null || true
-	@# Fix viewbox to match drawing area with padding
-	@BOUNDS=$$(inkscape "$@" --query-all 2>/dev/null | grep '^svg' | cut -d, -f2-); \
-	if [ -n "$$BOUNDS" ]; then \
-		MARGIN=10; \
-		X=$$(echo $$BOUNDS | cut -d, -f1); \
-		Y=$$(echo $$BOUNDS | cut -d, -f2); \
-		W=$$(echo $$BOUNDS | cut -d, -f3); \
-		H=$$(echo $$BOUNDS | cut -d, -f4); \
-		NX=$$(awk "BEGIN {print $$X - $$MARGIN}"); \
-		NY=$$(awk "BEGIN {print $$Y - $$MARGIN}"); \
-		NW=$$(awk "BEGIN {print $$W + 2 * $$MARGIN}"); \
-		NH=$$(awk "BEGIN {print $$H + 2 * $$MARGIN}"); \
-		sed -i "s/viewBox=\"[^\"]*\"/viewBox=\"$$NX $$NY $$NW $$NH\"/" "$@" 2>/dev/null || true; \
-		sed -i "s/width=\"[^\"]*\"/width=\"$$NW\"/" "$@" 2>/dev/null || true; \
-		sed -i "s/height=\"[^\"]*\"/height=\"$$NH\"/" "$@" 2>/dev/null || true; \
-	fi
+all: logos pngs ## Build everything (brick SVGs + PNG/WebP exports)
 
-$(SQUARE_OUTLINED_DIR)/%.svg: $(SQUARE_SVG_DIR)/%.svg
-	@echo "Generating outlined version: $@"
-	@mkdir -p $(SQUARE_OUTLINED_DIR)
-	@inkscape "$<" --export-text-to-path --export-filename="$@" 2>/dev/null || true
-	@# Fix viewbox to match drawing area with padding
-	@BOUNDS=$$(inkscape "$@" --query-all 2>/dev/null | grep '^svg' | cut -d, -f2-); \
-	if [ -n "$$BOUNDS" ]; then \
-		MARGIN=10; \
-		X=$$(echo $$BOUNDS | cut -d, -f1); \
-		Y=$$(echo $$BOUNDS | cut -d, -f2); \
-		W=$$(echo $$BOUNDS | cut -d, -f3); \
-		H=$$(echo $$BOUNDS | cut -d, -f4); \
-		NX=$$(awk "BEGIN {print $$X - $$MARGIN}"); \
-		NY=$$(awk "BEGIN {print $$Y - $$MARGIN}"); \
-		NW=$$(awk "BEGIN {print $$W + 2 * $$MARGIN}"); \
-		NH=$$(awk "BEGIN {print $$H + 2 * $$MARGIN}"); \
-		sed -i "s/viewBox=\"[^\"]*\"/viewBox=\"$$NX $$NY $$NW $$NH\"/" "$@" 2>/dev/null || true; \
-		sed -i "s/width=\"[^\"]*\"/width=\"$$NW\"/" "$@" 2>/dev/null || true; \
-		sed -i "s/height=\"[^\"]*\"/height=\"$$NH\"/" "$@" 2>/dev/null || true; \
-	fi
-	@inkscape "$<" --export-text-to-path --export-filename="$@" 2>/dev/null || true
+logos: designs $(ALL_SVGS) ## Build all brick SVGs
 
-# Generate PNG versions from outlined SVGs with tight bounds
-.PHONY: png
-png: outlined $(HORIZONTAL_PNG_FILES) $(SQUARE_PNG_FILES)
+pngs: logos $(ALL_PNGS) ## Export all PNGs and WebPs
 
-$(HORIZONTAL_PNG_DIR)/%.png: $(HORIZONTAL_OUTLINED_DIR)/%.svg
-	@echo "Generating PNG: $@"
-	@mkdir -p $(HORIZONTAL_PNG_DIR)
-	@inkscape "$<" --export-area-drawing --export-margin=10 --export-type=png --export-width=1600 --export-background-opacity=0 --export-filename="$@" 2>/dev/null || true
+designs: $(DESIGN_SVGS) ## Generate design SVGs from colors.py (re-runs on color change)
 
-$(SQUARE_PNG_DIR)/%.png: $(SQUARE_OUTLINED_DIR)/%.svg
-	@echo "Generating PNG: $@"
-	@mkdir -p $(SQUARE_PNG_DIR)
-	@inkscape "$<" --export-area-page --export-type=png --export-width=800 --export-background-opacity=0 --export-filename="$@" 2>/dev/null || true
+help: ## Show available targets
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
+	awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-# Generate WebP versions from PNG files
-.PHONY: webp
-webp: png $(HORIZONTAL_WEBP_FILES) $(SQUARE_WEBP_FILES)
+clean: ## Remove all generated files (design/, logo outputs, and Python cache)
+	rm -f $(DESIGN_SVGS)
+	rm -f $(SQ_SVGS) $(HZ_SVGS) $(HZ_FULL_SVGS)
+	rm -f $(SQ_PNGS) $(SQ_WEBPS) $(HZ_PNGS) $(HZ_WEBPS) $(HZ_FULL_PNGS) $(HZ_FULL_WEBPS)
+	rm -rf __pycache__
 
-$(HORIZONTAL_PNG_DIR)/%.webp: $(HORIZONTAL_PNG_DIR)/%.png
-	@echo "Generating WebP: $@"
-	@cwebp -q 95 "$<" -o "$@" 2>/dev/null || convert "$<" "$@" 2>/dev/null || true
+shell: ## Enter devenv shell
+	devenv shell
 
-$(SQUARE_PNG_DIR)/%.webp: $(SQUARE_PNG_DIR)/%.png
-	@echo "Generating WebP: $@"
-	@cwebp -q 95 "$<" -o "$@" 2>/dev/null || convert "$<" "$@" 2>/dev/null || true
+develop: devenv.local.nix devenv.local.yaml ## Bootstrap development environment
+	devenv shell --profile=devcontainer -- code .
 
-# Clean generated files
-.PHONY: clean
-clean: clean-brick
-	@echo "Cleaning generated files..."
-	@rm -f $(HORIZONTAL_OUTLINED_SVGS)
-	@rm -f $(HORIZONTAL_PNG_FILES)
-	@rm -f $(HORIZONTAL_WEBP_FILES)
-	@rm -f $(SQUARE_OUTLINED_SVGS)
-	@rm -f $(SQUARE_PNG_FILES)
-	@rm -f $(SQUARE_WEBP_FILES)
+devenv.local.nix:
+	cp devenv.local.nix.example devenv.local.nix
 
-# Clean and rebuild everything
-.PHONY: rebuild
-rebuild: clean all
+devenv.local.yaml:
+	cp devenv.local.yaml.example devenv.local.yaml
 
-# Display help
-.PHONY: help
-help:
-	@echo "SPY Logo Makefile"
-	@echo ""
-	@echo "Available targets:"
-	@echo "  all              - Generate all outlined SVG, PNG and WebP files (default)"
-	@echo "  outlined         - Generate outlined SVG files only"
-	@echo "  png              - Generate PNG files (requires outlined SVGs)"
-	@echo "  webp             - Generate WebP files (requires PNG files)"
-	@echo "  brick            - Generate all brick-style variants (SVG, PNG, WebP)"
-	@echo "  brick-square     - Generate square brick logos (SVG only)"
-	@echo "  brick-horizontal - Generate horizontal brick logos (SVG only)"
-	@echo "  clean            - Remove all generated files"
-	@echo "  clean-brick      - Remove all brick-style generated files"
-	@echo "  rebuild          - Clean and rebuild everything"
-	@echo "  status           - Show file counts for generated assets"
-	@echo "  help             - Show this help message"
-	@echo ""
-	@echo "Test targets:"
-	@echo "  test-brick-1x1   - Test 1x1 brick mode on first square logo"
-	@echo "  test-brick-2x2   - Test 2x2 brick mode on first square logo"
-	@echo "  test-brick-auto  - Test auto brick mode on first square logo"
-	@echo ""
-	@echo "Horizontal logos:"
-	@echo "  Source SVGs: $(HORIZONTAL_SVG_DIR)/spy-*.svg"
-	@echo "  Outlined SVGs: $(HORIZONTAL_OUTLINED_DIR)/"
-	@echo "  PNG files (1600px): $(HORIZONTAL_PNG_DIR)/"
-	@echo "  WebP files (1600px): $(HORIZONTAL_PNG_DIR)/"
-	@echo "  Brick variants: $(HORIZONTAL_BRICK_DIR)/"
-	@echo ""
-	@echo "Square logos:"
-	@echo "  Source SVGs: $(SQUARE_SVG_DIR)/spy-*.svg"
-	@echo "  Outlined SVGs: $(SQUARE_OUTLINED_DIR)/"
-	@echo "  PNG files (800px): $(SQUARE_PNG_DIR)/"
-	@echo "  WebP files (800px): $(SQUARE_PNG_DIR)/"
-	@echo "  Brick variants: $(SQUARE_BRICK_DIR)/"
+# ── Design SVGs (grouped output — regenerate all when colors.py changes) ───────
+$(DESIGN_SVGS): colors.py generate_designs.py
+	$(PYTHON) generate_designs.py
 
-# Show status of generated files
-.PHONY: status
-status:
-	@echo "Horizontal logos:"
-	@echo "  Source SVG files: $(words $(HORIZONTAL_SOURCE_SVGS))"
-	@echo "  Outlined SVG files: $(words $(wildcard $(HORIZONTAL_OUTLINED_DIR)/*.svg))"
-	@echo "  PNG files: $(words $(wildcard $(HORIZONTAL_PNG_DIR)/*.png))"
-	@echo "  WebP files: $(words $(wildcard $(HORIZONTAL_PNG_DIR)/*.webp))"
-	@echo ""
-	@echo "Square logos:"
-	@echo "  Source SVG files: $(words $(SQUARE_SOURCE_SVGS))"
-	@echo "  Outlined SVG files: $(words $(wildcard $(SQUARE_OUTLINED_DIR)/*.svg))"
-	@echo "  PNG files: $(words $(wildcard $(SQUARE_PNG_DIR)/*.png))"
-	@echo "  WebP files: $(words $(wildcard $(SQUARE_PNG_DIR)/*.webp))"
+# ── Square brick SVGs ──────────────────────────────────────────────────────────
+$(SQ_DIR):
+	mkdir -p $@
 
-# ============================================================================
-# BRICK-STYLE LOGO GENERATION
-# ============================================================================
-# Generates blocky/pixelated brick-style versions of outlined logos
-# Brick dimensions follow real proportions: 0.6" × 0.5" (width × height)
-#   - 2×2 bricks: 24px wide × 20px high
-#   - 1×1 bricks: 12px wide × 20px high
-#   - auto mode: Uses both sizes adaptively for optimal appearance
+$(SQ_DIR)/%.svg: $(DESIGN_DIR)/%.svg | $(SQ_DIR)
+	$(PYTHON) brick_blockify.py $< $@ $(SQ_PX) $(BLK_W) $(BLK_H) auto
 
-# Brick output directories
-HORIZONTAL_BRICK_DIR = $(HORIZONTAL_OUTLINED_DIR)/brick
-SQUARE_BRICK_DIR = $(SQUARE_OUTLINED_DIR)/brick
+# ── Horizontal brick SVGs — full variant (with subtitle) ──────────────────────
+# Must be listed BEFORE the generic %.svg rule so make tries it first.
+$(HZ_DIR)/%-full.svg: $(HZ_DIR)/%.svg
+	$(PYTHON) compose_logo.py $< $@
 
-# Generate all brick logos (calls shell script for PNG/WebP generation too)
-.PHONY: brick
-brick: outlined
-	@echo "Generating brick logo variants..."
-	@bash generate_all_brick_variants.sh
+# ── Horizontal brick SVGs — simple (no subtitle) ──────────────────────────────
+$(HZ_DIR):
+	mkdir -p $@
 
-# Clean brick variants
-.PHONY: clean-brick
-clean-brick:
-	@echo "Cleaning brick variants..."
-	@rm -f $(SQUARE_BRICK_DIR)/*-brick.svg
-	@rm -f $(HORIZONTAL_BRICK_DIR)/*-brick.svg
-	@rm -f $(SQUARE_PNG_DIR)/*-brick.png
-	@rm -f $(SQUARE_PNG_DIR)/*-brick.webp
-	@rm -f $(HORIZONTAL_PNG_DIR)/*-brick.png
-	@rm -f $(HORIZONTAL_PNG_DIR)/*-brick.webp
+$(HZ_DIR)/%.svg: $(DESIGN_DIR)/%.svg | $(HZ_DIR)
+	$(PYTHON) brick_blockify.py $< $@ $(HZ_PX) $(BLK_W) $(BLK_H) auto
 
-# Generate only square brick logos (SVG only, no PNG/WebP)
-.PHONY: brick-square
-brick-square: outlined
-	@echo "Generating square brick logos..."
-	@mkdir -p $(SQUARE_BRICK_DIR)
-	@for file in $(SQUARE_OUTLINED_DIR)/spy-square-*.svg; do \
-		basename=$$(basename "$$file" .svg); \
-		output="$(SQUARE_BRICK_DIR)/$${basename}-brick.svg"; \
-		echo "Processing: $$basename"; \
-		nix-shell -p "python3.withPackages(ps: [ ps.pillow ps.cairosvg ])" --run \
-			"python3 brick_blockify.py '$$file' '$$output' 20 24 20 auto"; \
-	done
+# ── Square PNG / WebP exports ──────────────────────────────────────────────────
+$(SQ_PNG):
+	mkdir -p $@
 
-# Generate only horizontal brick logos (SVG only, no PNG/WebP)
-.PHONY: brick-horizontal
-brick-horizontal: outlined
-	@echo "Generating horizontal brick logos..."
-	@mkdir -p $(HORIZONTAL_BRICK_DIR)
-	@for file in $(HORIZONTAL_OUTLINED_DIR)/spy-simple-*.svg; do \
-		basename=$$(basename "$$file" .svg); \
-		output="$(HORIZONTAL_BRICK_DIR)/$${basename}-brick.svg"; \
-		echo "Processing: $$basename"; \
-		nix-shell -p "python3.withPackages(ps: [ ps.pillow ps.cairosvg ])" --run \
-			"python3 brick_blockify.py '$$file' '$$output' 30 24 20 auto"; \
-	done
-	@for file in $(HORIZONTAL_OUTLINED_DIR)/spy-full-*.svg; do \
-		basename=$$(basename "$$file" .svg); \
-		output="$(HORIZONTAL_BRICK_DIR)/$${basename}-brick.svg"; \
-		echo "Processing: $$basename (with subtitle)"; \
-		nix-shell -p "python3.withPackages(ps: [ ps.pillow ps.cairosvg ])" --run \
-			"python3 brick_blockify_full.py '$$file' '$$output' 30 24 20"; \
-	done
+$(SQ_PNG)/%.png: $(SQ_DIR)/%.svg | $(SQ_PNG)
+	$(PYTHON) export_raster.py $< $@ 800
 
-# Test brick generation with different modes (square logos only)
-.PHONY: test-brick-1x1
-test-brick-1x1: outlined
-	@echo "Testing 1x1 brick mode on first square logo..."
-	@mkdir -p $(SQUARE_BRICK_DIR)
-	@file=$$(ls $(SQUARE_OUTLINED_DIR)/spy-square-*.svg | head -n 1); \
-	basename=$$(basename "$$file" .svg); \
-	output="$(SQUARE_BRICK_DIR)/$${basename}-brick-test-1x1.svg"; \
-	echo "Processing: $$basename (1x1 mode)"; \
-	nix-shell -p "python3.withPackages(ps: [ ps.pillow ps.cairosvg ])" --run \
-		"python3 brick_blockify.py '$$file' '$$output' 20 24 20 1x1"
+$(SQ_PNG)/%.webp: $(SQ_DIR)/%.svg | $(SQ_PNG)
+	$(PYTHON) export_raster.py $< $@ 800
 
-.PHONY: test-brick-2x2
-test-brick-2x2: outlined
-	@echo "Testing 2x2 brick mode on first square logo..."
-	@mkdir -p $(SQUARE_BRICK_DIR)
-	@file=$$(ls $(SQUARE_OUTLINED_DIR)/spy-square-*.svg | head -n 1); \
-	basename=$$(basename "$$file" .svg); \
-	output="$(SQUARE_BRICK_DIR)/$${basename}-brick-test-2x2.svg"; \
-	echo "Processing: $$basename (2x2 mode)"; \
-	nix-shell -p "python3.withPackages(ps: [ ps.pillow ps.cairosvg ])" --run \
-		"python3 brick_blockify.py '$$file' '$$output' 20 24 20 2x2"
+# ── Horizontal PNG / WebP exports ─────────────────────────────────────────────
+$(HZ_PNG):
+	mkdir -p $@
 
-.PHONY: test-brick-auto
-test-brick-auto: outlined
-	@echo "Testing auto brick mode on first square logo..."
-	@mkdir -p $(SQUARE_BRICK_DIR)
-	@file=$$(ls $(SQUARE_OUTLINED_DIR)/spy-square-*.svg | head -n 1); \
-	basename=$$(basename "$$file" .svg); \
-	output="$(SQUARE_BRICK_DIR)/$${basename}-brick-test-auto.svg"; \
-	echo "Processing: $$basename (auto mode)"; \
-	nix-shell -p "python3.withPackages(ps: [ ps.pillow ps.cairosvg ])" --run \
-		"python3 brick_blockify.py '$$file' '$$output' 20 24 20 auto"
+$(HZ_PNG)/%.png: $(HZ_DIR)/%.svg | $(HZ_PNG)
+	$(PYTHON) export_raster.py $< $@ 800
+
+$(HZ_PNG)/%.webp: $(HZ_DIR)/%.svg | $(HZ_PNG)
+	$(PYTHON) export_raster.py $< $@ 800

@@ -24,12 +24,12 @@ def svg_to_image(svg_path, width=200):
     return img
 
 
-def create_brick_side_view(x, y, brick_width, brick_height, color, opacity=1.0, show_studs=True, brick_type="2x2"):
+def create_brick_side_view(x, y, brick_width, brick_height, color, brick_type="2x2"):
     """Create SVG elements for a brick from side view with studs on top.
-    
+
     Real brick proportions: 0.6" × 0.6" × 0.5" (width × depth × height)
     Height is 5/6 of width. Studs on top are part of the height.
-    
+
     brick_type: "1x1", "2x2", "3x3", or "4x4" - determines number of studs (1, 2, 3, or 4)
     """
     r, g, b = color
@@ -313,43 +313,31 @@ def image_to_brick_svg(img, block_width=24, block_height=20, min_alpha=128, bric
                         brick_sizes[(x, y)] = block_width // 2
                         x += 1
     
-    # Calculate actual SVG dimensions
-    # Width should be based on the maximum x-coordinate of any brick
-    svg_width = width * (block_width // 2)  # Each pixel position takes half-width
-    
-    # Height: Calculate the inner dimensions after stud calculation
-    # When we pass body_height to create_brick_side_view, it recalculates:
-    # inner_stud = body_height * 0.15, inner_body = body_height - inner_stud
+    # Calculate SVG dimensions and stud geometry (single authoritative calculation)
+    svg_width = width * (block_width // 2)
     stud_height = max(2, int(block_height * 0.15))
     body_height = block_height - stud_height
-    
-    # The actual rendered body size (what create_brick_side_view will use)
     inner_stud_height = max(2, int(body_height * 0.15))
     inner_body_height = body_height - inner_stud_height
-    
+
     # Spacing: upper brick body sits on lower brick stud
     content_height = (height - 1) * inner_body_height + body_height
-    
-    # For square aspect ratio images (where width == height), make output square
-    # by padding vertically and centering the content
+
+    # For square aspect ratio images, centre content in a square canvas.
     if width == height:
-        svg_height = svg_width  # Make it square
+        svg_height = max(svg_width, content_height)
         vertical_offset = (svg_height - content_height) // 2
     else:
         svg_height = content_height
         vertical_offset = 0
-    
+
     svg_parts = [
         '<?xml version="1.0" encoding="UTF-8" standalone="no"?>',
         f'<svg width="{svg_width}" height="{svg_height}" viewBox="0 0 {svg_width} {svg_height}" ',
         '     xmlns="http://www.w3.org/2000/svg">',
         f'  <desc>Brick-style blocky version - {brick_type} bricks side view</desc>',
     ]
-    
-    # Calculate stud and body heights once
-    stud_height = max(2, int(block_height * 0.15))
-    body_height = block_height - stud_height
-    
+
     # Process each pixel as a brick - DRAW FROM BOTTOM TO TOP (reverse y order)
     # This way upper bricks are drawn after (on top of) lower bricks, hiding studs below
     for y in range(height - 1, -1, -1):  # Start from bottom (highest y) to top (y=0)
@@ -357,22 +345,13 @@ def image_to_brick_svg(img, block_width=24, block_height=20, min_alpha=128, bric
             brick_w = brick_sizes.get((x, y), 0)
             if brick_w == 0:
                 continue
-            
+
             r, g, b, a = color_map.get((x, y), (0, 0, 0, 0))
-            
-            # Calculate brick position based on pixel coordinates to preserve shape
-            brick_x = x * (block_width // 2)  # Each pixel x-position is half-width unit
-            
-            # Y position: space bricks by inner_body_height so upper brick bodies
-            # sit on top of lower brick studs, hiding them naturally
-            # Add vertical_offset to center content in square outputs
+
+            brick_x = x * (block_width // 2)
             brick_y = y * inner_body_height + vertical_offset
-            
-            # All bricks show studs - they're always visible from the side view
-            show_studs = True
-            
-            # Determine brick type based on width
-            # brick_w can be: 12 (1x), 24 (2x), 36 (3x), or 48 (4x)
+
+            # Determine brick type from width
             if brick_w == block_width // 2:
                 btype = "1x1"
             elif brick_w == block_width:
@@ -382,16 +361,11 @@ def image_to_brick_svg(img, block_width=24, block_height=20, min_alpha=128, bric
             elif brick_w == block_width * 2:
                 btype = "4x4"
             else:
-                btype = "2x2"  # Default fallback
-            
-            # Create brick from side view - NO SHADING, only original RGB color
-            # Opacity is ignored - we use only opaque bricks
-            # All bricks have studs for consistent appearance
-            # Use body_height as brick total height (stud will be part of it)
+                btype = "2x2"
+
             brick_elements = create_brick_side_view(
                 brick_x, brick_y, brick_w, body_height,
                 (r, g, b),
-                show_studs=show_studs,
                 brick_type=btype
             )
             
@@ -430,21 +404,15 @@ def blockify_svg(input_svg, output_svg, pixel_width=20, block_width=24, block_he
         f.write(brick_svg)
     
     print(f"  Saved to {output_svg}")
-    # Calculate actual output dimensions with stacking overlap
-    stud_height = max(2, int(block_height * 0.15))
-    body_height = block_height - stud_height
-    inner_stud_height = max(2, int(body_height * 0.15))
-    inner_body_height = body_height - inner_stud_height
-    output_width = img.width * (block_width // 2)
-    content_height = (img.height - 1) * inner_body_height + body_height
-    
-    # Report actual dimensions (square if input was square)
-    if img.width == img.height:
-        output_height = output_width
-        print(f"  Output size: {output_width}×{output_height} (square, content centered)")
-    else:
-        output_height = content_height
-        print(f"  Output size: {output_width}×{output_height}")
+
+    # Report actual output dimensions (mirrors the geometry in image_to_brick_svg)
+    _stud_h  = max(2, int(block_height * 0.15))
+    _body_h  = block_height - _stud_h
+    _ibody_h = _body_h - max(2, int(_body_h * 0.15))
+    out_w    = img.width * (block_width // 2)
+    content  = (img.height - 1) * _ibody_h + _body_h
+    out_h    = max(out_w, content) if img.width == img.height else content
+    print(f"  Output size: {out_w}×{out_h}")
 
 
 if __name__ == '__main__':

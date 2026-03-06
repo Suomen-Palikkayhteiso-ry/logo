@@ -27,3 +27,23 @@ Desktop.ini
 # Build artifacts
 *.png.backup
 *.svg.backup
+
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Root-level test preview exports (generated manually, not part of build)
+/horizontal.png
+/square.png
