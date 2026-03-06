@@ -136,15 +136,19 @@ FAVICON_FILES = $(FAVICON_ICO) \
                 $(FAVICON_DIR)/icon-512.png
 
 # ── Top-level targets ───────────────────────────────────────────────────────────
-.PHONY: all logos pngs designs favicons clean help shell develop
+BRAND_JSON = brand.json
 
-all: logos pngs favicons ## Build everything (design sources → brick SVGs → PNG/WebP → favicons)
+.PHONY: all logos pngs designs favicons brand clean help shell develop
+
+all: logos pngs favicons brand ## Build everything (design sources → brick SVGs → PNG/WebP → favicons → brand.json)
 
 logos: designs $(ALL_SVGS) ## Build all brick SVGs
 
 pngs: logos $(ALL_PNGS) ## Export all PNGs and WebPs
 
 favicons: pngs $(FAVICON_FILES) ## Generate favicon.ico and PNG variants
+
+brand: favicons $(BRAND_JSON) ## Generate machine-readable brand manifest (brand.json)
 
 designs: $(DESIGN_SQ) $(DESIGN_SQ_LN) $(DESIGN_SQ_N) $(DESIGN_SQ_DN) \
          $(DESIGN_HZ) $(DESIGN_HZ_R1) $(DESIGN_HZ_R2) $(DESIGN_HZ_R3) \
@@ -160,6 +164,7 @@ clean: ## Remove all generated files (design/, logo outputs, and Python cache)
 	      $(DESIGN_COLORFUL) $(DESIGN_RAINBOW)
 	rm -f $(ALL_SVGS) $(ALL_PNGS)
 	rm -f $(FAVICON_FILES)
+	rm -f $(BRAND_JSON)
 	rm -rf __pycache__
 
 shell: ## Enter devenv shell
@@ -299,4 +304,8 @@ $(FAVICON_DIR):
 
 $(FAVICON_FILES): $(SQ_SVG) generate_favicons.py | $(FAVICON_DIR)
 	$(PYTHON) generate_favicons.py
+
+# ── Brand manifest ───────────────────────────────────────────────────────────
+$(BRAND_JSON): colors.py generate_brand_json.py
+	$(PYTHON) generate_brand_json.py
 
