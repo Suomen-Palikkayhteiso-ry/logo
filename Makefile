@@ -44,7 +44,7 @@ LOGO_GEN_ARGS := \
   --raster-w   $(RASTER_W)
 
 # Haskell source files – stamp depends on these so code changes also invalidate it
-HS_SOURCES := $(shell find src app -name '*.hs') logo.cabal
+HS_SOURCES := $(shell find src app -name '*.hs') logo.cabal $(wildcard cabal.project*)
 
 LOGO_STAMP := logo/.stamp
 

@@ -22,7 +22,7 @@ jobs:
       run:
         shell: devenv shell bash -- -e {0}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: cachix/install-nix-action@v31
 
@@ -33,6 +33,45 @@ jobs:
       - name: Install devenv.sh
         shell: bash
         run: nix profile add nixpkgs#devenv
+
+      # ── Caches ──────────────────────────────────────────────────────────────
+
+      # Haskell compiled artifacts. Keyed on cabal files + devenv.lock so a
+      # different GHC (after devenv update) always gets a fresh build.
+      - uses: actions/cache@v5
+        with:
+          path: dist-newstyle
+          key: cabal-${{ runner.os }}-${{ hashFiles('logo.cabal', 'cabal.project', 'devenv.lock') }}-${{ hashFiles('src/**/*.hs', 'app/**/*.hs') }}
+          restore-keys: cabal-${{ runner.os }}-${{ hashFiles('logo.cabal', 'cabal.project', 'devenv.lock') }}-
+
+      # Generated pipeline outputs (logos, favicons, JSON/JSON-LD, Elm tokens).
+      # If this hits we touch logo/.stamp so make skips logo-gen entirely.
+      - uses: actions/cache@v5
+        id: pipeline-cache
+        with:
+          path: |
+            logo
+            favicon
+            design-guide.json
+            design-guide
+            src/Brand/Tokens.elm
+          key: pipeline-${{ runner.os }}-${{ hashFiles('source.svg', 'fonts/Outfit-VariableFont_wght.ttf', 'src/**/*.hs', 'app/**/*.hs', 'logo.cabal', 'cabal.project', 'Makefile') }}
+
+      - name: Refresh pipeline stamp after cache restore
+        if: steps.pipeline-cache.outputs.cache-hit == 'true'
+        shell: bash
+        run: touch logo/.stamp
+
+      # npm packages + compiled Elm packages
+      - uses: actions/cache@v5
+        with:
+          path: |
+            node_modules
+            elm-stuff
+          key: npm-elm-${{ runner.os }}-${{ hashFiles('package-lock.json', 'elm.json') }}
+          restore-keys: npm-elm-${{ runner.os }}-
+
+      # ── Build ────────────────────────────────────────────────────────────────
 
       - name: Build devenv shell
         run: echo "devenv shell ready"
@@ -46,12 +85,11 @@ jobs:
       - name: Build elm-pages site
         run: npx elm-pages build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        # configure-pages has no run commands, shell override doesn't apply
+      # ── Deploy ───────────────────────────────────────────────────────────────
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
