@@ -1,16 +1,26 @@
-module Logo.Blockify (blockifySvg, aspectCorrectionFactor) where
+module Logo.Blockify
+    ( blockifyToLayout
+    , blockifySvg
+    , aspectCorrectionFactor
+    ) where
 
 import Codec.Picture
-import Data.List (intercalate, maximumBy, sort)
+import Data.List (maximumBy, sort)
 import Data.Maybe (fromMaybe, isJust, isNothing)
 import Data.Ord (comparing)
 import Data.Word (Word8)
 import qualified Data.ByteString as BS
 import qualified Data.Map.Strict as Map
+import Logo.BrickLayout
+    ( BrickGeom (..)
+    , BrickLayout
+    , imageAndMapToLayout
+    , layoutToSvg
+    , mkBrickGeom
+    )
 import System.Directory (createDirectoryIfMissing)
 import System.FilePath (takeDirectory)
 import System.Process (createProcess, proc, std_out, StdStream (..), waitForProcess)
-import Text.Printf (printf)
 
 type RGB = (Word8, Word8, Word8)
 type Pos = (Int, Int) -- (col, row)
@@ -105,21 +115,6 @@ aspectCorrectionFactor blkW blkH =
         vPitch     = bodyH - innerStudH
         hPitch     = blkW `div` 2
      in fromIntegral hPitch / fromIntegral vPitch
-
-data BrickGeom = BrickGeom
-    { bgBodyH      :: !Int -- brick body height (17 px)
-    , bgInnerBodyH :: !Int -- vertical row pitch / v_pitch (15 px)
-    , bgHPitch     :: !Int -- horizontal column pitch / h_pitch (12 px)
-    }
-
-mkBrickGeom :: Int -> Int -> BrickGeom
-mkBrickGeom blkW blkH =
-    let studH      = max 2 (blkH * 15 `div` 100)
-        bodyH      = blkH - studH
-        innerStudH = max 2 (bodyH * 15 `div` 100)
-        innerBodyH = bodyH - innerStudH
-        hPitch     = blkW `div` 2
-     in BrickGeom bodyH innerBodyH hPitch
 
 -- ── Auto brick sizing ─────────────────────────────────────────────────────────────
 
@@ -277,143 +272,56 @@ replaceAt xs i x = take i xs ++ [x] ++ drop (i + 1) xs
 removeAt :: [a] -> Int -> [a]
 removeAt xs i = take i xs ++ drop (i + 1) xs
 
--- ── SVG rendering ─────────────────────────────────────────────────────────────────
+-- ── Main entry points ──────────────────────────────────────────────────────────────
 
-rgbStr :: RGB -> String
-rgbStr (r, g, b) = printf "rgb(%d,%d,%d)" r g b
-
--- | Render one brick as SVG elements: body rect, 4 hairline borders, studs.
--- Matches Python create_brick_side_view(x, y, brick_width, brick_height=bgBodyH, …)
--- which recomputes its own inner stud from brick_height (bgBodyH=17, not blkH=20).
-brickElements :: Int -> Int -> Int -> RGB -> BrickGeom -> [String]
-brickElements brickX brickY brickW color geom =
-    let r      = rgbStr color
-        bc     = "rgb(0,0,0)"
-        -- Python: stud_height = max(2, int(brick_height * 0.15))  brick_height = bgBodyH = 17
-        --         body_height  = brick_height - stud_height        = 15
-        studHt = max 2 (bgBodyH geom * 15 `div` 100)  -- 2
-        actBH  = bgBodyH geom - studHt                 -- 15
-        hP     = bgHPitch geom
-        bodyY  = brickY + studHt
-        bY2    = brickY + bgBodyH geom
-        sCount = brickW `div` hP
-
-        body =
-            printf "  <rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"%s\"/>"
-                brickX bodyY brickW actBH r
-        lTop =
-            printf "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"%s\" stroke-width=\"0.25\" opacity=\"1.0\"/>"
-                brickX bodyY (brickX + brickW) bodyY bc
-        lBottom =
-            printf "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"%s\" stroke-width=\"0.25\" opacity=\"1.0\"/>"
-                brickX bY2 (brickX + brickW) bY2 bc
-        lLeft =
-            printf "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"%s\" stroke-width=\"0.25\" opacity=\"1.0\"/>"
-                brickX bodyY brickX bY2 bc
-        lRight =
-            printf "  <line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"%s\" stroke-width=\"0.25\" opacity=\"1.0\"/>"
-                (brickX + brickW) bodyY (brickX + brickW) bY2 bc
-
-        studs = concatMap (mkStud brickX brickY r bc studHt hP) [0 .. sCount - 1]
-     in body : lTop : lBottom : lLeft : lRight : studs
-
-mkStud :: Int -> Int -> String -> String -> Int -> Int -> Int -> [String]
-mkStud brickX brickY r bc studHt hPitch i =
-    -- Python: stud_x = x + base_unit * i + (base_unit - stud_width) / 2
-    -- stud_width = 7, base_unit = hPitch = 12  →  offset = (12-7)/2 = 2.5
-    let studW = 7 :: Int
-        studX = fromIntegral brickX
-                    + fromIntegral (hPitch * i)
-                    + (fromIntegral hPitch - 7.0 :: Double) / 2.0
-        studY = brickY :: Int
-        sRect =
-            printf "  <rect x=\"%.1f\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"%s\"/>"
-                studX studY studW studHt r
-        sBdr =
-            printf "  <rect x=\"%.1f\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"none\" stroke=\"%s\" stroke-width=\"0.25\" opacity=\"1.0\"/>"
-                studX studY studW studHt bc
-     in [sRect, sBdr]
-
--- | Convert the processed image + brick-size map to a complete SVG string.
--- padTop / padBottom are extra whitespace in SVG pixels added above / below the bricks.
-imageToBrickSvg :: Image PixelRGBA8 -> Map.Map Pos Int -> BrickGeom -> Int -> Int -> String
-imageToBrickSvg img brickSizes geom padTop padBottom =
-    let w          = imageWidth img
-        h          = imageHeight img
-        hP         = bgHPitch geom
-        bodyH      = bgBodyH geom
-        innerBodyH = bgInnerBodyH geom
-        svgW       = w * hP
-        contentH   = (h - 1) * innerBodyH + bodyH
-        (baseSvgH, baseVertOff)
-            | w == h    = let sh = max svgW contentH
-                           in (sh, (sh - contentH) `div` 2)
-            | otherwise = (contentH, 0)
-        svgH    = baseSvgH + padTop + padBottom
-        vertOff = baseVertOff + padTop
-
-        header =
-            [ "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"
-            , printf "<svg width=\"%d\" height=\"%d\" viewBox=\"0 0 %d %d\" "
-                svgW svgH svgW svgH
-            , "     xmlns=\"http://www.w3.org/2000/svg\">"
-            , "  <desc>Brick-style blocky version - auto bricks side view</desc>"
-            ]
-        footer = ["</svg>"]
-
-        -- Draw bottom-to-top so upper bricks overlap lower brick studs.
-        bricks =
-            [ line
-            | row <- [h - 1, h - 2 .. 0]
-            , col <- [0 .. w - 1]
-            , let brickW = Map.findWithDefault 0 (col, row) brickSizes
-            , brickW > 0
-            , let PixelRGBA8 r g b a = pixelAt img col row
-            , a >= 128
-            , let color  = (r, g, b)
-                  brickX = col * hP
-                  brickY = row * innerBodyH + vertOff
-            , line <- brickElements brickX brickY brickW color geom
-            ]
-     in intercalate "\n" (header ++ bricks ++ footer)
-
--- ── Main entry point ──────────────────────────────────────────────────────────────
-
-blockifySvg
+-- | Stage 1: rasterize a design SVG and compute the brick layout, returning
+-- a 'BrickLayout' value ready for ASCII export (@writeBrickLayout@) or direct
+-- SVG rendering (@layoutToSvg@ / @layoutsToHorizontalSvg@).
+blockifyToLayout
     :: FilePath -- ^ input SVG
-    -> FilePath -- ^ output SVG
     -> Int      -- ^ target pixel width (sqPx or hzPx)
-    -> Int      -- ^ blkW (2×2 brick SVG width, default 24)
-    -> Int      -- ^ blkH (brick SVG height, default 20)
+    -> Int      -- ^ blkW
+    -> Int      -- ^ blkH
     -> Int      -- ^ pad (transparent column padding each side)
-    -> Int      -- ^ padTop (extra SVG pixels above bricks)
-    -> Int      -- ^ padBottom (extra SVG pixels below bricks)
-    -> IO ()
-blockifySvg inSvg outSvg sqPx blkW blkH pad padTop padBottom = do
-    putStrLn $ "  blockify " ++ inSvg ++ " -> " ++ outSvg
+    -> Int      -- ^ padTop
+    -> Int      -- ^ padBottom
+    -> IO BrickLayout
+blockifyToLayout inSvg sqPx blkW blkH pad padTop padBottom = do
+    putStrLn $ "  blockify (stage 1) " ++ inSvg
 
-    -- 1. Rasterize via cairosvg+PIL (mode filter and downscale done in Python)
     raw <- rasterize inSvg sqPx
 
-    -- 2. Aspect-ratio correction: compress height by h_pitch / v_pitch
-    let geom   = mkBrickGeom blkW blkH
-        origH  = imageHeight raw
-        corrH  = max 1 $ round
-                     ( fromIntegral origH
-                     * fromIntegral (bgHPitch geom)
-                     / fromIntegral (bgInnerBodyH geom) :: Double )
+    let geom  = mkBrickGeom blkW blkH
+        origH = imageHeight raw
+        corrH = max 1 $ round
+                    ( fromIntegral origH
+                    * fromIntegral (bgHPitch geom)
+                    / fromIntegral (bgInnerBodyH geom) :: Double )
         corrected
             | corrH /= origH = scaleNearest raw (imageWidth raw) corrH
             | otherwise      = raw
 
-    -- 3. Add transparent padding columns
     let padded = addPadding corrected pad
+        sizes  = autoBrickSizes padded (bgHPitch geom)
 
-    -- 4. Compute adaptive brick sizes
-    let sizes = autoBrickSizes padded (bgHPitch geom)
+    return $ imageAndMapToLayout padded sizes blkW blkH padTop padBottom
 
-    -- 5. Render and write
-    let svg = imageToBrickSvg padded sizes geom padTop padBottom
+-- | Convenience wrapper: blockify a design SVG and write the brick SVG in one
+-- step (without saving an intermediate @.blay@ file).
+blockifySvg
+    :: FilePath -- ^ input SVG
+    -> FilePath -- ^ output SVG
+    -> Int      -- ^ target pixel width (sqPx or hzPx)
+    -> Int      -- ^ blkW
+    -> Int      -- ^ blkH
+    -> Int      -- ^ pad
+    -> Int      -- ^ padTop
+    -> Int      -- ^ padBottom
+    -> IO ()
+blockifySvg inSvg outSvg sqPx blkW blkH pad padTop padBottom = do
+    putStrLn $ "  blockify " ++ inSvg ++ " -> " ++ outSvg
+    layout <- blockifyToLayout inSvg sqPx blkW blkH pad padTop padBottom
+    let svg = layoutToSvg layout
     createDirectoryIfMissing True (takeDirectory outSvg)
     writeFile outSvg svg
     putStrLn $ "  Saved " ++ outSvg

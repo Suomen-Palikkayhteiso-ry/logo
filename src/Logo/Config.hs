@@ -59,11 +59,18 @@ data Config = Config
 
     -- ── Output directories ────────────────────────────────────────────────
     , cfgDesignDir  :: FilePath -- ^ Raw design SVGs          (default: @design@)
+    , cfgLayoutDir  :: FilePath -- ^ Intermediate .blay files (default: @layout@)
     , cfgSqSvgDir   :: FilePath -- ^ Square brick SVGs        (default: @logo/square/svg@)
     , cfgHzSvgDir   :: FilePath -- ^ Horizontal brick SVGs    (default: @logo/horizontal/svg@)
     , cfgSqPngDir   :: FilePath -- ^ Square raster outputs    (default: @logo/square/png@)
     , cfgHzPngDir   :: FilePath -- ^ Horizontal raster outputs(default: @logo/horizontal/png@)
     , cfgFaviconDir :: FilePath -- ^ Favicon outputs          (default: @favicon@)
+
+    -- ── Mode ──────────────────────────────────────────────────────────────
+    , cfgFromBlay   :: Bool
+      -- ^ Skip Stage 1 (rasterise → .blay) and read existing .blay files
+      --   directly.  Use this after hand-editing a .blay file to re-render
+      --   without re-running the slow rasterisation step.  (flag: @--from-blay@)
     } deriving (Show)
 
 -- | Default configuration matching the original hardcoded constants.
@@ -82,11 +89,13 @@ defaultConfig = Config
     , cfgAnimMs     = 10000
     , cfgRasterW    = 800
     , cfgDesignDir  = "design"
+    , cfgLayoutDir  = "layout"
     , cfgSqSvgDir   = "logo/square/svg"
     , cfgHzSvgDir   = "logo/horizontal/svg"
     , cfgSqPngDir   = "logo/square/png"
     , cfgHzPngDir   = "logo/horizontal/png"
     , cfgFaviconDir = "favicon"
+    , cfgFromBlay   = False
     }
 
 -- | Parse CLI args and return a Config, or print usage and exit.
@@ -125,11 +134,16 @@ applyOne flag val cfg = case flag of
     "--anim-ms"     -> int $ \n -> cfg { cfgAnimMs    = n }
     "--raster-w"    -> int $ \n -> cfg { cfgRasterW   = n }
     "--design-dir"  -> Right cfg { cfgDesignDir  = val }
+    "--layout-dir"  -> Right cfg { cfgLayoutDir  = val }
     "--sq-svg-dir"  -> Right cfg { cfgSqSvgDir   = val }
     "--hz-svg-dir"  -> Right cfg { cfgHzSvgDir   = val }
     "--sq-png-dir"  -> Right cfg { cfgSqPngDir   = val }
     "--hz-png-dir"  -> Right cfg { cfgHzPngDir   = val }
     "--favicon-dir" -> Right cfg { cfgFaviconDir = val }
+    "--from-blay"   -> case val of
+        "true"  -> Right cfg { cfgFromBlay = True }
+        "false" -> Right cfg { cfgFromBlay = False }
+        _       -> Left $ "--from-blay expects true/false, got: " ++ val
     _               -> Left $ "unknown flag: " ++ flag
   where
     int f = case reads val of
@@ -155,9 +169,11 @@ usage = unlines
     , "  --anim-ms N         Animation frame duration ms  [default: 10000]"
     , "  --raster-w N        PNG/WebP export width px     [default: 800]"
     , "  --design-dir PATH   Raw design SVG output dir    [default: design]"
+  , "  --layout-dir PATH   Intermediate .blay files dir [default: layout]"
     , "  --sq-svg-dir PATH   Square SVG output dir        [default: logo/square/svg]"
     , "  --hz-svg-dir PATH   Horizontal SVG output dir    [default: logo/horizontal/svg]"
     , "  --sq-png-dir PATH   Square PNG/WebP output dir   [default: logo/square/png]"
     , "  --hz-png-dir PATH   Horizontal PNG/WebP dir      [default: logo/horizontal/png]"
     , "  --favicon-dir PATH  Favicon output dir           [default: favicon]"
+  , "  --from-blay true    Skip stage 1; read existing .blay files and re-render"
     ]

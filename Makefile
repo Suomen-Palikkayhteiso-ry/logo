@@ -46,7 +46,9 @@ LOGO_GEN_ARGS := \
 # Haskell source files – stamp depends on these so code changes also invalidate it
 HS_SOURCES := $(shell find src app -name '*.hs') logo.cabal $(wildcard cabal.project*)
 
-LOGO_STAMP := logo/.stamp
+LOGO_STAMP  := logo/.stamp
+BLAY_FILES  := $(wildcard layout/*.blay)
+BLAY_STAMP  := logo/.blay-stamp
 
 # The devenv shell's PATH can grow to 100 KB+ from hundreds of individual
 # Haskell dep bin-dirs (one per nativeBuildInput).  When cabal spawns GHC and
@@ -97,12 +99,31 @@ run-force: ## Force-run logo-gen regardless of stamp
 	$(CABAL) run --offline logo-gen -- $(LOGO_GEN_ARGS)
 	$(OUTLINE_TEXT)
 
+# Incremental: only re-runs logo-gen (stage 2) when .blay files, fonts, Haskell
+# source, or Makefile change.  rsvg-convert blockification is skipped entirely.
+$(BLAY_STAMP): $(BLAY_FILES) $(FONT_PATH) $(HS_SOURCES) Makefile scripts/text_to_path.py
+	$(CABAL) build --offline
+	$(CABAL) run --offline logo-gen -- $(LOGO_GEN_ARGS) --from-blay true
+	$(OUTLINE_TEXT)
+	@mkdir -p logo
+	touch $(BLAY_STAMP)
+
+render-blay: $(BLAY_STAMP) ## Re-render from .blay files (stamp-based; skips rasterisation)
+
+render-blay-force: build ## Force re-render from .blay files regardless of stamp
+	$(CABAL) run --offline logo-gen -- $(LOGO_GEN_ARGS) --from-blay true
+	$(OUTLINE_TEXT)
+
 # ── elm-pages site ────────────────────────────────────────────────────────────
 
 install: ## Install npm deps and resolve Elm packages (run once after checkout)
 	npm install
 
 assets: run ## Copy generated assets into public/ for elm-pages
+	rm -rf public/logo public/favicon public/fonts public/design-guide.json public/design-guide
+	cp -r logo favicon fonts design-guide.json design-guide public/
+
+assets-from-blay: render-blay ## CI: copy assets built from committed .blay files (skips rasterisation)
 	rm -rf public/logo public/favicon public/fonts public/design-guide.json public/design-guide
 	cp -r logo favicon fonts design-guide.json design-guide public/
 

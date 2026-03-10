@@ -1,0 +1,31 @@
+# brick-layout v1
+blk-w: 24
+blk-h: 20
+pad-top: 20
+pad-bottom: 0
+# palette: char = RRGGBB  (. = transparent)
+palette:
+  . = transparent
+  A = 9195ca
+  B = ac78ba
+  C = f2705e
+  D = f9ba61
+  E = 000000
+  F = 151100
+  G = f3705e
+  H = fab962
+# grid: 64×13
+grid:
+.....|AAAA|AA|..........|BBBB|BB|..........|CCCC|CC|..........|DDDD|DD|.....
+.....|AA|AAAA|..........|BB|BBBB|..........|CC|CCCC|..........|DD|DDDD|.....
+..|AAAA|AAAA|AAAA|....|BBBB|BBBB|BBBB|....|CCCC|CCCC|CCCC|....|DDDD|DDDD|DDDD|..
+.|AAA|AAAA|AAAA|AAA|..|BBBB|BBBB|BBBB|BB|..|CCCC|CCCC|CCCC|CC|..|DDDD|DDDD|DDDD|DD|.
+.|AAA|EEE|AA|EEE|AAA|..|BBB|EEE|BB|EEE|BBB|..|CCC|EEE|CC|EEE|CCC|..|DDD|EEE|DD|EEE|DDD|.
+.|AAA|EEE|AA|EEE|AAA|..|BBB|EEE|BB|EEE|BBB|..|CCC|EEE|CC|EEE|CCC|..|DDD|EEE|DD|EEE|DDD|.
+.|AAAA|AAAA|AAAA|AA|..|BBBB|BBBB|BBBB|BB|..|CCCC|CCCC|CCCC|CC|..|DDDD|DDDD|DDDD|DD|.
+.|AAA|AAAA|AAAA|AAA|..|BBB|BBBB|BBBB|BBB|..|CCC|CCCC|CCCC|CCC|..|DDD|DDDD|DDDD|DDD|.
+.|AAA|FF|AAAA|FF|AAA|..|BBB|FF|BBBB|FF|BBB|..|CCC|FF|CCCC|FF|CCC|..|DDD|FF|DDDD|FF|DDD|.
+.|AAAA|FFFF|FF|AAAA|..|BBBB|FFFF|FF|BBBB|..|CCCC|FFFF|FF|CCCC|..|DDDD|FFFF|FF|DDDD|.
+.|AAAA|A|FFFF|AAAA|A|..|BBBB|B|FFFF|BBBB|B|..|CCCC|C|FFFF|CCCC|C|..|DDDD|D|FFFF|DDDD|D|.
+..|AAAA|AAAA|AAA|A|....|BBBB|BBBB|BBB|B|....|CCCC|CCCC|CCC|C|....|DDDD|DDDD|DDD|D|..
+....|AAA|AAAA|A|........|BBBB|BBBB|........|CCCC|CCC|G|........|DDDD|DDD|H|....

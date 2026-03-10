@@ -7,7 +7,7 @@ build-type:    Simple
 library
   exposed-modules:
     Brand.Colors, Brand.DesignData, Brand.Json, Brand.JsonLd, Brand.ElmGen,
-    Logo.Config, Logo.Designs, Logo.Blockify, Logo.Compose,
+    Logo.Config, Logo.Designs, Logo.BrickLayout, Logo.Blockify, Logo.Compose,
     Logo.Animate, Logo.Raster, Logo.Favicons
   hs-source-dirs: src
   ghc-options: -Wall
@@ -23,7 +23,7 @@ executable logo-gen
   ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   default-language: GHC2021
   build-depends:
-    base >=4.7 && <5, logo-gen, text, directory
+    base >=4.7 && <5, logo-gen, text, directory, filepath
 
 test-suite logo-gen-tests
   type: exitcode-stdio-1.0

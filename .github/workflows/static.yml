@@ -45,7 +45,9 @@ jobs:
           restore-keys: cabal-${{ runner.os }}-${{ hashFiles('logo.cabal', 'cabal.project', 'devenv.lock') }}-
 
       # Generated pipeline outputs (logos, favicons, JSON/JSON-LD, Elm tokens).
-      # If this hits we touch logo/.stamp so make skips logo-gen entirely.
+      # Keyed on .blay files + fonts + Haskell source; source.svg is not needed
+      # because rasterisation is skipped (--from-blay true).
+      # If this hits we touch logo/.blay-stamp so make skips logo-gen entirely.
       - uses: actions/cache@v5
         id: pipeline-cache
         with:
@@ -55,12 +57,12 @@ jobs:
             design-guide.json
             design-guide
             src/Brand/Tokens.elm
-          key: pipeline-${{ runner.os }}-${{ hashFiles('source.svg', 'fonts/Outfit-VariableFont_wght.ttf', 'src/**/*.hs', 'app/**/*.hs', 'logo.cabal', 'cabal.project', 'Makefile') }}
+          key: pipeline-${{ runner.os }}-${{ hashFiles('layout/*.blay', 'fonts/Outfit-VariableFont_wght.ttf', 'src/**/*.hs', 'app/**/*.hs', 'logo.cabal', 'cabal.project', 'Makefile', 'scripts/text_to_path.py') }}
 
-      - name: Refresh pipeline stamp after cache restore
+      - name: Refresh blay stamp after cache restore
         if: steps.pipeline-cache.outputs.cache-hit == 'true'
         shell: bash
-        run: touch logo/.stamp
+        run: mkdir -p logo && touch logo/.blay-stamp
 
       # npm packages + compiled Elm packages
       - uses: actions/cache@v5
@@ -77,7 +79,7 @@ jobs:
         run: echo "devenv shell ready"
 
       - name: Run Haskell pipeline and copy assets
-        run: make assets
+        run: make assets-from-blay
 
       - name: Install npm dependencies
         run: npm install
