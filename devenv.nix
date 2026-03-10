@@ -48,6 +48,8 @@ in {
       elm-pages
       # Other CLI tools
       pkgs.entr
+      # Python with fontTools for SVG text-to-path conversion
+      (pkgs.python3.withPackages (ps: [ ps.fonttools ]))
     ];
 
     enterShell = ''

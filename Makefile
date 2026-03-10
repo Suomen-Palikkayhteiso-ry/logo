@@ -64,6 +64,11 @@ _MAGICK_BIN := $(shell dirname $(shell which convert      2>/dev/null) 2>/dev/nu
 _SLIM_PATH  := $(_GHC_BIN):$(_CABAL_BIN):$(_RSVG_BIN):$(_WEBP_BIN):$(_GIFSKI_BIN):$(_ICO_BIN):$(_MAGICK_BIN):/usr/bin:/bin
 CABAL       := env PATH="$(_SLIM_PATH)" cabal
 
+# Outline subtitle text in composed horizontal SVGs only (not squares, not logo-only horizontals)
+OUTLINE_TEXT := python3 scripts/text_to_path.py $(FONT_PATH) \
+  logo/horizontal/svg/*-full.svg \
+  logo/horizontal/svg/*-full-dark.svg
+
 # ── Targets ───────────────────────────────────────────────────────────────────
 
 help: ## Show available targets
@@ -79,9 +84,10 @@ build: ## Compile Haskell executable (no run)
 
 # Incremental: only re-runs logo-gen when source.svg, fonts/, Haskell source,
 # or any constant in this Makefile has changed.
-$(LOGO_STAMP): $(SOURCE_SVG) $(FONT_PATH) $(HS_SOURCES) Makefile
+$(LOGO_STAMP): $(SOURCE_SVG) $(FONT_PATH) $(HS_SOURCES) Makefile scripts/text_to_path.py
 	$(CABAL) build --offline
 	$(CABAL) run --offline logo-gen -- $(LOGO_GEN_ARGS)
+	$(OUTLINE_TEXT)
 	@mkdir -p logo
 	touch $(LOGO_STAMP)
 
@@ -89,6 +95,7 @@ run: $(LOGO_STAMP) ## Haskell pipeline: generate logo/, favicon/, brand.json, Br
 
 run-force: ## Force-run logo-gen regardless of stamp
 	$(CABAL) run --offline logo-gen -- $(LOGO_GEN_ARGS)
+	$(OUTLINE_TEXT)
 
 # ── elm-pages site ────────────────────────────────────────────────────────────
 
@@ -126,7 +133,7 @@ dev-watch: assets ## Build all static assets, then watch with elm-pages dev (hot
 	elm-pages dev
 
 watch: ## Re-run Haskell pipeline on .hs/.cabal changes (requires entr)
-	find src app tests -name '*.hs' -o -name '*.cabal' | entr -r $(CABAL) run --offline logo-gen -- $(LOGO_GEN_ARGS)
+	find src app tests -name '*.hs' -o -name '*.cabal' | entr -r sh -c '$(CABAL) run --offline logo-gen -- $(LOGO_GEN_ARGS) && $(OUTLINE_TEXT)'
 
 watch-elm: ## elm-pages dev server only (assumes assets already in public/)
 	elm-pages dev
