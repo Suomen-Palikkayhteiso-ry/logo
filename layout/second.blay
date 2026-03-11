@@ -6,9 +6,10 @@ pad-bottom: 20
 # palette: char = RRGGBB  (. = transparent)
 palette:
   . = transparent
-  A = f6d7b3
+  A = f2cd37
   B = 000000
   C = 151100
+  D = f3cc36
 # grid: 16×13
 grid:
 .....|AAAA|AA|.....
@@ -24,3 +25,7 @@ grid:
 .|AAAA|A|CCCC|AAAA|A|.
 ..|AAAA|AAAA|AAA|A|..
 ....|AAA|AAAA|A|....
+
+
+
+

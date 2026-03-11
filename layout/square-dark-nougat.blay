@@ -9,7 +9,6 @@ palette:
   A = ad6140
   B = 000000
   C = 151100
-  D = ad6241
 # grid: 16×13
 grid:
 .....|AAAA|AA|.....
@@ -20,8 +19,8 @@ grid:
 .|AAA|BBB|AA|BBB|AAA|.
 .|AAAA|AAAA|AAAA|AA|.
 .|AAA|AAAA|AAAA|AAA|.
-.|AAA|CC|AAAA|CC|AAA|.
+.|AAA|CC|CCCC|CC|AAA|.
 .|AAAA|CCCC|CC|AAAA|.
 .|AAAA|A|CCCC|AAAA|A|.
 ..|AAAA|AAAA|AAA|A|..
-....|AAA|AAAA|D|....
+....|AAA|AAAA|A|....
