@@ -45,9 +45,11 @@ jobs:
           restore-keys: cabal-${{ runner.os }}-${{ hashFiles('logo.cabal', 'cabal.project', 'devenv.lock') }}-
 
       # Generated pipeline outputs (logos, favicons, JSON/JSON-LD, Elm tokens).
-      # Keyed on .blay files + fonts + Haskell source; source.svg is not needed
-      # because rasterisation is skipped (--from-blay true).
-      # If this hits we touch logo/.blay-stamp so make skips logo-gen entirely.
+      # Keyed on .blay files + fonts + Haskell source + Makefile.
+      # On cache hit we touch all output files so Make sees them as newer than
+      # the checked-out sources (git checkout stamps files with current time,
+      # while tar restores with original timestamps → outputs would appear stale
+      # without the explicit touch).
       - uses: actions/cache@v5
         id: pipeline-cache
         with:
@@ -59,10 +61,12 @@ jobs:
             src/Brand/Tokens.elm
           key: pipeline-${{ runner.os }}-${{ hashFiles('layout/*.blay', 'fonts/Outfit-VariableFont_wght.ttf', 'src/**/*.hs', 'app/**/*.hs', 'logo.cabal', 'cabal.project', 'Makefile', 'scripts/text_to_path.py') }}
 
-      - name: Refresh blay stamp after cache restore
+      - name: Touch pipeline outputs after cache restore
         if: steps.pipeline-cache.outputs.cache-hit == 'true'
         shell: bash
-        run: mkdir -p logo && touch logo/.blay-stamp
+        run: |
+          find logo favicon design-guide -type f -exec touch {} + 2>/dev/null || true
+          touch design-guide.json src/Brand/Tokens.elm 2>/dev/null || true
 
       # npm packages + compiled Elm packages
       - uses: actions/cache@v5
