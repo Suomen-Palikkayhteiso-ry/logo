@@ -11,108 +11,197 @@ guide is served at [logo.palikkaharrastajat.fi](https://logo.palikkaharrastajat.
 | **LEGO Yellow** | `#F2CD37` |
 | **LEGO Black** | `#05131D` |
 | **LEGO White** | `#FFFFFF` |
+| Light Nougat | `#F6D7B3` |
+| Nougat | `#D09168` |
+| Dark Nougat | `#AD6140` |
 
 ## Quick start
 
 ```bash
 devenv shell           # enter the Nix dev environment (GHC + Elm + Node.js)
-make install           # npm install + elm-json install (once after checkout)
-make dev               # full pipeline → copy assets → elm-pages dev server
+make install           # npm install (once after checkout)
+make build             # compile all Haskell executables
+make render            # generate logo/, favicon/, design-guide.json
+make dev               # render → copy assets → elm-pages dev server
 ```
 
 ## Makefile targets
 
 | Target | What it does |
 |--------|-------------|
-| `make all` | **Build everything**: pipeline → assets → `npx elm-pages build` → `dist/` |
-| `make dev-watch` | **Build all static assets, then watch**: pipeline → assets → `npx elm-pages dev` |
-| `make run` | Haskell pipeline: generate `logo/`, `favicon/`, `brand.json`, `src/Brand/Generated.elm` |
-| `make assets` | `make run` + copy `logo/`, `favicon/`, `fonts/`, `brand.json` into `public/` |
-| `make site` | `make assets` + `npx elm-pages build` → `dist/` (production) |
-| `make dev` | `make assets` + `npx elm-pages dev` (hot-reload dev server) |
-| `make dev-watch` | `make assets` then elm-pages dev with hot reload |
-| `make install` | `npm install` + `elm-json install --yes` |
+| `make all` | `render` → `assets` → `elm-pages build` → `dist/` |
+| `make build` | Compile all Haskell executables (no output generated) |
+| `make blay-compose-all` | Derive all `.blay` files from masters (commit outputs) |
+| `make render` | Render all `.blay` files → `logo/`, `favicon/`, `design-guide.json` |
+| `make assets` | `render` + copy generated assets into `public/` |
+| `make dev` | `assets` + `elm-pages dev` (hot-reload dev server) |
+| `make site` | `assets` + `elm-pages build` → `dist/` (production) |
 | `make deploy` | `git push origin main` (triggers GitHub Actions) |
-| `make build` | Compile Haskell only (no run) |
-| `make test` | `cabal test` + `hlint src tests` |
+| `make install` | `npm install` |
+| `make test` | `cabal test` + `hlint` |
 | `make check` | `hlint src tests` only |
-| `make watch` | Re-run pipeline on `.hs` changes (requires `entr`) |
-| `make watch-elm` | elm-pages dev only (assumes assets already in `public/`) |
-| `make clean` | Remove all generated files, `dist/`, `src/Brand/Generated.elm` |
-
-## Build
-
-### Haskell pipeline (asset generation)
-
-The executable (`cabal run logo-gen` / `make run`) runs a sequential pipeline:
-
-```
-source.svg + Brand.Colors → Logo.Designs → design/ (19 SVG files)
-design/*.svg → Logo.Blockify (rsvg-convert + JuicyPixels) → logo/*/svg/*.svg
-logo/horizontal/svg/*.svg → Logo.Compose → *-full.svg, *-full-dark.svg
-logo/**/*.svg → Logo.Raster (rsvg-convert + cwebp) → logo/**/*.{png,webp}
-PNGs → Logo.Animate (gifski + img2webp) → *-animated.{gif,webp}
-logo/square/svg/square.svg → Logo.Favicons → favicon/
-Brand.Colors → Brand.Json → brand.json
-Brand.Colors → Brand.ElmGen → src/Brand/Generated.elm
-```
-
-### elm-pages design-guide site
-
-The site sources live in `app/` (routes), `src/` (Elm modules), and `public/`
-(static assets). Tailwind CSS v4 is used for styling.
-
-```bash
-make dev               # pipeline → copy assets → elm-pages dev server (hot reload)
-make site              # pipeline → copy assets → elm-pages build → dist/
-make deploy            # push main (triggers GitHub Actions → GitHub Pages)
-```
+| `make format` | `elm-format` on hand-written Elm sources |
+| `make outline-text` | Convert subtitle text to paths in composed SVGs |
+| `make watch` | Re-run `render` on `.hs`/`.cabal` changes (requires `entr`) |
+| `make watch-elm` | `elm-pages dev` only (assets already in `public/`) |
+| `make clean` | Remove all generated files and build artifacts |
 
 ## Pipeline
 
+The asset pipeline is driven by five Haskell executables and GNU Make.
+All color and text constants live in the Makefile — no Haskell rebuild is
+required when changing them.
+
 ```
-source.svg
-  └─ Logo.Designs ──────────────────── design/*.svg (19 variants)
-       └─ Logo.Blockify ─────────────── logo/*/svg/*.svg (brick-art SVG)
-            ├─ Logo.Compose ──────────── *-full.svg, *-full-dark.svg
-            ├─ Logo.Raster ───────────── *.png, *.webp (800 px)
-            └─ Logo.Animate ──────────── *-animated.gif, *-animated.webp
-Logo.Favicons ────────────────────────── favicon/{ico,png,apple-touch-icon}
-Brand.Json ───────────────────────────── brand.json
-Brand.ElmGen ─────────────────────────── src/Brand/Generated.elm
+master SVGs —blay-draft—► layout/first.blay … layout/fourth.blay
+                                      │
+                              blay-compose
+                                      │
+                      ┌───────────────┼───────────────────┐
+                      │               │                       │
+              layout/square*.blay  layout/horizontal*.blay  layout/horizontal-rainbow*.blay
+                      │               │                       │
+                  blay-render     blay-render             blay-render
+                      │               │                       │
+              logo/square/        logo/horizontal/        logo/horizontal/
+                svg/ png/           svg/ png/               svg/ png/
+              (plain + favicon)   (plain + subtitle        (plain + subtitle
+                                   light + dark)            light + dark)
+                      │               │                       │
+                  blay-animate    blay-animate            blay-animate
+                      │               │                       │
+              *-animated.{gif,webp}  *-animated.{gif,webp}  *-animated.{gif,webp}
+
+brand-gen —► design-guide.json, design-guide/*.jsonld, src/Brand/Tokens.elm
 ```
+
+### Step 1 — Draft master blays (manual, once per design)
+
+```bash
+cabal run blay-draft -- --source logo-head.svg --output layout/first.blay
+```
+
+Each master `.blay` uses a placeholder face color (`F2CD37`) that is swapped
+out in the next step.
+
+### Step 2 — Derive `.blay` files
+
+```bash
+make blay-compose-all   # writes all 15 derived .blay files; commit them
+```
+
+`blay-compose --input FILE[:FROM:TO]` recolors and/or tiles blay files.
+The derived blays are committed to the repo so CI can render without running
+this step.
+
+### Step 3 — Render
+
+```bash
+make render
+```
+
+`blay-render --input STEM.blay` produces all output formats in a single run:
+
+- Plain SVG + PNG + WebP
+- Subtitle-composed SVG + PNG + WebP (light background)
+- Subtitle-composed SVG + PNG + WebP (dark background)
+- Favicons (`favicon/`) when given `--favicon-dir`
+
+### Step 4 — Animate
+
+`blay-animate --input FRAME.png [--input …] --gif-out … --webp-out …` assembles
+pre-rendered PNG frames into animated GIF and WebP. Called automatically by
+`make render`.
+
+### Step 5 — Brand assets
+
+`brand-gen` generates `design-guide.json`, `design-guide/*.jsonld`, and
+`src/Brand/Tokens.elm` from `Brand.Colors`. Called automatically by
+`make render`.
+
+## Executables
+
+| Executable | Source | Purpose |
+|------------|--------|---------|
+| `blay-draft` | `app/Draft.hs` | Convert source SVG → `.blay` master |
+| `blay-compose` | `app/Compose.hs` | Recolour and/or tile `.blay` files |
+| `blay-render` | `app/Main.hs` | `.blay` → SVG + PNG + WebP + composed variants + favicons |
+| `blay-animate` | `app/Animate.hs` | PNG frames → animated GIF + WebP |
+| `brand-gen` | `app/BrandGen.hs` | Design-guide JSON + JSON-LD + Elm tokens |
 
 ## Source layout
 
 | Path | Purpose |
 |------|---------|
-| `source.svg` | Master minifig head SVG |
-| `src/Brand/Colors.hs` | Brand colors + constants (single source of truth) |
-| `src/Brand/Json.hs` | Generates `brand.json` |
-| `src/Brand/ElmGen.hs` | Generates `src/Brand/Generated.elm` |
-| `src/Logo/Designs.hs` | SVG design variants |
+| `app/Draft.hs` | `blay-draft` entry point |
+| `app/Compose.hs` | `blay-compose` entry point |
+| `app/Main.hs` | `blay-render` entry point |
+| `app/Animate.hs` | `blay-animate` entry point |
+| `app/BrandGen.hs` | `brand-gen` entry point |
+| `src/Brand/Colors.hs` | Brand colors (single source of truth) |
+| `src/Brand/DesignData.hs` | Aggregated design data |
+| `src/Brand/ElmGen.hs` | Generates `src/Brand/Tokens.elm` |
+| `src/Brand/Json.hs` | Generates `design-guide.json` |
+| `src/Brand/JsonLd.hs` | Generates `design-guide/*.jsonld` |
+| `src/Logo/BrickLayout.hs` | `.blay` format parser and renderer |
 | `src/Logo/Blockify.hs` | SVG → brick-art SVG |
-| `src/Logo/Compose.hs` | Appends subtitle text |
-| `src/Logo/Raster.hs` | SVG → PNG/WebP |
-| `src/Logo/Animate.hs` | PNG frames → GIF/WebP |
-| `src/Logo/Favicons.hs` | Favicon assets |
-| `src/Main.hs` | Pipeline orchestration |
-| `app/` | elm-pages route modules |
-| `src/*.elm` | Reusable Elm modules |
+| `src/Logo/Compose.hs` | Appends subtitle text to brick SVG |
+| `src/Logo/Raster.hs` | SVG → PNG / WebP via rsvg-convert + cwebp |
+| `src/Logo/Animate.hs` | Animated GIF / WebP helpers |
+| `src/Logo/Favicons.hs` | Favicon generation |
+| `layout/` | Master and derived `.blay` files |
+| `app/` (Elm) | elm-pages route modules |
 | `public/` | Static assets for elm-pages |
-| `scripts/` | Helper scripts (svg_rasterize.py, svg_to_png.py) |
+| `fonts/` | Outfit variable font (SIL OFL 1.1) |
+| `scripts/` | `svg_rasterize.py`, `text_to_path.py` |
+
+## Layout files
+
+| File | Description |
+|------|-------------|
+| `layout/first.blay` … `layout/fourth.blay` | Master blays (placeholder face color `F2CD37`) |
+| `layout/square.blay` | Yellow square logo |
+| `layout/square-light-nougat.blay` | Light-nougat square |
+| `layout/square-nougat.blay` | Nougat square |
+| `layout/square-dark-nougat.blay` | Dark-nougat square |
+| `layout/horizontal.blay` | Four-face horizontal logo (skin tones) |
+| `layout/horizontal-rot{1-3}.blay` | Rotated skin-tone variants |
+| `layout/horizontal-rainbow.blay` | Rainbow horizontal (4-of-7 sliding window) |
+| `layout/horizontal-rainbow-rot{1-6}.blay` | Rainbow rotations |
+
+## Configuration
+
+All colors and dimensions are Makefile variables — edit the top of the
+`Makefile` to change them without recompiling:
+
+```makefile
+FONT_PATH := fonts/Outfit-VariableFont_wght.ttf
+SUBTITLE  := Suomen Palikkaharrastajat ry
+RASTER_W  := 800          # output PNG/WebP width in pixels
+TXT_SIZE  := 63           # subtitle font size (SVG units)
+ANIM_MS   := 10000        # animation loop duration in ms
+
+SUBTITLE_LIGHT := 05131D  # subtitle colour on light background
+SUBTITLE_DARK  := FFFFFF  # subtitle colour on dark background
+
+FACE_PH           := F2CD37   # placeholder color in masters
+SKIN_YELLOW       := F2CD37
+SKIN_LIGHT_NOUGAT := F6D7B3
+SKIN_NOUGAT       := D09168
+SKIN_DARK_NOUGAT  := AD6140
+```
 
 ## Requirements
 
 Provided by `devenv.nix`:
 
-- GHC 9.6 + cabal
+- GHC 9.6 + Cabal
 - rsvg-convert (librsvg)
 - cwebp, img2webp (libwebp)
 - gifski
 - icotool (icoutils)
 - Node.js + npm
-- elm, elm-format, elm-json, elm-review
+- elm, elm-format, elm-json
 
 ## Fonts
 
