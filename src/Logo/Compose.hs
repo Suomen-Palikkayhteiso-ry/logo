@@ -12,8 +12,12 @@ module Logo.Compose
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Base64 as B64
 import qualified Data.ByteString.Char8 as BC
+import qualified Data.ByteString.Lazy as LBS
+import qualified Data.Map.Strict as Map
 import Data.Text (Text)
 import qualified Data.Text as T
+import qualified Data.Text.Encoding as TE
+import qualified Text.XML as XML
 
 -- | Gap in SVG px between the brick grid and the subtitle text.
 _GAP :: Int
@@ -23,20 +27,19 @@ _GAP = 24
 _BOTTOM_PAD :: Int
 _BOTTOM_PAD = 20
 
--- | Parse width and height from SVG text.
+-- | Parse width and height from SVG text using the XML parser.
 parseSvgDimensions :: Text -> (Int, Int)
 parseSvgDimensions t =
-    let wStr = extract "width=\""
-        hStr = extract "height=\""
-     in (readI wStr, readI hStr)
-  where
-    extract attr =
-        T.takeWhile (/= '"') $
-            T.drop (T.length attr) $
-                snd $ T.breakOn attr t
-    readI s = case reads (T.unpack s) of
-        [(n, _)] -> n
-        _        -> 0
+    case XML.parseLBS XML.def (LBS.fromStrict (TE.encodeUtf8 t)) of
+        Left _    -> (0, 0)
+        Right doc ->
+            let attrs = XML.elementAttributes (XML.documentRoot doc)
+                readAttr k = case Map.lookup (XML.Name k Nothing Nothing) attrs of
+                    Nothing -> 0
+                    Just v  -> case reads (T.unpack v) of
+                        [(n, _)] -> n
+                        _        -> 0
+            in (readAttr "width", readAttr "height")
 
 -- | Load a font file and return it as a @data:@ URI string.
 loadFont :: FilePath -> IO String
