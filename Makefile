@@ -1,4 +1,4 @@
-.PHONY: help all build blay-compose-all assets site dev dev-watch deploy install test check format clean watch watch-elm repl develop shell render outline-text
+.PHONY: help all build blay-compose-all assets assets-from-blay site dev dev-watch deploy install test check format clean watch watch-elm repl develop shell render outline-text
 
 # elm-pages wrapper: add its own node_modules/.bin to PATH
 _ELM_PAGES_BIN  := $(shell which elm-pages 2>/dev/null)
@@ -295,6 +295,8 @@ render: $(ALL_SQ_OUTPUTS) $(ALL_HZ_OUTPUTS) $(ALL_ANIMATIONS) design-guide.json 
 
 install: ## Install npm deps and resolve Elm packages (run once after checkout)
 	npm install
+
+assets-from-blay: assets ## CI alias: render .blay files then copy assets to public/
 
 assets: render ## Copy generated assets into public/ for elm-pages
 	rm -rf public/logo public/favicon public/fonts public/design-guide.json public/design-guide
