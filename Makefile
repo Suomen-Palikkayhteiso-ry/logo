@@ -29,6 +29,7 @@ SUBTITLE_DARK  := FFFFFF
 
 # Placeholder and skin-tone colours in master .blay files (6-digit hex, no #)
 FACE_PH           := F2CD37
+SKIN_WHITE        := FFFFFF
 SKIN_YELLOW       := F2CD37
 SKIN_LIGHT_NOUGAT := F6D7B3
 SKIN_NOUGAT       := D09168
@@ -98,6 +99,19 @@ layout/square-blink.blay: layout/head-blink.blay $(HS_SOURCES)
 layout/square-laugh.blay: layout/head-laugh.blay $(HS_SOURCES)
 	$(_COMPOSE) --input layout/head-laugh.blay:$(FACE_PH):$(SKIN_YELLOW) --output $@
 
+# Black-and-white square blays (white face, dark details)
+layout/square-bw-basic.blay: layout/head-basic.blay $(HS_SOURCES)
+	$(_COMPOSE) --input layout/head-basic.blay:$(FACE_PH):$(SKIN_WHITE) --output $@
+
+layout/square-bw-smile.blay: layout/head-smile.blay $(HS_SOURCES)
+	$(_COMPOSE) --input layout/head-smile.blay:$(FACE_PH):$(SKIN_WHITE) --output $@
+
+layout/square-bw-blink.blay: layout/head-blink.blay $(HS_SOURCES)
+	$(_COMPOSE) --input layout/head-blink.blay:$(FACE_PH):$(SKIN_WHITE) --output $@
+
+layout/square-bw-laugh.blay: layout/head-laugh.blay $(HS_SOURCES)
+	$(_COMPOSE) --input layout/head-laugh.blay:$(FACE_PH):$(SKIN_WHITE) --output $@
+
 _SQ_BLAYS := layout/square-basic.blay layout/square-smile.blay layout/square-blink.blay layout/square-laugh.blay
 
 # Horizontal smiley blays
@@ -150,9 +164,17 @@ layout/horizontal-skintone-rot2.blay: $(_MASTER_BLAYS) $(HS_SOURCES)
 layout/horizontal-skintone-rot3.blay: $(_MASTER_BLAYS) $(HS_SOURCES)
 	$(_COMPOSE) --input layout/head-basic.blay:$(FACE_PH):$(SKIN_DARK_NOUGAT) --input layout/head-smile.blay:$(FACE_PH):$(SKIN_YELLOW) --input layout/head-blink.blay:$(FACE_PH):$(SKIN_LIGHT_NOUGAT) --input layout/head-laugh.blay:$(FACE_PH):$(SKIN_NOUGAT) $(_HZ_TILE) --output $@
 
+_BW_SQ_BLAYS := layout/square-bw-basic.blay layout/square-bw-smile.blay layout/square-bw-blink.blay layout/square-bw-laugh.blay
+
+# Black-and-white horizontal blays (white face, dark details)
+layout/horizontal-bw.blay: $(_BW_SQ_BLAYS) $(HS_SOURCES)
+	$(_COMPOSE) --input layout/head-basic.blay:$(FACE_PH):$(SKIN_WHITE) --input layout/head-smile.blay:$(FACE_PH):$(SKIN_WHITE) --input layout/head-blink.blay:$(FACE_PH):$(SKIN_WHITE) --input layout/head-laugh.blay:$(FACE_PH):$(SKIN_WHITE) $(_HZ_TILE) --output $@
+
 DERIVED_BLAYS := \
   layout/square-basic.blay layout/square-smile.blay \
   layout/square-blink.blay layout/square-laugh.blay \
+  layout/square-bw-basic.blay layout/square-bw-smile.blay \
+  layout/square-bw-blink.blay layout/square-bw-laugh.blay \
   layout/horizontal.blay layout/horizontal-rot1.blay \
   layout/horizontal-rot2.blay layout/horizontal-rot3.blay \
   layout/horizontal-rainbow.blay layout/horizontal-rainbow-rot1.blay \
@@ -160,7 +182,8 @@ DERIVED_BLAYS := \
   layout/horizontal-rainbow-rot4.blay layout/horizontal-rainbow-rot5.blay \
   layout/horizontal-rainbow-rot6.blay \
   layout/horizontal-skintone.blay layout/horizontal-skintone-rot1.blay \
-  layout/horizontal-skintone-rot2.blay layout/horizontal-skintone-rot3.blay
+  layout/horizontal-skintone-rot2.blay layout/horizontal-skintone-rot3.blay \
+  layout/horizontal-bw.blay
 
 blay-compose-all: build $(DERIVED_BLAYS) ## Derive all .blay files (run locally; commit outputs)
 
@@ -215,7 +238,7 @@ endef
 
 # square-basic is rendered by the favicon rule below (single grouped target);
 # the remaining square faces go through the render_square macro.
-_SQ_DERIVED := square-laugh square-blink square-basic
+_SQ_DERIVED := square-laugh square-blink square-basic square-bw-basic square-bw-smile square-bw-blink square-bw-laugh
 SQ_STEMS    := square-smile $(_SQ_DERIVED)
 HZ_STEMS    := \
   horizontal horizontal-rot1 horizontal-rot2 horizontal-rot3 \
@@ -223,7 +246,8 @@ HZ_STEMS    := \
   horizontal-rainbow-rot3 horizontal-rainbow-rot4 \
   horizontal-rainbow-rot5 horizontal-rainbow-rot6 \
   horizontal-skintone horizontal-skintone-rot1 horizontal-skintone-rot2 \
-  horizontal-skintone-rot3
+  horizontal-skintone-rot3 \
+  horizontal-bw
 
 $(foreach s,$(_SQ_DERIVED),$(eval $(call render_square,$(s))))
 $(foreach s,$(HZ_STEMS),$(eval $(call render_horizontal,$(s))))

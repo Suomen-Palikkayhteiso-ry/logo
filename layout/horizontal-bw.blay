@@ -1,0 +1,27 @@
+# brick-layout v1
+blk-w: 24
+blk-h: 20
+pad-top: 20
+pad-bottom: 20
+pad-left: 0
+pad-right: 0
+# palette: char = RRGGBB  (. = transparent)
+palette:
+  . = transparent
+  A = ffffff
+  B = 151100
+# grid: 70×13
+grid:
+.....|AAAA|AA|.....|..|.....|AAAA|AA|.....|..|.....|AAAA|AA|.....|..|.....|AAAA|AA|.....
+.....|AA|AAAA|.....|..|.....|AA|AAAA|.....|..|.....|AA|AAAA|.....|..|.....|AA|AAAA|.....
+..|AAAA|AAAA|AAAA|..|..|..|AAAA|AAAA|AAAA|..|..|..|AAAA|AAAA|AAAA|..|..|..|AAAA|AAAA|AAAA|..
+.|AAA|AAAA|AAAA|AAA|.|..|.|AAA|AAAA|AAAA|AAA|.|..|.|AAA|AAAA|AAAA|AAA|.|..|.|AAA|AAAA|AAAA|AAA|.
+.|AAA|BBB|AA|BBB|AAA|.|..|.|AAA|BBB|AA|BBB|AAA|.|..|.|AAAA|AAAA|AAAA|AA|.|..|.|AAA|BBB|AA|BBB|AAA|.
+.|AAA|BBB|AA|BBB|AAA|.|..|.|AAA|BBB|AA|BBB|AAA|.|..|.|AAA|BBB|AA|BBB|AAA|.|..|.|AAA|BBB|AA|BBB|AAA|.
+.|AAAA|AAAA|AAAA|AA|.|..|.|AAAA|AAAA|AAAA|AA|.|..|.|AAAA|AAAA|AAAA|AA|.|..|.|AAAA|AAAA|AAAA|AA|.
+.|AAA|AAAA|AAAA|AAA|.|..|.|AAA|AAAA|AAAA|AAA|.|..|.|AAA|AAAA|AAAA|AAA|.|..|.|AAA|AAAA|AAAA|AAA|.
+.|AA|AAAA|AA|AAAA|AA|.|..|.|AAA|B|AAAA|AA|B|AAA|.|..|.|AAA|BB|BBBB|BB|AAA|.|..|.|AAA|BB|BBBB|BB|AAA|.
+.|AAAA|B|AAAA|B|AAAA|.|..|.|AAAA|BBBB|BB|AAAA|.|..|.|AAAA|BBBB|BB|AAAA|.|..|.|AAAA|BBBB|BB|AAAA|.
+.|AAAA|A|BBBB|AAAA|A|.|..|.|AAAA|A|BBBB|AAAA|A|.|..|.|AAAA|A|BBBB|AAAA|A|.|..|.|AAAA|A|BBBB|AAAA|A|.
+..|AAAA|AAAA|AAA|A|..|..|..|AAAA|AAAA|AAA|A|..|..|..|AAAA|AAAA|AAA|A|..|..|..|AAAA|AAAA|AAA|A|..
+....|AAA|AAAA|A|....|..|....|AAA|AAAA|A|....|..|....|AAA|AAAA|A|....|..|....|AAA|AAAA|A|....

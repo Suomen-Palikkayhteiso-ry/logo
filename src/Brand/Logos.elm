@@ -1,4 +1,4 @@
-module Brand.Logos exposing (LogoVariant, horizontalVariants, squareVariants)
+module Brand.Logos exposing (LogoVariant, bwVariants, horizontalVariants, squareVariants)
 
 
 type alias LogoVariant =
@@ -250,5 +250,80 @@ horizontalVariants =
       , pngUrl = Nothing
       , webpUrl = Just "/logo/horizontal/png/horizontal-skintone-full-dark-animated.webp"
       , gifUrl = Just "/logo/horizontal/png/horizontal-skintone-full-dark-animated.gif"
+      }
+    ]
+
+
+bwVariants : List LogoVariant
+bwVariants =
+    [ { id = "square-bw-basic"
+      , description = "B&W square — neutral expression"
+      , theme = "light"
+      , animated = False
+      , withText = False
+      , svgUrl = Just "/logo/square/svg/square-bw-basic.svg"
+      , pngUrl = Just "/logo/square/png/square-bw-basic.png"
+      , webpUrl = Just "/logo/square/png/square-bw-basic.webp"
+      , gifUrl = Nothing
+      }
+    , { id = "square-bw-smile"
+      , description = "B&W square — smiling expression"
+      , theme = "light"
+      , animated = False
+      , withText = False
+      , svgUrl = Just "/logo/square/svg/square-bw-smile.svg"
+      , pngUrl = Just "/logo/square/png/square-bw-smile.png"
+      , webpUrl = Just "/logo/square/png/square-bw-smile.webp"
+      , gifUrl = Nothing
+      }
+    , { id = "square-bw-blink"
+      , description = "B&W square — blinking expression"
+      , theme = "light"
+      , animated = False
+      , withText = False
+      , svgUrl = Just "/logo/square/svg/square-bw-blink.svg"
+      , pngUrl = Just "/logo/square/png/square-bw-blink.png"
+      , webpUrl = Just "/logo/square/png/square-bw-blink.webp"
+      , gifUrl = Nothing
+      }
+    , { id = "square-bw-laugh"
+      , description = "B&W square — laughing expression"
+      , theme = "light"
+      , animated = False
+      , withText = False
+      , svgUrl = Just "/logo/square/svg/square-bw-laugh.svg"
+      , pngUrl = Just "/logo/square/png/square-bw-laugh.png"
+      , webpUrl = Just "/logo/square/png/square-bw-laugh.webp"
+      , gifUrl = Nothing
+      }
+    , { id = "horizontal-bw"
+      , description = "B&W horizontal logo mark only"
+      , theme = "light"
+      , animated = False
+      , withText = False
+      , svgUrl = Just "/logo/horizontal/svg/horizontal-bw.svg"
+      , pngUrl = Just "/logo/horizontal/png/horizontal-bw.png"
+      , webpUrl = Just "/logo/horizontal/png/horizontal-bw.webp"
+      , gifUrl = Nothing
+      }
+    , { id = "horizontal-bw-full"
+      , description = "B&W horizontal logo mark with subtitle, light theme"
+      , theme = "light"
+      , animated = False
+      , withText = True
+      , svgUrl = Just "/logo/horizontal/svg/horizontal-bw-full.svg"
+      , pngUrl = Just "/logo/horizontal/png/horizontal-bw-full.png"
+      , webpUrl = Just "/logo/horizontal/png/horizontal-bw-full.webp"
+      , gifUrl = Nothing
+      }
+    , { id = "horizontal-bw-full-dark"
+      , description = "B&W horizontal logo mark with subtitle, dark theme"
+      , theme = "dark"
+      , animated = False
+      , withText = True
+      , svgUrl = Just "/logo/horizontal/svg/horizontal-bw-full-dark.svg"
+      , pngUrl = Just "/logo/horizontal/png/horizontal-bw-full-dark.png"
+      , webpUrl = Just "/logo/horizontal/png/horizontal-bw-full-dark.webp"
+      , gifUrl = Nothing
       }
     ]
