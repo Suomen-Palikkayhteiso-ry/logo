@@ -1,7 +1,7 @@
--- | brand-gen: generate project design-guide assets from Brand.* modules.
+-- | brand-gen: generate project design-guide assets from Guide.* modules.
 --
 -- Writes design-guide.json, design-guide/*.jsonld, and optionally an Elm
--- Brand.Tokens module.  No .blay files are read; this step is independent of
+-- Guide.Tokens module.  No .blay files are read; this step is independent of
 -- the blay render pipeline.
 --
 -- == Usage
@@ -11,9 +11,9 @@
 -- @
 module Main where
 
-import Brand.ElmGen (generateBrandModule)
-import Brand.Json (generateDesignGuide)
-import Brand.JsonLd (generateJsonLd)
+import Guide.ElmGen (generateBrandModule)
+import Guide.Json (generateDesignGuide)
+import Guide.JsonLd (generateJsonLd)
 import qualified Data.Text.IO as TIO
 import System.Directory (createDirectoryIfMissing)
 import System.Environment (getArgs)
@@ -63,7 +63,7 @@ usageText :: String
 usageText = unlines
     [ "Usage: brand-gen [--elm-tokens-out FILE]"
     , ""
-    , "Generate project design-guide assets from Brand.* modules."
+    , "Generate project design-guide assets from Guide.* modules."
     , ""
     , "Options:"
     , "  --elm-tokens-out FILE   Elm tokens output path"

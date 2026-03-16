@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Brand.Colors where
+module Guide.Colors where
 
 import Data.Text (Text)
 

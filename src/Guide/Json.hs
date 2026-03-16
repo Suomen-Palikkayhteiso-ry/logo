@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Brand.Json (generateDesignGuide) where
+module Guide.Json (generateDesignGuide) where
 
-import Brand.Colors
-import Brand.DesignData
+import Guide.Colors
+import Guide.DesignData
 import qualified Data.Aeson as A
 import Data.Aeson ((.=))
 import Data.Aeson.Types (Pair)
@@ -76,7 +76,7 @@ buildColors =
                 , "$type"        .= ("color" :: Text)
                 , "id"           .= ("lego-black" :: Text)
                 , "name"         .= ("Black" :: Text)
-                , "$description" .= ("Primary brand color. Never hard-code this hex — use Brand.Colors in Haskell or Brand.Tokens in Elm." :: Text)
+                , "$description" .= ("Primary brand color. Never hard-code this hex — use Guide.Colors in Haskell or Guide.Tokens in Elm." :: Text)
                 , "$extensions"  .= A.object
                     [ "palikkaharrastajat.fi:usage" .= (["features", "text", "dark background"] :: [Text])
                     , "palikkaharrastajat.fi:wcag"  .= A.object ["onWhite" .= (17.3 :: Double), "onWhiteRating" .= ("AAA" :: Text), "onYellow" .= (11.5 :: Double), "onYellowRating" .= ("AAA" :: Text)]

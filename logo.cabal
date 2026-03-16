@@ -6,7 +6,7 @@ build-type:    Simple
 
 library
   exposed-modules:
-    Brand.Colors, Brand.DesignData, Brand.Json, Brand.JsonLd, Brand.ElmGen,
+    Guide.Colors, Guide.DesignData, Guide.Json, Guide.JsonLd, Guide.ElmGen,
     Logo.BrickLayout, Logo.Blockify, Logo.Compose,
     Logo.Animate, Logo.Raster, Logo.Favicons
   hs-source-dirs: src
@@ -69,7 +69,7 @@ test-suite logo-gen-tests
   type: exitcode-stdio-1.0
   main-is: TestSuite.hs
   other-modules:
-    Brand.ColorsSpec, Brand.ElmGenSpec, Brand.JsonSpec,
+    Guide.ColorsSpec, Guide.ElmGenSpec, Guide.JsonSpec,
     Logo.BlockifySpec
   hs-source-dirs: tests
   ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N

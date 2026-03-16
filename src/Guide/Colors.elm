@@ -1,4 +1,4 @@
-module Brand.Colors exposing (ColorEntry, RainbowColor, SkinToneEntry, brandColors, rainbowColors, skinTones)
+module Guide.Colors exposing (ColorEntry, RainbowColor, SkinToneEntry, brandColors, rainbowColors, skinTones)
 
 
 type alias ColorEntry =

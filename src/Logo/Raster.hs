@@ -1,4 +1,4 @@
-module Logo.Raster (exportPng, exportPngSquare, exportWebp) where
+module Logo.Raster (exportPng, exportPngSquare, exportPngSquareTrimmed, exportWebp) where
 
 import Control.Exception (bracket)
 import System.Directory (doesDirectoryExist, listDirectory, makeAbsolute, removeFile)
@@ -14,14 +14,49 @@ exportPng svgIn pngOut widthPx = do
     putStrLn $ "  raster " ++ svgIn ++ " -> " ++ pngOut
     callRsvg ["-w", show widthPx] svgIn pngOut
 
--- | Export SVG to a square PNG of the given side length.
--- The source SVG is expected to already have a square canvas (ensured by
--- pad-left/pad-right in the .blay file); this simply rasterizes at the
--- requested size with -w, which produces an exact N×N output.
+-- | Export SVG to a square PNG of exactly sizePx × sizePx.
+-- The SVG is scaled to fit within the square while preserving its aspect
+-- ratio (--keep-aspect-ratio), and the output canvas is forced to the
+-- requested square dimensions via --page-width/--page-height.  Any
+-- letterbox/pillarbox area is transparent.
 exportPngSquare :: FilePath -> FilePath -> Int -> IO ()
 exportPngSquare svgIn pngOut sizePx = do
     putStrLn $ "  raster (square) " ++ svgIn ++ " -> " ++ pngOut
-    callRsvg ["-w", show sizePx] svgIn pngOut
+    let sz = show sizePx
+    callRsvg ["-w", sz, "-h", sz, "--keep-aspect-ratio",
+              "--page-width", sz, "--page-height", sz] svgIn pngOut
+
+-- | Export SVG to a square PNG, trimming transparent padding first so the
+-- actual brick content fills as much of the target square as possible.
+-- Steps:
+--   1. Render at 8× the target size for accurate trim detection.
+--   2. Use ImageMagick to trim transparent edges, pad back to square,
+--      and scale to the target size.
+-- Only the content bounding box is used; transparent letterbox/pillarbox
+-- from pad-left/pad-right/pad-top/pad-bottom in the source layout is removed.
+exportPngSquareTrimmed :: FilePath -> FilePath -> Int -> IO ()
+exportPngSquareTrimmed svgIn pngOut sizePx = do
+    putStrLn $ "  raster (square, trimmed) " ++ svgIn ++ " -> " ++ pngOut
+    let sz      = show sizePx
+        renderSz = show (max 512 (sizePx * 8))
+        tmpRaw  = pngOut ++ ".raw.tmp.png"
+    callRsvg ["-w", renderSz, "-h", renderSz, "--keep-aspect-ratio",
+              "--page-width", renderSz, "--page-height", renderSz] svgIn tmpRaw
+    -- Use "magick" (ImageMagick 7 CLI).  The -extent geometry cannot use
+    -- inline FX expressions, so we store max(w,h) in a named option first.
+    callProcess "magick"
+        [ tmpRaw
+        , "-trim", "+repage"
+        -- record max(w,h) before any further processing
+        , "-set", "option:dim", "%[fx:max(w,h)]"
+        -- pad to square in case content w ≠ h
+        , "-gravity", "center"
+        , "-background", "transparent"
+        , "-extent", "%[option:dim]x%[option:dim]"
+        , "-resize", sz ++ "x" ++ sz
+        , pngOut
+        ]
+    removeFile tmpRaw
 
 -- | Export SVG to WebP at given width (via intermediate PNG and cwebp).
 exportWebp :: FilePath -> FilePath -> Int -> IO ()

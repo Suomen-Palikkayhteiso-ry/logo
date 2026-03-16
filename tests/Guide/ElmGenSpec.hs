@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Brand.ElmGenSpec (tests) where
+module Guide.ElmGenSpec (tests) where
 
-import Brand.Colors (rainbowColors, skinTones)
-import Brand.ElmGen (generateBrandModule)
+import Guide.Colors (rainbowColors, skinTones)
+import Guide.ElmGen (generateBrandModule)
 import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
@@ -16,10 +16,10 @@ import Test.Tasty.HUnit
 tests :: TestTree
 tests =
     testGroup
-        "Brand.ElmGen"
+        "Guide.ElmGen"
         [ testCase "module header is correct" $
-            assertBool "starts with module Brand.Tokens exposing (..)" $
-                "module Brand.Tokens exposing (..)" `T.isPrefixOf` generateBrandModule
+            assertBool "starts with module Guide.Tokens exposing (..)" $
+                "module Guide.Tokens exposing (..)" `T.isPrefixOf` generateBrandModule
         , testCase "contains associationName" $
             assertBool "has association name" $
                 "Suomen Palikkaharrastajat ry" `T.isInfixOf` generateBrandModule
@@ -48,7 +48,7 @@ tests =
                     code @?= ExitSuccess
         ]
 
--- | Mirror of Brand.ElmGen internals for testing the escape logic.
+-- | Mirror of Guide.ElmGen internals for testing the escape logic.
 escapeElmString :: Text -> Text
 escapeElmString = T.concatMap escapeChar
   where

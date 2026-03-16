@@ -3,6 +3,8 @@ blk-w: 24
 blk-h: 20
 pad-top: 20
 pad-bottom: 20
+pad-left: 22
+pad-right: 23
 # palette: char = RRGGBB  (. = transparent)
 palette:
   . = transparent

@@ -11,17 +11,21 @@ import Component.Card as Card
 import Component.CloseButton as CloseButton
 import Component.Collapse as Collapse
 import Component.ColorSwatch as ColorSwatch
+import Component.Dialog as Dialog
 import Component.Dropdown as Dropdown
 import Component.ListGroup as ListGroup
 import Component.Pagination as Pagination
 import Component.Placeholder as Placeholder
 import Component.Progress as Progress
-import Component.SectionHeader as SectionHeader
 import Component.Spinner as Spinner
 import Component.Stats as Stats
+import Component.Tag as Tag
 import Component.Tabs as Tabs
 import Component.Timeline as Timeline
 import Component.Toast as Toast
+import FeatherIcons
+import Component.Toggle as Toggle
+import Component.Tooltip as Tooltip
 import Dict exposing (Dict)
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
@@ -31,7 +35,7 @@ import Html exposing (Html)
 import Html.Attributes as Attr
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
-import RouteBuilder exposing (App, StaticPayload)
+import RouteBuilder exposing (App)
 import Shared
 import SiteMeta
 import UrlPath exposing (UrlPath)
@@ -49,11 +53,20 @@ type Tab
 
 
 type alias Model =
-    { tabs : Dict String Tab }
+    { tabs : Dict String Tab
+    , dropdownOpen : Bool
+    , toggleChecked : Bool
+    , dialogOpen : Bool
+    }
 
 
 type Msg
     = SelectTab String Tab
+    | ToggleDropdown
+    | CloseDropdown
+    | ToggleChanged Bool
+    | OpenDialog
+    | CloseDialog
 
 
 type alias RouteParams =
@@ -111,7 +124,13 @@ head _ =
 
 init : App Data ActionData RouteParams -> Shared.Model -> ( Model, Effect Msg )
 init _ _ =
-    ( { tabs = Dict.empty }, Effect.none )
+    ( { tabs = Dict.empty
+      , dropdownOpen = False
+      , toggleChecked = False
+      , dialogOpen = False
+      }
+    , Effect.none
+    )
 
 
 update : App Data ActionData RouteParams -> Shared.Model -> Msg -> Model -> ( Model, Effect Msg )
@@ -119,6 +138,21 @@ update _ _ msg model =
     case msg of
         SelectTab key tab ->
             ( { model | tabs = Dict.insert key tab model.tabs }, Effect.none )
+
+        ToggleDropdown ->
+            ( { model | dropdownOpen = not model.dropdownOpen }, Effect.none )
+
+        CloseDropdown ->
+            ( { model | dropdownOpen = False }, Effect.none )
+
+        ToggleChanged checked ->
+            ( { model | toggleChecked = checked }, Effect.none )
+
+        OpenDialog ->
+            ( { model | dialogOpen = True }, Effect.none )
+
+        CloseDialog ->
+            ( { model | dialogOpen = False }, Effect.none )
 
 
 subscriptions : RouteParams -> UrlPath -> Shared.Model -> Model -> Sub Msg
@@ -134,11 +168,11 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ model =
     { title = "Komponentit — " ++ SiteMeta.organizationName
     , body =
-        [ Html.div [ Attr.class "max-w-5xl mx-auto px-4 py-12 space-y-6" ]
+        [ Html.div [ Attr.class "max-w-5xl mx-auto px-4 py-8 sm:py-12 space-y-6" ]
             [ Html.div [ Attr.class "space-y-2" ]
-                [ Html.h1 [ Attr.class "text-3xl font-bold text-brand" ]
+                [ Html.h1 [ Attr.class "text-2xl sm:text-3xl font-bold text-brand" ]
                     [ Html.text "Komponentit" ]
-                , Html.p [ Attr.class "text-gray-500" ]
+                , Html.p [ Attr.class "text-sm sm:text-base text-gray-500" ]
                     [ Html.text "Kaikki komponentit hakemistossa "
                     , Html.code [ Attr.class "font-mono text-sm bg-gray-100 px-1 rounded" ]
                         [ Html.text "src/Component/" ]
@@ -163,6 +197,7 @@ view _ _ model =
                 , viewCard model
                 , viewCloseButton model
                 , viewCollapse model
+                , viewDialog model
                 , viewDropdown model
                 , viewListGroup model
                 , viewPagination model
@@ -170,8 +205,11 @@ view _ _ model =
                 , viewProgress model
                 , viewSpinner model
                 , viewStats model
+                , viewTag model
                 , viewTimeline model
                 , viewToast model
+                , viewToggle model
+                , viewTooltip model
                 ]
             ]
         ]
@@ -211,6 +249,7 @@ viewCompIndex =
             , "Card"
             , "CloseButton"
             , "Collapse"
+            , "Dialog"
             , "Dropdown"
             , "ListGroup"
             , "Pagination"
@@ -218,8 +257,11 @@ viewCompIndex =
             , "Progress"
             , "Spinner"
             , "Stats"
+            , "Tag"
             , "Timeline"
             , "Toast"
+            , "Toggle"
+            , "Tooltip"
             ]
         )
 
@@ -319,12 +361,12 @@ viewAlert : Model -> Html (PagesMsg Msg)
 viewAlert model =
     compCard model
         "Alert"
-        "Kontekstuaalinen palauteviesti neljässä tyypissä."
+        "Kontekstuaalinen palauteviesti neljässä tyypissä. Tukee myös suljettavaa varianttia (onDismiss)."
         (Html.div [ Attr.class "space-y-3" ]
-            [ Alert.view { alertType = Alert.Info, title = Just "Tietoa", body = [ Html.text "Neutraali ohjeistus tai informaatio." ] }
-            , Alert.view { alertType = Alert.Success, title = Just "Onnistui", body = [ Html.text "Toiminto onnistui onnistuneesti." ] }
-            , Alert.view { alertType = Alert.Warning, title = Just "Varoitus", body = [ Html.text "Tarkista tiedot ennen jatkamista." ] }
-            , Alert.view { alertType = Alert.Error, title = Just "Virhe", body = [ Html.text "Toiminto epäonnistui." ] }
+            [ Alert.view { alertType = Alert.Info, title = Just "Tietoa", body = [ Html.text "Neutraali ohjeistus tai informaatio." ], onDismiss = Nothing }
+            , Alert.view { alertType = Alert.Success, title = Just "Onnistui", body = [ Html.text "Toiminto onnistui onnistuneesti." ], onDismiss = Nothing }
+            , Alert.view { alertType = Alert.Warning, title = Just "Varoitus", body = [ Html.text "Tarkista tiedot ennen jatkamista." ], onDismiss = Nothing }
+            , Alert.view { alertType = Alert.Error, title = Just "Virhe", body = [ Html.text "Toiminto epäonnistui." ], onDismiss = Nothing }
             ]
         )
         """import Component.Alert as Alert
@@ -333,12 +375,13 @@ Alert.view
     { alertType = Alert.Info
     , title = Just "Tietoa"
     , body = [ Html.text "Ohjeteksti tähän." ]
+    , onDismiss = Nothing          -- or Just DismissMsg
     }"""
         (jsonLdSnippet "alert"
             "Alert"
             "Component.Alert"
             "Contextual feedback message. Types: Info, Success, Warning, Error."
-            [ "alertType: AlertType (Info|Success|Warning|Error)", "title: Maybe String", "body: List (Html msg)" ]
+            [ "alertType: AlertType (Info|Success|Warning|Error)", "title: Maybe String", "body: List (Html msg)", "onDismiss: Maybe msg" ]
             []
         )
 
@@ -383,25 +426,32 @@ viewBadge : Model -> Html (PagesMsg Msg)
 viewBadge model =
     compCard model
         "Badge"
-        "Pieni tunniste tilalle, kategorialle tai metatiedolle."
-        (Html.div [ Attr.class "flex flex-wrap gap-3 items-center" ]
-            [ Badge.view { label = "Gray", color = Badge.Gray }
-            , Badge.view { label = "Blue", color = Badge.Blue }
-            , Badge.view { label = "Green", color = Badge.Green }
-            , Badge.view { label = "Yellow", color = Badge.Yellow }
-            , Badge.view { label = "Red", color = Badge.Red }
-            , Badge.view { label = "Purple", color = Badge.Purple }
-            , Badge.view { label = "Indigo", color = Badge.Indigo }
+        "Pieni tunniste tilalle, kategorialle tai metatiedolle. Kolme kokoa: Small, Medium, Large."
+        (Html.div [ Attr.class "space-y-3" ]
+            [ Html.div [ Attr.class "flex flex-wrap gap-3 items-center" ]
+                [ Badge.view { label = "Gray", color = Badge.Gray, size = Badge.Medium }
+                , Badge.view { label = "Blue", color = Badge.Blue, size = Badge.Medium }
+                , Badge.view { label = "Green", color = Badge.Green, size = Badge.Medium }
+                , Badge.view { label = "Yellow", color = Badge.Yellow, size = Badge.Medium }
+                , Badge.view { label = "Red", color = Badge.Red, size = Badge.Medium }
+                , Badge.view { label = "Purple", color = Badge.Purple, size = Badge.Medium }
+                , Badge.view { label = "Indigo", color = Badge.Indigo, size = Badge.Medium }
+                ]
+            , Html.div [ Attr.class "flex flex-wrap gap-3 items-center" ]
+                [ Badge.view { label = "Small", color = Badge.Blue, size = Badge.Small }
+                , Badge.view { label = "Medium", color = Badge.Blue, size = Badge.Medium }
+                , Badge.view { label = "Large", color = Badge.Blue, size = Badge.Large }
+                ]
             ]
         )
         """import Component.Badge as Badge
 
-Badge.view { label = "Uusi", color = Badge.Green }"""
+Badge.view { label = "Uusi", color = Badge.Green, size = Badge.Medium }"""
         (jsonLdSnippet "badge"
             "Badge"
             "Component.Badge"
-            "Small inline label. Colors: Gray, Blue, Green, Yellow, Red, Purple, Indigo."
-            [ "label: String", "color: Color (Gray|Blue|Green|Yellow|Red|Purple|Indigo)" ]
+            "Small inline label. Colors: Gray, Blue, Green, Yellow, Red, Purple, Indigo. Sizes: Small, Medium, Large."
+            [ "label: String", "color: Color (Gray|Blue|Green|Yellow|Red|Purple|Indigo)", "size: Size (Small|Medium|Large)" ]
             []
         )
 
@@ -444,7 +494,7 @@ viewButton : Model -> Html (PagesMsg Msg)
 viewButton model =
     compCard model
         "Button"
-        "Toimintopainike tai linkki-painike neljässä variantissa ja kolmessa koossa. Sisältää aina cursor-pointer."
+        "Toimintopainike tai linkki-painike neljässä variantissa ja kolmessa koossa. Tukee disabled- ja loading-tiloja."
         (Html.div [ Attr.class "space-y-4" ]
             [ Html.div [ Attr.class "flex flex-wrap gap-3 items-center" ]
                 [ Button.viewLink { label = "Primary", variant = Button.Primary, size = Button.Medium, href = "#" }
@@ -456,6 +506,11 @@ viewButton model =
                 [ Button.viewLink { label = "Small", variant = Button.Primary, size = Button.Small, href = "#" }
                 , Button.viewLink { label = "Medium", variant = Button.Primary, size = Button.Medium, href = "#" }
                 , Button.viewLink { label = "Large", variant = Button.Primary, size = Button.Large, href = "#" }
+                ]
+            , Html.div [ Attr.class "flex flex-wrap gap-3 items-center" ]
+                [ Button.view { label = "Normal", variant = Button.Primary, size = Button.Medium, onClick = PagesMsg.fromMsg (SelectTab "Button" PreviewTab), disabled = False, loading = False }
+                , Button.view { label = "Disabled", variant = Button.Primary, size = Button.Medium, onClick = PagesMsg.fromMsg (SelectTab "Button" PreviewTab), disabled = True, loading = False }
+                , Button.view { label = "Lataa", variant = Button.Primary, size = Button.Medium, onClick = PagesMsg.fromMsg (SelectTab "Button" PreviewTab), disabled = False, loading = True }
                 ]
             ]
         )
@@ -469,12 +524,13 @@ Button.viewLink
 -- Action button:
 Button.view
     { label = "Lähetä", variant = Button.Primary
-    , size = Button.Medium, onClick = SubmitForm }"""
+    , size = Button.Medium, onClick = SubmitForm
+    , disabled = False, loading = False }"""
         (jsonLdSnippet "button"
             "Button"
             "Component.Button"
             "Action button or link-button. Variants: Primary, Secondary, Ghost, Danger."
-            [ "label: String", "variant: Variant (Primary|Secondary|Ghost|Danger)", "size: Size (Small|Medium|Large)", "onClick: msg  OR  href: String" ]
+            [ "label: String", "variant: Variant (Primary|Secondary|Ghost|Danger)", "size: Size (Small|Medium|Large)", "onClick: msg  OR  href: String", "disabled: Bool", "loading: Bool" ]
             [ "colors.semantic.background.accent" ]
         )
 
@@ -493,6 +549,7 @@ viewButtonGroup model =
                 |> Html.map PagesMsg.fromMsg
             , ButtonGroup.viewButton { label = "Keski", onClick = SelectTab "ButtonGroup" PreviewTab, active = False, position = ButtonGroup.Middle }
                 |> Html.map PagesMsg.fromMsg
+            , ButtonGroup.viewEllipsis
             , ButtonGroup.viewButton { label = "Oikea", onClick = SelectTab "ButtonGroup" PreviewTab, active = False, position = ButtonGroup.Last }
                 |> Html.map PagesMsg.fromMsg
             ]
@@ -530,7 +587,7 @@ viewCard model =
             , Card.view
                 { header = Just (Html.span [ Attr.class "font-semibold text-brand" ] [ Html.text "Otsikko" ])
                 , body = [ Html.p [ Attr.class "text-sm text-gray-600" ] [ Html.text "Kortti otsikolla." ] ]
-                , footer = Just (Html.span [ Attr.class "text-xs text-gray-400" ] [ Html.text "Alatunniste" ])
+                , footer = Just (Html.span [ Attr.class "text-xs text-gray-500" ] [ Html.text "Alatunniste" ])
                 , image = Nothing
                 , shadow = Card.Sm
                 }
@@ -569,7 +626,7 @@ viewCloseButton : Model -> Html (PagesMsg Msg)
 viewCloseButton model =
     compCard model
         "CloseButton"
-        "Saavutettava sulku/hylkäyspainike hälytyksissä, modaaleissa tai korteissa."
+        "Saavutettava sulku/hylkäyspainike hälytyksissä, modaaleissa tai korteissa. Koskutusalue 44×44 px (WCAG 2.5.5)."
         (Html.div [ Attr.class "flex items-center gap-4" ]
             [ CloseButton.view { onClick = SelectTab "CloseButton" PreviewTab, label = "Sulje" }
                 |> Html.map PagesMsg.fromMsg
@@ -585,7 +642,7 @@ CloseButton.view
         (jsonLdSnippet "closebutton"
             "CloseButton"
             "Component.CloseButton"
-            "Accessible close/dismiss button with aria-label."
+            "Accessible close/dismiss button with aria-label. 44×44 px touch target."
             [ "onClick: msg", "label: String (aria-label)" ]
             []
         )
@@ -630,6 +687,56 @@ Collapse.view
 
 
 
+-- ── Dialog ────────────────────────────────────────────────────────────────────
+
+
+viewDialog : Model -> Html (PagesMsg Msg)
+viewDialog model =
+    compCard model
+        "Dialog"
+        "Modaali-ikkuna natiivin <dialog>-elementin päällä. Sulkeutuu Escape-näppäimellä ja CloseButton-painikkeesta."
+        (Html.div [ Attr.class "flex flex-col gap-4" ]
+            [ Button.view
+                { label = "Avaa modaali"
+                , variant = Button.Primary
+                , size = Button.Medium
+                , onClick = PagesMsg.fromMsg OpenDialog
+                , disabled = False
+                , loading = False
+                }
+            , Dialog.view
+                { title = "Esimerkki-modaali"
+                , body = [ Html.p [ Attr.class "text-sm text-gray-600" ] [ Html.text "Tämä on modaalin sisältö. Sulje Escape-näppäimellä tai X-painikkeella." ] ]
+                , footer =
+                    Just
+                        (Html.div [ Attr.class "flex justify-end gap-2" ]
+                            [ Button.view { label = "Sulje", variant = Button.Secondary, size = Button.Medium, onClick = PagesMsg.fromMsg CloseDialog, disabled = False, loading = False }
+                            ]
+                        )
+                , isOpen = model.dialogOpen
+                , onClose = PagesMsg.fromMsg CloseDialog
+                }
+            ]
+        )
+        """import Component.Dialog as Dialog
+
+Dialog.view
+    { title  = "Otsikko"
+    , body   = [ Html.text "Sisältö" ]
+    , footer = Just (Button.view { label = "OK", ... })
+    , isOpen = model.dialogOpen
+    , onClose = CloseDialog
+    }"""
+        (jsonLdSnippet "dialog"
+            "Dialog"
+            "Component.Dialog"
+            "Modal dialog using native <dialog> element. Closes on Escape."
+            [ "title: String", "body: List (Html msg)", "footer: Maybe (Html msg)", "isOpen: Bool", "onClose: msg" ]
+            []
+        )
+
+
+
 -- ── Dropdown ──────────────────────────────────────────────────────────────────
 
 
@@ -637,7 +744,7 @@ viewDropdown : Model -> Html (PagesMsg Msg)
 viewDropdown model =
     compCard model
         "Dropdown"
-        "CSS-pohjainen dropdown <details>-elementillä. Sulkeutuu automaattisesti focus-out-tapahtumassa."
+        "ARIA-pohjainen valikko — aria-haspopup, aria-expanded, role=menu/menuitem. Sulkeutuu Escape-näppäimellä."
         (Html.div [ Attr.class "flex gap-4 flex-wrap items-start" ]
             [ Dropdown.view
                 { trigger = Html.text "Valikko"
@@ -647,24 +754,30 @@ viewDropdown model =
                     , Dropdown.viewDivider
                     , Dropdown.viewItem { label = "design-guide/", href = "/design-guide/index.jsonld" }
                     ]
+                , isOpen = model.dropdownOpen
+                , onToggle = PagesMsg.fromMsg ToggleDropdown
+                , onClose = PagesMsg.fromMsg CloseDropdown
                 }
             ]
         )
         """import Component.Dropdown as Dropdown
 
 Dropdown.view
-    { trigger = Html.text "Valikko"
-    , items =
+    { trigger  = Html.text "Valikko"
+    , items    =
         [ Dropdown.viewItem { label = "Sivu 1", href = "/sivu1" }
         , Dropdown.viewDivider
         , Dropdown.viewItem { label = "Sivu 2", href = "/sivu2" }
         ]
+    , isOpen   = model.dropdownOpen
+    , onToggle = ToggleDropdown
+    , onClose  = CloseDropdown
     }"""
         (jsonLdSnippet "dropdown"
             "Dropdown"
             "Component.Dropdown"
-            "Disclosure dropdown using <details>/<summary>. Closes on focus-out."
-            [ "trigger: Html msg", "items: List (Html msg)" ]
+            "ARIA menu dropdown with aria-haspopup, aria-expanded, role=menu. Closes on Escape."
+            [ "trigger: Html msg", "items: List (Html msg)", "isOpen: Bool", "onToggle: msg", "onClose: msg" ]
             []
         )
 
@@ -845,7 +958,7 @@ viewStats model =
             [ Stats.viewItem { label = "Logovariantteja", value = "19", change = Nothing }
             , Stats.viewItem { label = "Ihonsävyjä", value = "4", change = Nothing }
             , Stats.viewItem { label = "Värejä", value = "9", change = Nothing }
-            , Stats.viewItem { label = "Komponentteja", value = "18", change = Nothing }
+            , Stats.viewItem { label = "Komponentteja", value = "22", change = Nothing }
             ]
         )
         """import Component.Stats as Stats
@@ -867,6 +980,38 @@ Stats.view
 
 
 
+-- ── Tag ───────────────────────────────────────────────────────────────────────
+
+
+viewTag : Model -> Html (PagesMsg Msg)
+viewTag model =
+    compCard model
+        "Tag"
+        "Kompakti inline-tunniste, jonka voi poistaa. Ei sisäistä tilaa."
+        (Html.div [ Attr.class "flex flex-wrap gap-2 items-center" ]
+            [ Tag.view { label = "Elm", onRemove = Nothing }
+            , Tag.view { label = "Haskell", onRemove = Nothing }
+            , Tag.view { label = "Poistettava", onRemove = Just (PagesMsg.fromMsg (SelectTab "Tag" PreviewTab)) }
+            , Tag.view { label = "Tailwind", onRemove = Just (PagesMsg.fromMsg (SelectTab "Tag" PreviewTab)) }
+            ]
+        )
+        """import Component.Tag as Tag
+
+-- Without remove button:
+Tag.view { label = "Elm", onRemove = Nothing }
+
+-- With remove button:
+Tag.view { label = "Poistettava", onRemove = Just RemoveTag }"""
+        (jsonLdSnippet "tag"
+            "Tag"
+            "Component.Tag"
+            "Compact inline label, optionally removable."
+            [ "label: String", "onRemove: Maybe msg" ]
+            []
+        )
+
+
+
 -- ── Timeline ──────────────────────────────────────────────────────────────────
 
 
@@ -876,9 +1021,15 @@ viewTimeline model =
         "Timeline"
         "Pystysuora aikajana muutoslokeille ja versiohistorioille."
         (Timeline.view
-            [ Timeline.viewItem { date = "2026", title = "Brändiohjeistus julkaistu", children = [ Html.text "JSON-LD-pohjainen koneluettava ohjeistus." ] }
-            , Timeline.viewItem { date = "2025", title = "Haskell-pipeline uudistettu", children = [ Html.text "Puhdas Haskell-rasterointi." ] }
-            , Timeline.viewItem { date = "2024", title = "Logo suunniteltu", children = [ Html.text "Minihahmon tiilimosaiikkilogo." ] }
+            [ Timeline.viewItem { date = "2026", title = "Brändiohjeistus julkaistu", children = [ Html.text "JSON-LD-pohjainen koneluettava ohjeistus." ], icon = Nothing, image = Nothing }
+            , Timeline.viewItem { date = "2025", title = "Haskell-pipeline uudistettu", children = [ Html.text "Puhdas Haskell-rasterointi." ], icon = Nothing, image = Nothing }
+            , Timeline.viewItem { date = "2024", title = "Logo suunniteltu", children = [ Html.text "Minihahmon tiilimosaiikkilogo." ], icon = Nothing, image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Tapahtuma", children = [ Html.text "Kalenterikuvake tapahtumalle." ], icon = Just (FeatherIcons.calendar |> FeatherIcons.withSize 22 |> FeatherIcons.toHtml []), image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Uutinen", children = [ Html.text "Megafonikuvake uutiselle." ], icon = Just (FeatherIcons.rss |> FeatherIcons.withSize 22 |> FeatherIcons.toHtml []), image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Tärkeä huomio", children = [ Html.text "Huutomerkkikuvake tärkeälle huomiolle." ], icon = Just (FeatherIcons.alertCircle |> FeatherIcons.withSize 22 |> FeatherIcons.toHtml []), image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Tähtihetki", children = [ Html.text "Tähtikuvake erityiselle saavutukselle." ], icon = Just (FeatherIcons.star |> FeatherIcons.withSize 22 |> FeatherIcons.toHtml []), image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Valmis", children = [ Html.text "Rasti valmistuneelle asialle." ], icon = Just (FeatherIcons.checkCircle |> FeatherIcons.withSize 22 |> FeatherIcons.toHtml []), image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Kuva oikealla", children = [ Html.text "Kohde, jossa kuva kelluu oikealla puolella." ], icon = Just (FeatherIcons.star |> FeatherIcons.withSize 22 |> FeatherIcons.toHtml []), image = Just "/logo/square/png/square-basic.png" }
             ]
         )
         """import Component.Timeline as Timeline
@@ -888,13 +1039,22 @@ Timeline.view
         { date     = "2026"
         , title    = "Versio 1.0"
         , children = [ Html.text "Ensimmäinen julkaisu." ]
+        , icon     = Nothing
+        , image    = Nothing
+        }
+    , Timeline.viewItem
+        { date     = "2026"
+        , title    = "Tärkeä tapahtuma"
+        , children = [ Html.text "Kuvakkeella ja kuvalla." ]
+        , icon     = Just (FeatherIcons.calendar |> FeatherIcons.withSize 22 |> FeatherIcons.toHtml [])
+        , image    = Just "/logo/square/png/square-basic.png"
         }
     ]"""
         (jsonLdSnippet "timeline"
             "Timeline"
             "Component.Timeline"
             "Vertical timeline for changelogs and version history."
-            [ "items: List { date: String, title: String, children: List (Html msg) }" ]
+            [ "items: List { date: String, title: String, children: List (Html msg), icon: Maybe (Html msg), image: Maybe String }" ]
             [ "colors.semantic.border.default" ]
         )
 
@@ -929,6 +1089,101 @@ Toast.view
             "Component.Toast"
             "Notification toast. Variants: Default, Success, Warning, Danger."
             [ "title: String", "body: String", "variant: Variant (Default|Success|Warning|Danger)", "onClose: Maybe msg" ]
+            []
+        )
+
+
+
+-- ── Toggle ────────────────────────────────────────────────────────────────────
+
+
+viewToggle : Model -> Html (PagesMsg Msg)
+viewToggle model =
+    compCard model
+        "Toggle"
+        "Boolen kytkin <input type=checkbox> -pohjaisena. Kutsuja omistaa tilan."
+        (Html.div [ Attr.class "flex flex-col gap-4" ]
+            [ Toggle.view
+                { id = "toggle-demo-1"
+                , label = "Ilmoitukset käytössä"
+                , checked = model.toggleChecked
+                , onToggle = \v -> PagesMsg.fromMsg (ToggleChanged v)
+                , disabled = False
+                }
+            , Toggle.view
+                { id = "toggle-demo-2"
+                , label = "Käytöstä poistettu"
+                , checked = False
+                , onToggle = \v -> PagesMsg.fromMsg (ToggleChanged v)
+                , disabled = True
+                }
+            ]
+        )
+        """import Component.Toggle as Toggle
+
+Toggle.view
+    { id       = "notif-toggle"
+    , label    = "Ilmoitukset"
+    , checked  = model.notifEnabled
+    , onToggle = NotifToggled  -- Bool -> msg
+    , disabled = False
+    }"""
+        (jsonLdSnippet "toggle"
+            "Toggle"
+            "Component.Toggle"
+            "Boolean toggle built on <input type=checkbox>. Caller owns state."
+            [ "id: String", "label: String", "checked: Bool", "onToggle: Bool -> msg", "disabled: Bool" ]
+            []
+        )
+
+
+
+-- ── Tooltip ───────────────────────────────────────────────────────────────────
+
+
+viewTooltip : Model -> Html (PagesMsg Msg)
+viewTooltip model =
+    compCard model
+        "Tooltip"
+        "CSS-pohjainen tooltip — näkyy hover- ja focus-within-tiloissa. Ei Elm-tilaa."
+        (Html.div [ Attr.class "flex flex-wrap gap-6 items-end" ]
+            [ Tooltip.view
+                { content = "Ensisijainen toiminto"
+                , children =
+                    [ Button.view
+                        { label = "Hover tai fokusoi"
+                        , variant = Button.Primary
+                        , size = Button.Medium
+                        , onClick = PagesMsg.fromMsg (SelectTab "Tooltip" PreviewTab)
+                        , disabled = False
+                        , loading = False
+                        }
+                    ]
+                }
+            , Tooltip.view
+                { content = "#F2CD37 — brand yellow"
+                , children =
+                    [ ColorSwatch.view
+                        { hex = "#F2CD37"
+                        , name = "Yellow"
+                        , description = ""
+                        , usageTags = []
+                        }
+                    ]
+                }
+            ]
+        )
+        """import Component.Tooltip as Tooltip
+
+Tooltip.view
+    { content  = "Selitysteksti"
+    , children = [ Button.view { ... } ]
+    }"""
+        (jsonLdSnippet "tooltip"
+            "Tooltip"
+            "Component.Tooltip"
+            "CSS-only tooltip shown on hover and focus-within. No Elm state."
+            [ "content: String", "children: List (Html msg)" ]
             []
         )
 

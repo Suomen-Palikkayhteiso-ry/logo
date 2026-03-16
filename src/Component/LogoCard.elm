@@ -34,6 +34,9 @@ viewPreview variant =
             if variant.theme == "dark" then
                 "bg-brand"
 
+            else if variant.theme == "yellow" then
+                "bg-brand-yellow"
+
             else
                 "bg-gray-50"
 
