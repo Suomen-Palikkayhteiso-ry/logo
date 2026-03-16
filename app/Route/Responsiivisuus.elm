@@ -123,13 +123,13 @@ view _ _ model =
 
 viewPageHeader : Html msg
 viewPageHeader =
-    Html.div [ Attr.class "space-y-3" ]
+    Html.div [ Attr.class "space-y-2" ]
         [ Html.h1 [ Attr.class "text-2xl sm:text-3xl font-bold text-brand" ] [ Html.text "Responsiivisuus" ]
-        , Html.p [ Attr.class "text-gray-500 text-sm sm:text-base" ]
+        , Html.p [ Attr.class "text-sm sm:text-base text-gray-500" ]
             [ Html.text "Mobiililähtöinen suunnittelujärjestelmä. Koneluettava versio: "
             , Html.a
                 [ Attr.href "/design-guide/responsiveness.jsonld"
-                , Attr.class "underline hover:text-brand transition-colors font-mono text-xs sm:text-sm"
+                , Attr.class "underline hover:text-brand transition-colors font-mono text-sm"
                 ]
                 [ Html.text "responsiveness.jsonld" ]
             , Html.text "."

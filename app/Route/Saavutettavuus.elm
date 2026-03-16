@@ -73,7 +73,19 @@ view _ _ =
     { title = "Saavutettavuus — " ++ SiteMeta.organizationName
     , body =
         [ Html.div [ Attr.class "max-w-5xl mx-auto px-4 py-8 sm:py-12 space-y-12 sm:space-y-16" ]
-            [ Html.h1 [ Attr.class "text-2xl sm:text-3xl font-bold text-brand" ] [ Html.text "Saavutettavuus" ]
+            [ Html.div [ Attr.class "space-y-2" ]
+                [ Html.h1 [ Attr.class "text-2xl sm:text-3xl font-bold text-brand" ]
+                    [ Html.text "Saavutettavuus" ]
+                , Html.p [ Attr.class "text-sm sm:text-base text-gray-500" ]
+                    [ Html.text "WCAG 2.1 AA -ohjeistus kontrasteista, värisokeustuesta, animaatioista ja saavutettavasta nimeämisestä. Koneluettava: "
+                    , Html.a
+                        [ Attr.href "/design-guide/logos.jsonld"
+                        , Attr.class "underline hover:text-brand transition-colors font-mono text-sm"
+                        ]
+                        [ Html.text "design-guide/logos.jsonld" ]
+                    , Html.text "."
+                    ]
+                ]
             , Alert.view
                 { alertType = Alert.Info
                 , title = Just "WCAG 2.1 AA — tavoitetaso"

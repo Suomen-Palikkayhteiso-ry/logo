@@ -168,11 +168,11 @@ view : App Data ActionData RouteParams -> Shared.Model -> Model -> View (PagesMs
 view _ _ model =
     { title = "Komponentit — " ++ SiteMeta.organizationName
     , body =
-        [ Html.div [ Attr.class "max-w-5xl mx-auto px-4 py-12 space-y-6" ]
+        [ Html.div [ Attr.class "max-w-5xl mx-auto px-4 py-8 sm:py-12 space-y-6" ]
             [ Html.div [ Attr.class "space-y-2" ]
                 [ Html.h1 [ Attr.class "text-2xl sm:text-3xl font-bold text-brand" ]
                     [ Html.text "Komponentit" ]
-                , Html.p [ Attr.class "text-gray-500" ]
+                , Html.p [ Attr.class "text-sm sm:text-base text-gray-500" ]
                     [ Html.text "Kaikki komponentit hakemistossa "
                     , Html.code [ Attr.class "font-mono text-sm bg-gray-100 px-1 rounded" ]
                         [ Html.text "src/Component/" ]
