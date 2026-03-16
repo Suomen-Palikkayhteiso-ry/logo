@@ -1023,11 +1023,11 @@ viewTimeline model =
             [ Timeline.viewItem { date = "2026", title = "Brändiohjeistus julkaistu", children = [ Html.text "JSON-LD-pohjainen koneluettava ohjeistus." ], icon = Nothing, image = Nothing }
             , Timeline.viewItem { date = "2025", title = "Haskell-pipeline uudistettu", children = [ Html.text "Puhdas Haskell-rasterointi." ], icon = Nothing, image = Nothing }
             , Timeline.viewItem { date = "2024", title = "Logo suunniteltu", children = [ Html.text "Minihahmon tiilimosaiikkilogo." ], icon = Nothing, image = Nothing }
-            , Timeline.viewItem { date = "2026", title = "Tapahtuma", children = [ Html.text "Kuvake: tapahtuma (⊙)." ], icon = Just "⊙", image = Nothing }
-            , Timeline.viewItem { date = "2026", title = "Uutinen", children = [ Html.text "Kuvake: uutinen (◆)." ], icon = Just "◆", image = Nothing }
-            , Timeline.viewItem { date = "2026", title = "Huomio", children = [ Html.text "Kuvake: huutomerkki (!)." ], icon = Just "!", image = Nothing }
-            , Timeline.viewItem { date = "2026", title = "Tärkeä", children = [ Html.text "Kuvake: tähti (★)." ], icon = Just "★", image = Nothing }
-            , Timeline.viewItem { date = "2026", title = "Valmis", children = [ Html.text "Kuvake: valmis (✓)." ], icon = Just "✓", image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Tapahtuma", children = [ Html.text "Kalenterikuvake tapahtumalle." ], icon = Just "📅", image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Uutinen", children = [ Html.text "Megafonikuvake uutiselle." ], icon = Just "📣", image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Tärkeä huomio", children = [ Html.text "Huutomerkkikuvake tärkeälle huomiolle." ], icon = Just "!", image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Tähtihetki", children = [ Html.text "Tähti erityiselle saavutukselle." ], icon = Just "★", image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Valmis", children = [ Html.text "Rasti valmistuneelle asialle." ], icon = Just "✓", image = Nothing }
             , Timeline.viewItem { date = "2026", title = "Kuva oikealla", children = [ Html.text "Kohde, jossa kuva kelluu oikealla puolella." ], icon = Just "★", image = Just "/logo/square/png/square-basic.png" }
             ]
         )

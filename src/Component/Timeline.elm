@@ -7,7 +7,7 @@ import Html.Attributes as Attr
 view : List (Html msg) -> Html msg
 view items =
     Html.ol
-        [ Attr.class "not-prose relative border-s-2 border-gray-200 space-y-0" ]
+        [ Attr.class "not-prose relative border-s-2 border-gray-200 space-y-0 ms-8" ]
         items
 
 
@@ -22,7 +22,7 @@ viewItem config =
                     Html.span [ Attr.class "block h-4 w-4 rounded-full bg-brand" ] []
 
                 Just icon ->
-                    Html.span [ Attr.class "text-lg font-bold text-brand leading-none select-none" ] [ Html.text icon ]
+                    Html.span [ Attr.class "text-2xl font-bold text-brand leading-none select-none" ] [ Html.text icon ]
             ]
         , Html.div [ Attr.class "flex items-start gap-4" ]
             [ Html.div [ Attr.class "flex-1 min-w-0" ]
