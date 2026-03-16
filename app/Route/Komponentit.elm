@@ -169,7 +169,7 @@ view _ _ model =
     , body =
         [ Html.div [ Attr.class "max-w-5xl mx-auto px-4 py-12 space-y-6" ]
             [ Html.div [ Attr.class "space-y-2" ]
-                [ Html.h1 [ Attr.class "text-3xl font-bold text-brand" ]
+                [ Html.h1 [ Attr.class "text-2xl sm:text-3xl font-bold text-brand" ]
                     [ Html.text "Komponentit" ]
                 , Html.p [ Attr.class "text-gray-500" ]
                     [ Html.text "Kaikki komponentit hakemistossa "
@@ -548,6 +548,7 @@ viewButtonGroup model =
                 |> Html.map PagesMsg.fromMsg
             , ButtonGroup.viewButton { label = "Keski", onClick = SelectTab "ButtonGroup" PreviewTab, active = False, position = ButtonGroup.Middle }
                 |> Html.map PagesMsg.fromMsg
+            , ButtonGroup.viewEllipsis
             , ButtonGroup.viewButton { label = "Oikea", onClick = SelectTab "ButtonGroup" PreviewTab, active = False, position = ButtonGroup.Last }
                 |> Html.map PagesMsg.fromMsg
             ]
@@ -585,7 +586,7 @@ viewCard model =
             , Card.view
                 { header = Just (Html.span [ Attr.class "font-semibold text-brand" ] [ Html.text "Otsikko" ])
                 , body = [ Html.p [ Attr.class "text-sm text-gray-600" ] [ Html.text "Kortti otsikolla." ] ]
-                , footer = Just (Html.span [ Attr.class "text-xs text-gray-400" ] [ Html.text "Alatunniste" ])
+                , footer = Just (Html.span [ Attr.class "text-xs text-gray-500" ] [ Html.text "Alatunniste" ])
                 , image = Nothing
                 , shadow = Card.Sm
                 }
@@ -1019,14 +1020,15 @@ viewTimeline model =
         "Timeline"
         "Pystysuora aikajana muutoslokeille ja versiohistorioille."
         (Timeline.view
-            [ Timeline.viewItem { date = "2026", title = "Brändiohjeistus julkaistu", children = [ Html.text "JSON-LD-pohjainen koneluettava ohjeistus." ], icon = Nothing }
-            , Timeline.viewItem { date = "2025", title = "Haskell-pipeline uudistettu", children = [ Html.text "Puhdas Haskell-rasterointi." ], icon = Nothing }
-            , Timeline.viewItem { date = "2024", title = "Logo suunniteltu", children = [ Html.text "Minihahmon tiilimosaiikkilogo." ], icon = Nothing }
-            , Timeline.viewItem { date = "2026", title = "Tapahtuma", children = [ Html.text "Kuvake: tapahtuma (⊙)." ], icon = Just "⊙" }
-            , Timeline.viewItem { date = "2026", title = "Uutinen", children = [ Html.text "Kuvake: uutinen (◆)." ], icon = Just "◆" }
-            , Timeline.viewItem { date = "2026", title = "Huomio", children = [ Html.text "Kuvake: huutomerkki (!)." ], icon = Just "!" }
-            , Timeline.viewItem { date = "2026", title = "Tärkeä", children = [ Html.text "Kuvake: tähti (★)." ], icon = Just "★" }
-            , Timeline.viewItem { date = "2026", title = "Valmis", children = [ Html.text "Kuvake: valmis (✓)." ], icon = Just "✓" }
+            [ Timeline.viewItem { date = "2026", title = "Brändiohjeistus julkaistu", children = [ Html.text "JSON-LD-pohjainen koneluettava ohjeistus." ], icon = Nothing, image = Nothing }
+            , Timeline.viewItem { date = "2025", title = "Haskell-pipeline uudistettu", children = [ Html.text "Puhdas Haskell-rasterointi." ], icon = Nothing, image = Nothing }
+            , Timeline.viewItem { date = "2024", title = "Logo suunniteltu", children = [ Html.text "Minihahmon tiilimosaiikkilogo." ], icon = Nothing, image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Tapahtuma", children = [ Html.text "Kuvake: tapahtuma (⊙)." ], icon = Just "⊙", image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Uutinen", children = [ Html.text "Kuvake: uutinen (◆)." ], icon = Just "◆", image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Huomio", children = [ Html.text "Kuvake: huutomerkki (!)." ], icon = Just "!", image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Tärkeä", children = [ Html.text "Kuvake: tähti (★)." ], icon = Just "★", image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Valmis", children = [ Html.text "Kuvake: valmis (✓)." ], icon = Just "✓", image = Nothing }
+            , Timeline.viewItem { date = "2026", title = "Kuva oikealla", children = [ Html.text "Kohde, jossa kuva kelluu oikealla puolella." ], icon = Just "★", image = Just "/logo/square/png/square-basic.png" }
             ]
         )
         """import Component.Timeline as Timeline
@@ -1037,19 +1039,21 @@ Timeline.view
         , title    = "Versio 1.0"
         , children = [ Html.text "Ensimmäinen julkaisu." ]
         , icon     = Nothing
+        , image    = Nothing
         }
     , Timeline.viewItem
         { date     = "2026"
         , title    = "Tärkeä tapahtuma"
-        , children = [ Html.text "Kuvakkeella." ]
+        , children = [ Html.text "Kuvakkeella ja kuvalla." ]
         , icon     = Just "★"
+        , image    = Just "/logo/square/png/square-basic.png"
         }
     ]"""
         (jsonLdSnippet "timeline"
             "Timeline"
             "Component.Timeline"
             "Vertical timeline for changelogs and version history."
-            [ "items: List { date: String, title: String, children: List (Html msg), icon: Maybe String }" ]
+            [ "items: List { date: String, title: String, children: List (Html msg), icon: Maybe String, image: Maybe String }" ]
             [ "colors.semantic.border.default" ]
         )
 

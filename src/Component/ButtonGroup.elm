@@ -1,4 +1,4 @@
-module Component.ButtonGroup exposing (Position(..), view, viewButton)
+module Component.ButtonGroup exposing (Position(..), view, viewButton, viewEllipsis)
 
 import Html exposing (Html)
 import Html.Attributes as Attr
@@ -28,6 +28,13 @@ viewButton config =
         , Events.onClick config.onClick
         ]
         [ Html.text config.label ]
+
+
+viewEllipsis : Html msg
+viewEllipsis =
+    Html.span
+        [ Attr.class "inline-flex items-center px-3 py-2 text-sm font-medium border border-gray-300 border-r-0 bg-white text-gray-400 select-none" ]
+        [ Html.text "⋯" ]
 
 
 type Position

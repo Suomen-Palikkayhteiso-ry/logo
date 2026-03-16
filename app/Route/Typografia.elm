@@ -72,7 +72,7 @@ view _ _ =
     { title = "Typografia — " ++ SiteMeta.organizationName
     , body =
         [ Html.div [ Attr.class "max-w-5xl mx-auto px-4 py-12 space-y-12" ]
-            [ Html.h1 [ Attr.class "text-3xl font-bold text-brand" ] [ Html.text "Typografia" ]
+            [ Html.h1 [ Attr.class "text-2xl sm:text-3xl font-bold text-brand" ] [ Html.text "Typografia" ]
             , viewFontInfo
             , viewWeightSpecimens
             ]

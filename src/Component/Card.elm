@@ -51,7 +51,7 @@ viewImage src =
 viewHeader : Html msg -> Html msg
 viewHeader content =
     Html.div
-        [ Attr.class "px-6 py-4 border-b border-gray-100" ]
+        [ Attr.class "px-6 py-4" ]
         [ content ]
 
 
@@ -65,7 +65,7 @@ viewBody content =
 viewFooter : Html msg -> Html msg
 viewFooter content =
     Html.div
-        [ Attr.class "px-6 py-4 bg-gray-50 border-t border-gray-100" ]
+        [ Attr.class "px-6 py-4 border-t border-gray-100" ]
         [ content ]
 
 
