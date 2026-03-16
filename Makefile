@@ -272,7 +272,9 @@ ALL_HZ_OUTPUTS := $(foreach s,$(HZ_STEMS), \
 # ── blay-animate: PNG frames -> animated GIF + WebP ──────────────────────────
 
 _ANIMATE = $(CABAL) run --offline blay-animate --
-_SQ_FRAMES       := $(foreach s,$(SQ_STEMS),$(SQ_PNG)/$(s).png)
+# Yellow-face stems only — bw variants are excluded from the animation
+_SQ_ANIM_STEMS   := square-smile square-laugh square-blink square-basic
+_SQ_FRAMES       := $(foreach s,$(_SQ_ANIM_STEMS),$(SQ_PNG)/$(s).png)
 _HZ_SKIN_STEMS   := horizontal horizontal-rot1 horizontal-rot2 horizontal-rot3
 _RB_STEMS        := horizontal-rainbow horizontal-rainbow-rot1 horizontal-rainbow-rot2 horizontal-rainbow-rot3 horizontal-rainbow-rot4 horizontal-rainbow-rot5 horizontal-rainbow-rot6
 _SC_STEMS        := horizontal-skintone horizontal-skintone-rot1 horizontal-skintone-rot2 horizontal-skintone-rot3
