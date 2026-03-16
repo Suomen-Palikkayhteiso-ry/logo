@@ -298,7 +298,7 @@ bwVariants =
       }
     , { id = "horizontal-bw"
       , description = "B&W horizontal logo mark only"
-      , theme = "light"
+      , theme = "yellow"
       , animated = False
       , withText = False
       , svgUrl = Just "/logo/horizontal/svg/horizontal-bw.svg"
@@ -308,7 +308,7 @@ bwVariants =
       }
     , { id = "horizontal-bw-full"
       , description = "B&W horizontal logo mark with subtitle, light theme"
-      , theme = "light"
+      , theme = "yellow"
       , animated = False
       , withText = True
       , svgUrl = Just "/logo/horizontal/svg/horizontal-bw-full.svg"
