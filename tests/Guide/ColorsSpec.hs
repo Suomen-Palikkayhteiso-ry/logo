@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Brand.ColorsSpec (tests) where
+module Guide.ColorsSpec (tests) where
 
-import Brand.Colors
+import Guide.Colors
 import Data.Char (isHexDigit, toUpper)
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -9,7 +9,7 @@ import Test.Tasty
 import Test.Tasty.HUnit
 
 tests :: TestTree
-tests = testGroup "Brand.Colors"
+tests = testGroup "Guide.Colors"
     [ testCase "skinTones has exactly 4 entries" $
         length skinTones @?= 4
 

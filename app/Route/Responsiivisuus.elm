@@ -1,7 +1,7 @@
 module Route.Responsiivisuus exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
-import Brand.Tokens as Tokens
+import Guide.Tokens as Tokens
 import Component.Alert as Alert
 import Component.SectionHeader as SectionHeader
 import Effect exposing (Effect)

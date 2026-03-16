@@ -1,9 +1,9 @@
 module Main where
 
 import Test.Tasty
-import qualified Brand.ColorsSpec as Colors
-import qualified Brand.ElmGenSpec as ElmGen
-import qualified Brand.JsonSpec as Json
+import qualified Guide.ColorsSpec as Colors
+import qualified Guide.ElmGenSpec as ElmGen
+import qualified Guide.JsonSpec as Json
 import qualified Logo.BlockifySpec as Blockify
 
 main :: IO ()

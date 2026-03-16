@@ -1,8 +1,8 @@
 module Route.Index exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
-import Brand.Colors as Colors
-import Brand.Logos as Logos
+import Guide.Colors as Colors
+import Guide.Logos as Logos
 import Component.ColorSwatch as ColorSwatch
 import Component.LogoCard as LogoCard
 import Component.SectionHeader as SectionHeader

@@ -1,4 +1,4 @@
-module Brand.Logos exposing (LogoVariant, bwVariants, horizontalVariants, squareVariants)
+module Guide.Logos exposing (LogoVariant, bwVariants, horizontalVariants, squareVariants)
 
 
 type alias LogoVariant =

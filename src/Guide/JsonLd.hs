@@ -7,10 +7,10 @@
 --
 -- Vocabulary base: https://logo.palikkaharrastajat.fi/design-guide/vocab#
 -- Standard prefixes: schema (schema.org), dc (Dublin Core), xsd.
-module Brand.JsonLd (generateJsonLd) where
+module Guide.JsonLd (generateJsonLd) where
 
-import Brand.Colors (associationName)
-import Brand.DesignData
+import Guide.Colors (associationName)
+import Guide.DesignData
 import qualified Data.Aeson as A
 import Data.Aeson ((.=))
 import qualified Data.Aeson.Encode.Pretty as AP
@@ -148,7 +148,7 @@ buildColorsLd =
   where
     brandTokens =
         [ colorTok "brand-black" "Black"  "#05131D"
-            "Primary brand colour. Never hard-code — use Brand.Tokens in Elm."
+            "Primary brand colour. Never hard-code — use Guide.Tokens in Elm."
             (A.object ["onWhite" .= (17.3 :: Double), "onWhiteRating" .= ("AAA" :: Text)])
         , colorTok "brand-white" "White"  "#FFFFFF"
             "Use for eye highlights and text on dark/brand backgrounds."

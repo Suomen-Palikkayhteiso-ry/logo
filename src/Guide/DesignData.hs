@@ -1,10 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 -- | Single source of truth for all design token constants shared between
--- Brand.Json (design-guide.json generation) and Brand.ElmGen (Tokens.elm
+-- Guide.Json (design-guide.json generation) and Guide.ElmGen (Tokens.elm
 -- generation). Modify this file to change any value in BOTH outputs.
-module Brand.DesignData where
+module Guide.DesignData where
 
-import Brand.Colors
+import Guide.Colors
 import Data.Text (Text)
 
 -- ---------------------------------------------------------------------------
