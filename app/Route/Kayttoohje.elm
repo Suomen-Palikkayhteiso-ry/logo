@@ -361,7 +361,7 @@ viewFontLoadingGuide =
                 , Html.pre [ Attr.class "bg-gray-900 text-gray-100 rounded-lg p-4 text-xs leading-relaxed overflow-x-auto" ]
                     [ Html.code []
                         [ Html.text """@theme {
-  --font-family-sans: "Outfit", system-ui, sans-serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
   --color-brand: #05131D;
   --color-brand-yellow: #FAC80A;
 }""" ]
@@ -391,13 +391,13 @@ viewFrameworkIntegrationSection =
                 , Html.pre [ Attr.class "bg-gray-900 text-gray-100 rounded-lg p-4 text-xs leading-relaxed overflow-x-auto" ]
                     [ Html.code []
                         [ Html.text """:root {
-  --font-family-sans: "Outfit", system-ui, sans-serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
   --color-brand: #05131D;
   --color-brand-yellow: #FAC80A;
   --color-white: #FFFFFF;
 }
 
-body { font-family: var(--font-family-sans); color: var(--color-brand); }
+body { font-family: var(--font-sans); color: var(--color-brand); }
 .btn-primary { background: var(--color-brand-yellow); color: var(--color-brand); }""" ]
                     ]
                 ]
@@ -434,7 +434,7 @@ module.exports = {
 }
 
 @theme {
-  --font-family-sans: \"Outfit\", system-ui, sans-serif;
+  --font-sans: \"Outfit\", system-ui, sans-serif;
   --color-brand: #05131D;
   --color-brand-yellow: #FAC80A;
 }""" ]

@@ -3,7 +3,7 @@
 @theme {
   --color-brand: #05131D;
   --color-brand-yellow: #FAC80A;
-  --font-family-sans: "Outfit", system-ui, sans-serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
 }
 
 @font-face {
