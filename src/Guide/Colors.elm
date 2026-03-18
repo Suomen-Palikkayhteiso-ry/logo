@@ -5,6 +5,7 @@ type alias ColorEntry =
     { hex : String
     , id : String
     , name : String
+    , description : String
     , usage : List String
     }
 
@@ -29,21 +30,25 @@ brandColors =
     [ { hex = "#FAC80A"
       , id = "lego-yellow"
       , name = "Yellow"
+      , description = "Pääaksenttiväri painikkeisiin, korostuksiin ja CTA-elementteihin. Älä käytä tekstinä vaalealla taustalla — kontrasti ei riitä."
       , usage = [ "primary brand", "accent" ]
       }
     , { hex = "#05131D"
       , id = "lego-black"
       , name = "Black"
+      , description = "Kaikki otsikot, leipäteksti ja navigaatio vaalealla taustalla. Käytä myös tummalle taustavärille."
       , usage = [ "features", "text", "dark background" ]
       }
     , { hex = "#FFFFFF"
       , id = "lego-white"
       , name = "White"
+      , description = "Teksti ja kuvakkeet tummalla (Brand Black) taustalla. Sivun oletustaustaväri."
       , usage = [ "eye highlights", "text on dark background" ]
       }
     , { hex = "#C91A09"
       , id = "red"
       , name = "Red"
+      , description = "Aksentti- ja varoitusväri. Ei koskaan pääväri — käytä korostuksiin, danger-tiloihin ja graafisiin elementteihin."
       , usage = [ "accent", "danger", "highlights" ]
       }
     ]

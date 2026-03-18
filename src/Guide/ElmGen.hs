@@ -178,7 +178,7 @@ escElm = T.concatMap c
     c x    = T.singleton x
 
 renderSemanticColor :: SemanticColorRow -> [Text]
-renderSemanticColor (elmName, _, val, tw, desc) =
+renderSemanticColor (elmName, _, val, tw, _cssVar, desc) =
     [ ""
     , "-- " <> desc
     , elmName <> " : String"
@@ -258,8 +258,8 @@ renderSpacingList items =
         <> ", description = " <> q d
         <> " }"
 
-renderMotionDuration :: (Text, Int, Text) -> [Text]
-renderMotionDuration (name, ms, _) =
+renderMotionDuration :: (Text, Int, Text, Text) -> [Text]
+renderMotionDuration (name, ms, _, _) =
     let helperName = "motion" <> T.toUpper (T.take 1 name) <> T.drop 1 name <> "Ms"
     in
     [ helperName <> " : Int"

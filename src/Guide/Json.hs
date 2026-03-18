@@ -168,7 +168,7 @@ buildSemanticColors =
         ]
   where
     tok path =
-        case [ (val, tw, desc) | (_, p, val, tw, desc) <- semanticColors, p == path ] of
+        case [ (val, tw, desc) | (_, p, val, tw, _cssVar, desc) <- semanticColors, p == path ] of
             ((val, tw, desc) : _) ->
                 A.object
                     [ "$value"      .= colorValue val
@@ -302,7 +302,7 @@ buildMotion =
                 , "$type"        .= ("duration" :: Text)
                 , "$description" .= desc
                 ]
-            | (name, ms, desc) <- motionDurationData
+            | (name, ms, _cssVar, desc) <- motionDurationData
             ]
         , "easing" .= A.object
             [ AK.fromText name .= A.object

@@ -15,7 +15,7 @@ type alias ColorSwatchConfig =
 view : ColorSwatchConfig -> Html msg
 view config =
     Html.div
-        [ Attr.class "flex flex-col gap-2 min-w-36" ]
+        [ Attr.class "flex flex-col gap-2" ]
         [ Html.div
             [ Attr.class "h-20 rounded-lg border border-black/10 shadow-sm"
             , Attr.style "background-color" config.hex

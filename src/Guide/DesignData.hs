@@ -20,6 +20,7 @@ typeScale =
     , ("Heading1",  700, 1.875, 30, 1.2,  -0.01, "text-3xl font-bold",                           "Page-level headings (one per page).")
     , ("Heading2",  700, 1.5,   24, 1.3,  0.0,     "text-2xl font-bold",                           "Section headings.")
     , ("Heading3",  600, 1.25,  20, 1.35, 0.0,     "text-xl font-semibold",                        "Sub-section headings.")
+    , ("Heading4",  600, 1.125, 18, 1.4,  0.0,     "text-lg font-semibold",                        "Card and widget headings. Use below Heading3.")
     , ("Body",      400, 1.0,   16, 1.6,  0.0,     "text-base",                                    "Default body copy. Minimum size for accessible reading.")
     , ("BodySmall", 500, 0.875, 14, 1.5,  0.0,     "text-sm font-medium",                          "Secondary labels, UI controls, and form hints.")
     , ("Caption",   400, 0.875, 14, 1.4,  0.02,    "text-sm",                                      "Image captions, footnotes, and metadata.")
@@ -33,7 +34,7 @@ typographyUsageRules =
     , "Minimum body text size is 16px (1rem) at weight 400."
     , "Minimum caption/label text size is 14px (0.875rem); use weight 500 or higher for readability."
     , "Maximum recommended line length is 75 characters for body text."
-    , "Heading hierarchy must descend: Display > H1 > H2 > H3. Do not skip levels."
+    , "Heading hierarchy must descend: Display > H1 > H2 > H3 > H4. Do not skip levels."
     , "Code and monospace content should use font-family: monospace as a fallback."
     ]
 
@@ -60,13 +61,13 @@ spacingScale =
 -- Motion
 -- ---------------------------------------------------------------------------
 
--- | (name, ms, description)
-motionDurationData :: [(Text, Int, Text)]
+-- | (name, ms, cssVariable, description)
+motionDurationData :: [(Text, Int, Text, Text)]
 motionDurationData =
-    [ ("fast",      150,   "Hover states, focus rings, button fills.")
-    , ("base",      300,   "Default: card lift, menu open, accordion expand.")
-    , ("slow",      500,   "Page-level transitions, large content reveals.")
-    , ("logoFrame", 10000, "Animated logo frame hold — do not modify without regenerating assets.")
+    [ ("fast",      150,   "--duration-fast",       "Hover states, focus rings, button fills.")
+    , ("base",      300,   "--duration-base",       "Default: card lift, menu open, accordion expand.")
+    , ("slow",      500,   "--duration-slow",       "Page-level transitions, large content reveals.")
+    , ("logoFrame", 10000, "--duration-logo-frame", "Animated logo frame hold — do not modify without regenerating assets.")
     ]
 
 -- | (name, p1x, p1y, p2x, p2y, description)
@@ -93,21 +94,21 @@ motionUsageRules =
 -- Semantic colors
 -- ---------------------------------------------------------------------------
 
--- | (elmConstName, jsonPath, hexValue, cssTailwindClass, description)
-type SemanticColorRow = (Text, Text, Text, Text, Text)
+-- | (elmConstName, jsonPath, hexValue, cssTailwindClass, cssVariable, description)
+type SemanticColorRow = (Text, Text, Text, Text, Text, Text)
 
 semanticColors :: [SemanticColorRow]
 semanticColors =
-    [ ("colorTextPrimary",   "text.primary",       hexText subtitleOnLight, "text-brand",        "Primary body text; use on white or light-gray backgrounds.")
-    , ("colorTextOnDark",    "text.onDark",         hexText subtitleOnDark,  "text-white",        "Text on dark or brand-colored backgrounds.")
-    , ("colorTextMuted",     "text.muted",          "#6B7280",               "text-gray-500",     "Secondary labels, captions, helper text on light backgrounds.")
-    , ("colorTextSubtle",    "text.subtle",         "#9CA3AF",               "text-gray-400",     "De-emphasised metadata; use only for large text.")
-    , ("colorBgPage",        "background.page",     "#FFFFFF",               "bg-white",          "Default page/document background.")
-    , ("colorBgDark",        "background.dark",     hexText darkBg,          "bg-brand",          "Dark section backgrounds. Pair with colorTextOnDark.")
-    , ("colorBgSubtle",      "background.subtle",   "#F9FAFB",               "bg-gray-50",        "Light card and section backgrounds.")
-    , ("colorBgAccent",      "background.accent",   "#FAC80A",               "bg-brand-yellow",   "Brand accent CTA color. Always pair with colorTextPrimary.")
-    , ("colorBorderDefault", "border.default",      "#E5E7EB",               "border-gray-200",   "Standard card and section divider borders.")
-    , ("colorBorderBrand",   "border.brand",        hexText darkBg,          "border-brand",      "Brand-colored borders, left-accent rules, focus rings.")
+    [ ("colorTextPrimary",   "text.primary",       hexText subtitleOnLight, "text-brand",        "--color-brand",        "Primary body text; use on white or light-gray backgrounds.")
+    , ("colorTextOnDark",    "text.onDark",         hexText subtitleOnDark,  "text-white",        "--color-white",        "Text on dark or brand-colored backgrounds.")
+    , ("colorTextMuted",     "text.muted",          "#6B7280",               "text-gray-500",     "--color-gray-500",     "Secondary labels, captions, helper text on light backgrounds.")
+    , ("colorTextSubtle",    "text.subtle",         "#9CA3AF",               "text-gray-400",     "--color-gray-400",     "De-emphasised metadata; use only for large text.")
+    , ("colorBgPage",        "background.page",     "#FFFFFF",               "bg-white",          "--color-white",        "Default page/document background.")
+    , ("colorBgDark",        "background.dark",     hexText darkBg,          "bg-brand",          "--color-brand",        "Dark section backgrounds. Pair with colorTextOnDark.")
+    , ("colorBgSubtle",      "background.subtle",   "#F9FAFB",               "bg-gray-50",        "--color-gray-50",      "Light card and section backgrounds.")
+    , ("colorBgAccent",      "background.accent",   "#FAC80A",               "bg-brand-yellow",   "--color-brand-yellow", "Brand accent CTA color. Always pair with colorTextPrimary.")
+    , ("colorBorderDefault", "border.default",      "#E5E7EB",               "border-gray-200",   "--color-gray-200",     "Standard card and section divider borders.")
+    , ("colorBorderBrand",   "border.brand",        hexText darkBg,          "border-brand",      "--color-brand",        "Brand-colored borders, left-accent rules, focus rings.")
     ]
 
 -- ---------------------------------------------------------------------------

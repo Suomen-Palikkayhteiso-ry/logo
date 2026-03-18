@@ -109,6 +109,7 @@ view _ _ model =
             , viewBreakpointsSection
             , viewContainerSection
             , viewGridSection
+            , viewGeneralLayoutSection
             , viewTypographySection
             , viewTouchSection
             , viewMotionSection model
@@ -363,6 +364,95 @@ viewGridPattern p =
             , Html.code [ Attr.class "block font-mono text-xs bg-gray-100 px-3 py-2 rounded text-gray-600 break-all" ]
                 [ Html.text p.tailwind ]
             ]
+        ]
+
+
+
+-- ── General layout patterns ───────────────────────────────────────────────────
+
+
+viewGeneralLayoutSection : Html msg
+viewGeneralLayoutSection =
+    Html.section [ Attr.class "space-y-6" ]
+        [ SectionHeader.view
+            { title = "Yleiset asettelumallit"
+            , description = Just "Murtopiste-oletukset eri asettelutyypeille. Käytä näitä malleja yleissisältösivuilla."
+            }
+        , Html.div [ Attr.class "overflow-x-auto" ]
+            [ Html.table [ Attr.class "w-full text-sm border-collapse" ]
+                [ Html.thead []
+                    [ Html.tr [ Attr.class "bg-gray-50 border-b border-gray-200" ]
+                        [ th "Asettelu"
+                        , th "Mobiili"
+                        , th "Vaihto"
+                        , th "Tailwind-luokat"
+                        ]
+                    ]
+                , Html.tbody [ Attr.class "divide-y divide-gray-100" ]
+                    (List.map viewLayoutRow layoutBreakpointData)
+                ]
+            ]
+        , Html.div [ Attr.class "space-y-3" ]
+            (List.map viewRuleCard
+                [ ( "Tekstisisältö + kuva — vaihda md:ssä"
+                  , "Kaksipalstainen teksti–kuva-asettelu vaihtuu md (768px) -pisteessä. Alle sen sisältö pinoutuu pystysuoraan, kuva tulee tekstin alle tai päälle."
+                  )
+                , ( "Korttiruudukko — vaihda sm:ssä tai md:ssä"
+                  , "Pienet kortit (≤ 200px) sopivat 2 sarakkeeseen jo sm (640px). Laajemmat kortit (> 200px) vaihtuvat 2 sarakkeeseen vasta md:ssä."
+                  )
+                , ( "Sivupalkki — vaihda lg:ssä"
+                  , "Sivupalkki vaatii leveämmän näytön. Vaihda lg (1024px) -pisteessä. Alle sen palkki sijoittuu sisällön ylä- tai alapuolelle."
+                  )
+                , ( "Navigaatio — vaihda md:ssä"
+                  , "Hampurilaisvalikko mobiilissa, vaakasuuntainen navigaatiopalkki md (768px) -pisteestä ylöspäin."
+                  )
+                ]
+            )
+        ]
+
+
+layoutBreakpointData : List { layout : String, mobile : String, switchAt : String, tailwind : String }
+layoutBreakpointData =
+    [ { layout = "Artikkelirunko (teksti)"
+      , mobile = "1 sarake, täysleveys"
+      , switchAt = "—"
+      , tailwind = "max-w-prose mx-auto"
+      }
+    , { layout = "Teksti + kuva"
+      , mobile = "1 sarake (pino)"
+      , switchAt = "md (768px)"
+      , tailwind = "grid grid-cols-1 md:grid-cols-2 gap-8"
+      }
+    , { layout = "Korttiruudukko (pienet)"
+      , mobile = "1 sarake"
+      , switchAt = "sm (640px)"
+      , tailwind = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+      }
+    , { layout = "Korttiruudukko (laajat)"
+      , mobile = "1 sarake"
+      , switchAt = "md (768px)"
+      , tailwind = "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+      }
+    , { layout = "Sivupalkki + sisältö"
+      , mobile = "1 sarake (pino)"
+      , switchAt = "lg (1024px)"
+      , tailwind = "grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8"
+      }
+    , { layout = "Hero / banneri"
+      , mobile = "1 sarake, tekstikoko H1"
+      , switchAt = "md (768px) → Display"
+      , tailwind = "text-3xl md:text-5xl font-bold"
+      }
+    ]
+
+
+viewLayoutRow : { layout : String, mobile : String, switchAt : String, tailwind : String } -> Html msg
+viewLayoutRow row =
+    Html.tr [ Attr.class "hover:bg-gray-50" ]
+        [ Html.td [ Attr.class "py-2 px-3 font-medium text-sm text-brand" ] [ Html.text row.layout ]
+        , Html.td [ Attr.class "py-2 px-3 text-xs text-gray-600" ] [ Html.text row.mobile ]
+        , Html.td [ Attr.class "py-2 px-3 font-mono text-xs text-gray-500" ] [ Html.text row.switchAt ]
+        , Html.td [ Attr.class "py-2 px-3 font-mono text-xs text-gray-400 break-all" ] [ Html.text row.tailwind ]
         ]
 
 

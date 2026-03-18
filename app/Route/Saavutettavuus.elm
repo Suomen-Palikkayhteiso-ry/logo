@@ -86,6 +86,7 @@ view _ _ =
                     , Html.text "."
                     ]
                 ]
+            , viewSkipToContentSection
             , Alert.view
                 { alertType = Alert.Info
                 , title = Just "WCAG 2.1 AA — tavoitetaso"
@@ -99,6 +100,8 @@ view _ _ =
                 , onDismiss = Nothing
                 }
             , viewContrastSection
+            , viewSemanticPairingsSection
+            , viewDarkSurfaceSection
             , viewColorBlindSection
             , viewMotionSection
             , viewLogoAltSection
@@ -108,6 +111,46 @@ view _ _ =
         ]
     }
 
+
+
+-- ---------------------------------------------------------------------------
+-- Skip to content
+-- ---------------------------------------------------------------------------
+
+
+viewSkipToContentSection : Html msg
+viewSkipToContentSection =
+    Html.section [ Attr.class "space-y-6" ]
+        [ SectionHeader.view
+            { title = "Ohita-navigaatio-linkki"
+            , description = Just "Skip-to-content-linkki on pakollinen näppäimistökäyttäjille — ilman sitä koko navigaatio täytyy läpikäydä joka sivulatauksella."
+            }
+        , Html.div [ Attr.class "space-y-4" ]
+            [ viewRuleCard "Lisää ensimmäiseksi elementiksi <body>:n sisälle"
+                "Linkki on piilotettu oletuksena (sr-only) mutta tulee näkyviin, kun se saa kohdistuksen. Näin se ei häiritse visuaalista layoutia mutta on saavutettava näppäimistöllä."
+            , Html.div [ Attr.class "space-y-2" ]
+                [ Html.p [ Attr.class "text-xs font-semibold text-gray-500 uppercase tracking-wider" ] [ Html.text "HTML-esimerkki" ]
+                , Html.pre [ Attr.class "bg-gray-900 text-gray-100 rounded-lg p-4 text-xs leading-relaxed overflow-x-auto" ]
+                    [ Html.code []
+                        [ Html.text """<a href=\"#main-content\"
+   class=\"sr-only focus:not-sr-only focus:absolute
+          focus:top-4 focus:left-4 focus:z-50
+          bg-white text-brand font-semibold
+          py-2 px-4 rounded shadow-lg\">
+  Siirry pääsisältöön
+</a>
+
+<!-- ... navigaatio ... -->
+
+<main id=\"main-content\" tabindex=\"-1\">
+  <!-- sivun sisältö -->
+</main>""" ]
+                    ]
+                ]
+            , viewRuleCard "Elm-pages: lisää Shared.elm-tiedostoon"
+                "Elm-pages-sovelluksessa skip-linkki kuuluu Shared.view-funktioon ennen navigaatiopalkkia, jotta se renderöityy joka sivulla ensimmäisenä elementtinä."
+            ]
+        ]
 
 
 -- ---------------------------------------------------------------------------
@@ -167,6 +210,141 @@ viewContrastRow row =
         , Html.td [ Attr.class "px-4 py-3" ] [ Html.text row.onWhite ]
         , Html.td [ Attr.class "px-4 py-3" ] [ Html.text row.onBlack ]
         , Html.td [ Attr.class "px-4 py-3 text-gray-500" ] [ Html.text row.usage ]
+        ]
+
+
+
+-- ---------------------------------------------------------------------------
+-- Semantic token pairings
+-- ---------------------------------------------------------------------------
+
+
+viewSemanticPairingsSection : Html msg
+viewSemanticPairingsSection =
+    Html.section [ Attr.class "space-y-6" ]
+        [ SectionHeader.view
+            { title = "Semanttiset kontrastiparit"
+            , description = Just "Lasketut kontrastisuhteet semanttisten väritokenien yhdistelmille. Käytä tätä taulukkoa, kun valitset teksti–tausta-pareja."
+            }
+        , Html.div [ Attr.class "overflow-x-auto" ]
+            [ Html.table [ Attr.class "w-full text-sm border-collapse" ]
+                [ Html.thead []
+                    [ Html.tr [ Attr.class "bg-gray-50 border-b border-gray-200" ]
+                        [ th "Teksti-token"
+                        , th "Tausta-token"
+                        , th "Suhde"
+                        , th "Taso"
+                        , th "Soveltuvuus"
+                        ]
+                    ]
+                , Html.tbody [ Attr.class "divide-y divide-gray-100" ]
+                    (List.map viewPairingRow semanticPairingData)
+                ]
+            ]
+        ]
+
+
+semanticPairingData : List { textToken : String, bgToken : String, ratio : String, level : String, note : String }
+semanticPairingData =
+    [ { textToken = "text.primary",  bgToken = "background.page",   ratio = "17.3:1", level = "AAA", note = "Otsikot ja leipäteksti" }
+    , { textToken = "text.primary",  bgToken = "background.subtle", ratio = "16.8:1", level = "AAA", note = "Kortit ja korostusalueet" }
+    , { textToken = "text.muted",    bgToken = "background.page",   ratio = "4.6:1",  level = "AA",  note = "Sekundääriteksti ja kuvatekstit" }
+    , { textToken = "text.muted",    bgToken = "background.subtle", ratio = "4.5:1",  level = "AA",  note = "Aputekstit korttialueilla" }
+    , { textToken = "text.subtle",   bgToken = "background.page",   ratio = "2.5:1",  level = "—",   note = "Vain suuri teksti (≥18 pt / 14 pt bold)" }
+    , { textToken = "text.onDark",   bgToken = "background.dark",   ratio = "17.3:1", level = "AAA", note = "Kaikki teksti tummalla taustalla" }
+    , { textToken = "text.primary",  bgToken = "background.accent", ratio = "11.5:1", level = "AAA", note = "Teksti keltaisella aksenttipainikkeella" }
+    ]
+
+
+viewPairingRow : { textToken : String, bgToken : String, ratio : String, level : String, note : String } -> Html msg
+viewPairingRow row =
+    let
+        levelClass =
+            if row.level == "AAA" then
+                "text-green-700 font-semibold"
+            else if row.level == "AA" then
+                "text-blue-700 font-semibold"
+            else
+                "text-red-600 font-semibold"
+    in
+    Html.tr [ Attr.class "hover:bg-gray-50" ]
+        [ Html.td [ Attr.class "px-4 py-3 font-mono text-xs text-brand" ] [ Html.text row.textToken ]
+        , Html.td [ Attr.class "px-4 py-3 font-mono text-xs text-gray-500" ] [ Html.text row.bgToken ]
+        , Html.td [ Attr.class "px-4 py-3 font-mono text-xs" ] [ Html.text row.ratio ]
+        , Html.td [ Attr.class ("px-4 py-3 text-xs " ++ levelClass) ] [ Html.text row.level ]
+        , Html.td [ Attr.class "px-4 py-3 text-xs text-gray-500" ] [ Html.text row.note ]
+        ]
+
+
+
+-- ---------------------------------------------------------------------------
+-- Dark surface pairings
+-- ---------------------------------------------------------------------------
+
+
+viewDarkSurfaceSection : Html msg
+viewDarkSurfaceSection =
+    Html.section [ Attr.class "space-y-6" ]
+        [ SectionHeader.view
+            { title = "Tumman pinnan parit"
+            , description = Just "background.dark (#05131D) -taustan kanssa sallitut värit. Käytä vain tässä hyväksyttyjä värejä tummilla osuuksilla."
+            }
+        , Html.div [ Attr.class "overflow-x-auto" ]
+            [ Html.table [ Attr.class "w-full text-sm border-collapse" ]
+                [ Html.thead []
+                    [ Html.tr [ Attr.class "bg-gray-50 border-b border-gray-200" ]
+                        [ th "Väri / token"
+                        , th "Hex"
+                        , th "Kontrasti"
+                        , th "Taso"
+                        , th "Käyttö"
+                        ]
+                    ]
+                , Html.tbody [ Attr.class "divide-y divide-gray-100" ]
+                    (List.map viewDarkPairingRow darkSurfaceData)
+                ]
+            ]
+        , viewRuleCard "Vältä tummalla: text.muted ja text.subtle"
+            "text.muted (#6B7280) saavuttaa vain 2.8:1 tummalla taustalla — alle AA-tason. text.subtle (#9CA3AF) saavuttaa 3.9:1, mikä riittää vain suurelle tekstille (≥18 pt). Käytä näitä värejä ainoastaan vaaleilla taustoilla."
+        ]
+
+
+darkSurfaceData : List { token : String, hex : String, ratio : String, level : String, usage : String }
+darkSurfaceData =
+    [ { token = "text.onDark / White",     hex = "#FFFFFF", ratio = "17.3:1", level = "AAA", usage = "Kaikki teksti ja otsikot" }
+    , { token = "brand Yellow",            hex = "#FAC80A", ratio = "11.5:1", level = "AAA", usage = "Korostukset, linkit, CTA-painikkeet" }
+    , { token = "brand Red",               hex = "#C91A09", ratio = "4.2:1",  level = "AA",  usage = "Varoitukset, virheet (ei pienelle tekstille)" }
+    , { token = "text.subtle / gray-400",  hex = "#9CA3AF", ratio = "3.9:1",  level = "—",   usage = "Vain suuri teksti (≥18 pt / 14 pt bold)" }
+    , { token = "text.muted / gray-500",   hex = "#6B7280", ratio = "2.8:1",  level = "—",   usage = "Ei sallittu tummalla taustalla" }
+    ]
+
+
+viewDarkPairingRow : { token : String, hex : String, ratio : String, level : String, usage : String } -> Html msg
+viewDarkPairingRow row =
+    let
+        levelClass =
+            if row.level == "AAA" then
+                "text-green-700 font-semibold"
+            else if row.level == "AA" then
+                "text-blue-700 font-semibold"
+            else
+                "text-red-600 font-semibold"
+    in
+    Html.tr [ Attr.class "hover:bg-gray-50" ]
+        [ Html.td [ Attr.class "px-4 py-3 font-mono text-xs text-brand" ]
+            [ Html.div [ Attr.class "flex items-center gap-2" ]
+                [ Html.span
+                    [ Attr.class "inline-block w-4 h-4 rounded border border-black/10 flex-shrink-0"
+                    , Attr.style "background-color" row.hex
+                    ]
+                    []
+                , Html.text row.token
+                ]
+            ]
+        , Html.td [ Attr.class "px-4 py-3 font-mono text-xs text-gray-500" ] [ Html.text row.hex ]
+        , Html.td [ Attr.class "px-4 py-3 font-mono text-xs" ] [ Html.text row.ratio ]
+        , Html.td [ Attr.class ("px-4 py-3 text-xs " ++ levelClass) ] [ Html.text row.level ]
+        , Html.td [ Attr.class "px-4 py-3 text-xs text-gray-500" ] [ Html.text row.usage ]
         ]
 
 
@@ -237,7 +415,20 @@ viewLogoAltSection =
             , viewRuleCard "Logo kuvitustarkoituksessa"
                 "alt=\"Suomen Palikkaharrastajat ry — logo\" tai varianttispesifinen kuvaus, esim. alt=\"Sateenkaarilogovariantti\"."
             , viewRuleCard "Koristelullinen logo"
-                "Jos logo on pelkästään visuaalinen koriste (esim. taustakuvio), käytä alt=\"\"."
+                "Jos logo on pelkästään visuaalinen koriste (esim. taustakuvio), käytä alt=\"\". Lisää myös aria-hidden=\"true\", jotta ruudunlukija ohittaa elementin kokonaan."
+            , Html.div [ Attr.class "space-y-2" ]
+                [ Html.p [ Attr.class "text-xs font-semibold text-gray-500 uppercase tracking-wider" ] [ Html.text "Esimerkki — koristelullinen logo" ]
+                , viewCodeBlock """<!-- Koristelullinen: sekä alt=\"\" että aria-hidden=\"true\" -->
+<img src=\"/logo/square/svg/square-smile.svg\"
+     alt=\"\"
+     aria-hidden=\"true\"
+     width=\"40\" height=\"40\">
+
+<!-- Merkityksellinen: kuvaava alt, ei aria-hidden -->
+<img src=\"/logo/square/svg/square-smile.svg\"
+     alt=\"Suomen Palikkaharrastajat ry\"
+     width=\"40\" height=\"40\">"""
+                ]
             ]
         ]
 

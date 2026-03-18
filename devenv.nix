@@ -59,4 +59,6 @@ in {
       elm-pages --version
     '';
   };
+
+  cachix.pull = [ "palikkaharrastajat" ];
 }

@@ -193,6 +193,7 @@ view _ _ model =
                 , viewBadge model
                 , viewBreadcrumb model
                 , viewButton model
+                , viewButtonSpec
                 , viewButtonGroup model
                 , viewCard model
                 , viewCloseButton model
@@ -534,6 +535,88 @@ Button.view
             [ "colors.semantic.background.accent" ]
         )
 
+
+
+viewButtonSpec : Html msg
+viewButtonSpec =
+    Html.section [ Attr.id "button-spec", Attr.class "scroll-mt-20 space-y-4" ]
+        [ Html.h3 [ Attr.class "text-base font-semibold text-brand" ] [ Html.text "Button — täydellinen tila-taulukko" ]
+        , Html.div [ Attr.class "overflow-x-auto" ]
+            [ Html.table [ Attr.class "w-full text-xs border-collapse" ]
+                [ Html.thead []
+                    [ Html.tr [ Attr.class "bg-gray-50 border-b border-gray-200" ]
+                        [ Html.th [ Attr.class "py-2 px-3 text-left font-semibold text-gray-500 uppercase tracking-wider" ] [ Html.text "Variantti" ]
+                        , Html.th [ Attr.class "py-2 px-3 text-left font-semibold text-gray-500 uppercase tracking-wider" ] [ Html.text "Normaali" ]
+                        , Html.th [ Attr.class "py-2 px-3 text-left font-semibold text-gray-500 uppercase tracking-wider" ] [ Html.text "Hover" ]
+                        , Html.th [ Attr.class "py-2 px-3 text-left font-semibold text-gray-500 uppercase tracking-wider" ] [ Html.text "Focus-visible" ]
+                        , Html.th [ Attr.class "py-2 px-3 text-left font-semibold text-gray-500 uppercase tracking-wider" ] [ Html.text "Disabled" ]
+                        ]
+                    ]
+                , Html.tbody [ Attr.class "divide-y divide-gray-100" ]
+                    [ viewBtnSpecRow "Primary"
+                        "bg-brand-yellow text-brand font-semibold"
+                        "hover:opacity-90"
+                        "focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+                        "opacity-40 cursor-not-allowed"
+                    , viewBtnSpecRow "Secondary"
+                        "bg-white border border-gray-300 text-brand font-semibold"
+                        "hover:bg-gray-50"
+                        "focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+                        "opacity-40 cursor-not-allowed"
+                    , viewBtnSpecRow "Ghost"
+                        "bg-transparent text-brand font-semibold"
+                        "hover:bg-gray-100"
+                        "focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+                        "opacity-40 cursor-not-allowed"
+                    , viewBtnSpecRow "Danger"
+                        "bg-red-600 text-white font-semibold"
+                        "hover:bg-red-700"
+                        "focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                        "opacity-40 cursor-not-allowed"
+                    ]
+                ]
+            ]
+        , Html.div [ Attr.class "space-y-3" ]
+            [ Html.div [ Attr.class "border-l-4 border-brand-yellow pl-4 py-1 space-y-1" ]
+                [ Html.p [ Attr.class "font-semibold text-sm text-brand" ] [ Html.text "focus-visible, ei focus" ]
+                , Html.p [ Attr.class "text-sm text-gray-600" ]
+                    [ Html.text "Käytä "
+                    , Html.code [ Attr.class "font-mono bg-gray-100 px-1 rounded" ] [ Html.text "focus-visible:" ]
+                    , Html.text " eikä "
+                    , Html.code [ Attr.class "font-mono bg-gray-100 px-1 rounded" ] [ Html.text "focus:" ]
+                    , Html.text " — selain piilottaa kohdistusrenkaan hiirellä klikatuista elementeistä automaattisesti, näyttää sen näppäimistönavigoinnissa."
+                    ]
+                ]
+            , Html.div [ Attr.class "border-l-4 border-brand-yellow pl-4 py-1 space-y-1" ]
+                [ Html.p [ Attr.class "font-semibold text-sm text-brand" ] [ Html.text "aria-pressed — vaihto/toggle-painike" ]
+                , Html.p [ Attr.class "text-sm text-gray-600" ]
+                    [ Html.text "Suodatin- ja toggle-painikkeisiin täytyy lisätä "
+                    , Html.code [ Attr.class "font-mono bg-gray-100 px-1 rounded" ] [ Html.text "aria-pressed" ]
+                    , Html.text " -attribuutti, jotta ruudunlukija kertoo tilan."
+                    ]
+                , Html.pre [ Attr.class "bg-gray-900 text-gray-100 rounded-lg p-3 text-xs leading-relaxed overflow-x-auto mt-2" ]
+                    [ Html.code []
+                        [ Html.text """Html.button
+    [ Attr.attribute \"aria-pressed\"
+        (if model.active then \"true\" else \"false\")
+    , Attr.class \"...\"
+    ]
+    [ Html.text \"Suodata: Aktiiviset\" ]""" ]
+                    ]
+                ]
+            ]
+        ]
+
+
+viewBtnSpecRow : String -> String -> String -> String -> String -> Html msg
+viewBtnSpecRow variant normal hover focus disabled =
+    Html.tr [ Attr.class "hover:bg-gray-50 align-top" ]
+        [ Html.td [ Attr.class "py-2 px-3 font-semibold text-brand" ] [ Html.text variant ]
+        , Html.td [ Attr.class "py-2 px-3 font-mono text-gray-600" ] [ Html.text normal ]
+        , Html.td [ Attr.class "py-2 px-3 font-mono text-gray-600" ] [ Html.text hover ]
+        , Html.td [ Attr.class "py-2 px-3 font-mono text-gray-600" ] [ Html.text focus ]
+        , Html.td [ Attr.class "py-2 px-3 font-mono text-gray-600" ] [ Html.text disabled ]
+        ]
 
 
 -- ── ButtonGroup ───────────────────────────────────────────────────────────────

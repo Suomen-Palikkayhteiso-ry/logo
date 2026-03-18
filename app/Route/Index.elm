@@ -95,43 +95,14 @@ viewPageHeader =
         [ Html.h1 [ Attr.class "text-2xl sm:text-3xl font-bold text-brand" ]
             [ Html.text "Suomen Palikkaharrastajat ry" ]
         , Html.p [ Attr.class "text-sm sm:text-base text-gray-500" ]
-            [ Html.text "Logot, värit ja typografia. Koneluettava versio: "
+            [ Html.text "Logot, värit ja typografia — visuaalinen yleiskatsaus. Tekninen käyttöohje: "
             , Html.a
-                [ Attr.href "/design-guide/index.jsonld"
-                , Attr.class "underline hover:text-brand transition-colors font-mono text-sm"
+                [ Attr.href "/kayttoohje"
+                , Attr.class "underline hover:text-brand transition-colors"
                 ]
-                [ Html.text "design-guide/" ]
+                [ Html.text "Käyttöohje" ]
             , Html.text "."
             ]
-        ]
-
-
-
--- ── Anchor navigation ─────────────────────────────────────────────────────────
-
-
-viewAnchorNav : Html msg
-viewAnchorNav =
-    Html.nav
-        [ Attr.class "sticky top-16 z-40 bg-white/95 backdrop-blur border-b border-gray-100 -mx-4 px-4 py-2"
-        , Attr.attribute "aria-label" "Sivu-navigaatio"
-        ]
-        [ Html.ul [ Attr.class "flex gap-6 text-sm font-medium" ]
-            [ anchorItem "#logot" "Logot"
-            , anchorItem "#varit" "Värit"
-            , anchorItem "#typografia" "Typografia"
-            ]
-        ]
-
-
-anchorItem : String -> String -> Html msg
-anchorItem href label =
-    Html.li []
-        [ Html.a
-            [ Attr.href href
-            , Attr.class "text-gray-500 hover:text-brand transition-colors"
-            ]
-            [ Html.text label ]
         ]
 
 
@@ -142,37 +113,17 @@ anchorItem href label =
 viewLogotSection : Html msg
 viewLogotSection =
     Html.section [ Attr.id "logot", Attr.class "scroll-mt-28 space-y-8 sm:space-y-10" ]
-        [ Html.div [ Attr.class "flex items-baseline justify-between flex-wrap gap-4" ]
-            [ Html.h2 [ Attr.class "text-xl sm:text-2xl font-bold text-brand" ] [ Html.text "Logot" ]
-            , Html.a
-                [ Attr.href "/design-guide/logos.jsonld"
-                , Attr.class "text-xs font-mono text-gray-400 hover:text-brand transition-colors"
-                ]
-                [ Html.text "logos.jsonld" ]
-            ]
-        , viewLogoUsageRules
+        [ Html.h2 [ Attr.class "text-xl sm:text-2xl font-bold text-brand" ] [ Html.text "Logot" ]
         , viewSquareLogos
         , viewSquareFullLogos
         , viewHorizontalLogos
         ]
 
 
-viewLogoUsageRules : Html msg
-viewLogoUsageRules =
-    Html.div [ Attr.class "bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800 space-y-1" ]
-        [ Html.p [ Attr.class "font-semibold" ] [ Html.text "Käyttöohjeet" ]
-        , Html.ul [ Attr.class "list-disc list-inside space-y-1 mt-1" ]
-            [ Html.li [] [ Html.text "Käytä SVG ensin; WebP PNG-varamenetelmällä" ]
-            , Html.li [] [ Html.text "Älä venytä, litistä tai värjää logon osia" ]
-            , Html.li [] [ Html.text "Älä käytä animoitua logoa tulostettavissa tai sähköpostissa" ]
-            ]
-        ]
-
-
 viewSquareLogos : Html msg
 viewSquareLogos =
     Html.div [ Attr.class "space-y-4" ]
-        [ SectionHeader.view
+        [ SectionHeader.viewSub
             { title = "Neliö"
             , description = Just "Hymyilevä minihahmon pää rakennuspalikoista koottuna. Sopii someen ja sovelluskuvakkeisiin."
             }
@@ -184,7 +135,7 @@ viewSquareLogos =
 viewSquareFullLogos : Html msg
 viewSquareFullLogos =
     Html.div [ Attr.class "space-y-4" ]
-        [ SectionHeader.view
+        [ SectionHeader.viewSub
             { title = "Neliö tekstillä"
             , description = Just "Hymyilevä logo kahdella tekstirivillä alla. Käytä kun tarvitset täydellisen tunnuksen pystysuuntaisessa asettelussa."
             }
@@ -196,7 +147,7 @@ viewSquareFullLogos =
 viewHorizontalLogos : Html msg
 viewHorizontalLogos =
     Html.div [ Attr.class "space-y-4" ]
-        [ SectionHeader.view
+        [ SectionHeader.viewSub
             { title = "Vaakasuuntainen"
             , description = Just "Neljä minihahmon päätä vierekkäin. Vaakaversio tekstillä sopii esitteisiin ja nettisivuille."
             }
@@ -206,128 +157,27 @@ viewHorizontalLogos =
 
 
 
-
 -- ── Värit ─────────────────────────────────────────────────────────────────────
 
 
 viewVaritSection : Html msg
 viewVaritSection =
     Html.section [ Attr.id "varit", Attr.class "scroll-mt-28 space-y-8 sm:space-y-10" ]
-        [ Html.div [ Attr.class "flex items-baseline justify-between flex-wrap gap-4" ]
-            [ Html.h2 [ Attr.class "text-xl sm:text-2xl font-bold text-brand" ] [ Html.text "Värit" ]
-            , Html.a
-                [ Attr.href "/design-guide/colors.jsonld"
-                , Attr.class "text-xs font-mono text-gray-400 hover:text-brand transition-colors"
-                ]
-                [ Html.text "colors.jsonld" ]
-            ]
+        [ Html.h2 [ Attr.class "text-xl sm:text-2xl font-bold text-brand" ] [ Html.text "Värit" ]
         , viewBrandColors
-        -- , viewSkinTones
-        -- , viewRainbowColors
-        , viewSemanticColors
         ]
 
 
 viewBrandColors : Html msg
 viewBrandColors =
     Html.div [ Attr.class "space-y-4" ]
-        [ SectionHeader.view { title = "Merkkivärit", description = Just "Yhdistyksen viralliset päävärit." }
-        , Html.div [ Attr.class "flex flex-wrap gap-6" ]
+        [ SectionHeader.viewSub { title = "Merkkivärit", description = Just "Yhdistyksen viralliset päävärit." }
+        , Html.div [ Attr.class "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" ]
             (List.map
-                (\c -> ColorSwatch.view { hex = c.hex, name = c.name, description = "", usageTags = c.usage })
+                (\c -> ColorSwatch.view { hex = c.hex, name = c.name, description = c.description, usageTags = c.usage })
                 Colors.brandColors
             )
         ]
-
-
-viewSkinTones : Html msg
-viewSkinTones =
-    Html.div [ Attr.class "space-y-4" ]
-        [ SectionHeader.view
-            { title = "Ihoteemat"
-            , description = Just "Neljä ihonsävyä. Keltainen on yhdistyksen pääaksenttiväri."
-            }
-        , Html.div [ Attr.class "flex flex-wrap gap-6" ]
-            (List.map
-                (\c -> ColorSwatch.view { hex = c.hex, name = c.name, description = c.description, usageTags = [] })
-                Colors.skinTones
-            )
-        ]
-
-
-viewRainbowColors : Html msg
-viewRainbowColors =
-    Html.div [ Attr.class "space-y-4" ]
-        [ SectionHeader.view
-            { title = "Sateenkaari"
-            , description = Just "Sateenkaarilogoissa käytetyt seitsemän väriä. Käytä vain koristeellisesti."
-            }
-        , Html.div [ Attr.class "flex flex-wrap gap-6" ]
-            (List.map
-                (\c -> ColorSwatch.view { hex = c.hex, name = c.name, description = c.description, usageTags = [] })
-                Colors.rainbowColors
-            )
-        ]
-
-
-viewSemanticColors : Html msg
-viewSemanticColors =
-    Html.div [ Attr.class "space-y-4" ]
-        [ SectionHeader.view
-            { title = "Semanttiset värit"
-            , description = Just "Käytä aina semanttisia nimiä — älä koodaa heksadesimaaliarvoja suoraan komponentteihin."
-            }
-        , Html.div [ Attr.class "overflow-x-auto" ]
-            [ Html.table [ Attr.class "w-full text-sm border-collapse" ]
-                [ Html.thead []
-                    [ Html.tr [ Attr.class "border-b border-gray-200" ]
-                        [ th "Nimi", th "Arvo", th "Tailwind", th "Käyttö" ]
-                    ]
-                , Html.tbody [ Attr.class "divide-y divide-gray-100" ]
-                    (List.map viewSemanticRow semanticRows)
-                ]
-            ]
-        ]
-
-
-semanticRows : List { name : String, hex : String, tw : String, desc : String }
-semanticRows =
-    [ { name = "text.primary", hex = "#05131D", tw = "text-brand", desc = "Pääotsikot ja tärkeä teksti" }
-    , { name = "text.onDark", hex = "#FFFFFF", tw = "text-white", desc = "Teksti tummalla taustalla" }
-    , { name = "text.muted", hex = "#6B7280", tw = "text-gray-500", desc = "Sekundääri teksti" }
-    , { name = "text.subtle", hex = "#9CA3AF", tw = "text-gray-400", desc = "Placeholder, disabled" }
-    , { name = "background.page", hex = "#FFFFFF", tw = "bg-white", desc = "Sivun pääväri" }
-    , { name = "background.dark", hex = "#05131D", tw = "bg-brand", desc = "Tumma teema, navbar" }
-    , { name = "background.subtle", hex = "#F9FAFB", tw = "bg-gray-50", desc = "Korostusalue, kortit" }
-    , { name = "background.accent", hex = "#FAC80A", tw = "bg-brand-yellow", desc = "Keltainen aksentti" }
-    , { name = "border.default", hex = "#E5E7EB", tw = "border-gray-200", desc = "Kortit, taulukot" }
-    , { name = "border.brand", hex = "#05131D", tw = "border-brand", desc = "Aktiiviset elementit" }
-    ]
-
-
-viewSemanticRow : { name : String, hex : String, tw : String, desc : String } -> Html msg
-viewSemanticRow row =
-    Html.tr [ Attr.class "hover:bg-gray-50" ]
-        [ Html.td [ Attr.class "py-2 px-3 font-mono text-xs text-gray-700" ] [ Html.text row.name ]
-        , Html.td [ Attr.class "py-2 px-3" ]
-            [ Html.div [ Attr.class "flex items-center gap-2" ]
-                [ Html.span
-                    [ Attr.class "w-5 h-5 rounded border border-gray-200 flex-shrink-0"
-                    , Attr.style "background-color" row.hex
-                    ]
-                    []
-                , Html.span [ Attr.class "font-mono text-xs text-gray-500" ] [ Html.text row.hex ]
-                ]
-            ]
-        , Html.td [ Attr.class "py-2 px-3 font-mono text-xs text-brand" ] [ Html.text row.tw ]
-        , Html.td [ Attr.class "py-2 px-3 text-gray-500 text-xs" ] [ Html.text row.desc ]
-        ]
-
-
-th : String -> Html msg
-th label =
-    Html.th [ Attr.class "py-2 px-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider" ]
-        [ Html.text label ]
 
 
 
@@ -337,16 +187,8 @@ th label =
 viewTypografiaSection : Html msg
 viewTypografiaSection =
     Html.section [ Attr.id "typografia", Attr.class "scroll-mt-28 space-y-8 sm:space-y-10" ]
-        [ Html.div [ Attr.class "flex items-baseline justify-between flex-wrap gap-4" ]
-            [ Html.h2 [ Attr.class "text-xl sm:text-2xl font-bold text-brand" ] [ Html.text "Typografia" ]
-            , Html.a
-                [ Attr.href "/design-guide/typography.jsonld"
-                , Attr.class "text-xs font-mono text-gray-400 hover:text-brand transition-colors"
-                ]
-                [ Html.text "typography.jsonld" ]
-            ]
+        [ Html.h2 [ Attr.class "text-xl sm:text-2xl font-bold text-brand" ] [ Html.text "Typografia" ]
         , viewFontCard
-        , viewTypeScale
         , viewWeightSpecimens
         ]
 
@@ -372,63 +214,10 @@ viewFontCard =
         ]
 
 
-viewTypeScale : Html msg
-viewTypeScale =
-    Html.div [ Attr.class "space-y-4" ]
-        [ SectionHeader.view
-            { title = "Tyyliaste"
-            , description = Just "Käytä aina nimettyjä tyylejä — älä määritä fonttikokoja suoraan komponenteissa."
-            }
-        , Html.div [ Attr.class "overflow-x-auto" ]
-            [ Html.table [ Attr.class "w-full text-sm border-collapse" ]
-                [ Html.thead []
-                    [ Html.tr [ Attr.class "border-b border-gray-200" ]
-                        [ th "Nimi", th "Paino", th "Koko (rem)", th "Rivinorkeus", th "Esimerkki" ]
-                    ]
-                , Html.tbody [ Attr.class "divide-y divide-gray-100" ]
-                    (List.map viewTypeRow typeScaleRows)
-                ]
-            ]
-        ]
-
-
-typeScaleRows : List { name : String, weight : String, size : String, lineHeight : String }
-typeScaleRows =
-    [ { name = "Display", weight = "800", size = "3.5rem", lineHeight = "1.1" }
-    , { name = "H1", weight = "700", size = "2.25rem", lineHeight = "1.2" }
-    , { name = "H2", weight = "700", size = "1.875rem", lineHeight = "1.25" }
-    , { name = "H3", weight = "600", size = "1.5rem", lineHeight = "1.3" }
-    , { name = "H4", weight = "600", size = "1.25rem", lineHeight = "1.4" }
-    , { name = "Body", weight = "400", size = "1rem", lineHeight = "1.6" }
-    , { name = "BodySmall", weight = "400", size = "0.875rem", lineHeight = "1.6" }
-    , { name = "Caption", weight = "400", size = "0.75rem", lineHeight = "1.5" }
-    , { name = "Overline", weight = "600", size = "0.75rem", lineHeight = "1.5" }
-    ]
-
-
-viewTypeRow : { name : String, weight : String, size : String, lineHeight : String } -> Html msg
-viewTypeRow row =
-    Html.tr [ Attr.class "hover:bg-gray-50" ]
-        [ Html.td [ Attr.class "py-2 px-3 font-mono text-xs text-brand font-medium" ] [ Html.text row.name ]
-        , Html.td [ Attr.class "py-2 px-3 font-mono text-xs text-gray-500" ] [ Html.text row.weight ]
-        , Html.td [ Attr.class "py-2 px-3 font-mono text-xs text-gray-500" ] [ Html.text row.size ]
-        , Html.td [ Attr.class "py-2 px-3 font-mono text-xs text-gray-500" ] [ Html.text row.lineHeight ]
-        , Html.td [ Attr.class "py-2 px-3 text-brand overflow-hidden max-w-xs" ]
-            [ Html.span
-                [ Attr.style "font-weight" row.weight
-                , Attr.style "font-size" row.size
-                , Attr.style "line-height" row.lineHeight
-                , Attr.class "whitespace-nowrap"
-                ]
-                [ Html.text "Nopea ruskea kettu hyppää laiskan koiran yli" ]
-            ]
-        ]
-
-
 viewWeightSpecimens : Html msg
 viewWeightSpecimens =
     Html.div [ Attr.class "space-y-4" ]
-        [ SectionHeader.view { title = "Painovariannit", description = Nothing }
+        [ SectionHeader.viewSub { title = "Painovariannit", description = Nothing }
         , Html.div [ Attr.class "space-y-2" ]
             (List.map
                 (\( weight, label ) ->

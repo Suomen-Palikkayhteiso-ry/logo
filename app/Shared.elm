@@ -174,6 +174,7 @@ viewNavbar model toMsg =
                     [ desktopNavLink "/komponentit" "Komponentit"
                     , desktopNavLink "/responsiivisuus" "Responsiivisuus"
                     , desktopNavLink "/saavutettavuus" "Saavutettavuus"
+                    , desktopNavLink "/kayttoohje" "Käyttöohje"
                     ]
                 ]
             , if model.menuOpen then
@@ -185,6 +186,7 @@ viewNavbar model toMsg =
                     , mobileNavLink "/komponentit" "Komponentit" toMsg
                     , mobileNavLink "/responsiivisuus" "Responsiivisuus" toMsg
                     , mobileNavLink "/saavutettavuus" "Saavutettavuus" toMsg
+                    , mobileNavLink "/kayttoohje" "Käyttöohje" toMsg
                     ]
 
               else
