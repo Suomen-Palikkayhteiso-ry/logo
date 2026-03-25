@@ -24,6 +24,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y librsvg2-bin webp icoutils imagemagick
+          sudo ln -sf /usr/bin/convert /usr/local/bin/magick
 
       - name: Install gifski
         run: |
