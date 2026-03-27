@@ -72,7 +72,7 @@ pageButton config page =
 
 pageBtnClass : Bool -> String
 pageBtnClass active =
-    "w-9 h-9 flex items-center justify-center rounded-md text-sm font-medium transition-colors cursor-pointer "
+    "w-9 h-9 flex items-center justify-center rounded-md type-body-small transition-colors cursor-pointer "
         ++ (if active then
                 "bg-brand text-white"
 

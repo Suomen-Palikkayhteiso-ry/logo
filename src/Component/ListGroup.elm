@@ -35,7 +35,7 @@ viewActionItem config =
             [ Attr.type_ "button"
             , Attr.class
                 (if config.active then
-                    "w-full text-left px-4 py-3 text-sm font-medium bg-brand text-white cursor-pointer"
+                    "w-full text-left px-4 py-3 type-body-small bg-brand text-white cursor-pointer"
 
                  else
                     "w-full text-left px-4 py-3 text-sm text-gray-800 bg-white hover:bg-gray-50 hover:text-brand transition-colors cursor-pointer"

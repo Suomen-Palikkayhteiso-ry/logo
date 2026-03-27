@@ -1,5 +1,6 @@
 module Component.CloseButton exposing (view)
 
+import FeatherIcons
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Events as Events
@@ -13,6 +14,5 @@ view config =
         , Attr.attribute "aria-label" config.label
         , Events.onClick config.onClick
         ]
-        [ Html.span [ Attr.attribute "aria-hidden" "true", Attr.class "text-lg leading-none" ]
-            [ Html.text "×" ]
+        [ FeatherIcons.x |> FeatherIcons.withSize 18 |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
         ]

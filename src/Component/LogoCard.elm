@@ -83,7 +83,7 @@ viewInfo variant =
     Html.div
         [ Attr.class "p-4 bg-gray-50 border-t border-gray-100" ]
         [ Html.div [ Attr.class "mb-3" ]
-            [ Html.span [ Attr.class "font-semibold text-sm text-brand" ]
+            [ Html.span [ Attr.class "type-body-small text-brand" ]
                 [ Html.text variant.description ]
             , if variant.highlight then
                 Html.span

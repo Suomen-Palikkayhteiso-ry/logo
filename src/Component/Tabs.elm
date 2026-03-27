@@ -93,7 +93,7 @@ viewPanel activeIndex idx panel =
 
 tabClass : Bool -> String
 tabClass active =
-    "px-4 py-2 text-sm font-medium border-b-2 transition-colors cursor-pointer "
+    "px-4 py-2 type-body-small border-b-2 transition-colors cursor-pointer "
         ++ (if active then
                 "border-brand text-brand"
 

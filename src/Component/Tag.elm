@@ -1,5 +1,6 @@
 module Component.Tag exposing (view)
 
+import FeatherIcons
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Events as Events
@@ -21,7 +22,7 @@ view config =
                             , Attr.class "ml-0.5 inline-flex items-center justify-center w-3.5 h-3.5 rounded-full hover:bg-brand/20 transition-colors cursor-pointer"
                             , Events.onClick msg
                             ]
-                            [ Html.span [ Attr.attribute "aria-hidden" "true" ] [ Html.text "×" ] ]
+                            [ FeatherIcons.x |> FeatherIcons.withSize 10 |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ] ]
                         ]
                )
         )

@@ -1,6 +1,7 @@
 module Component.Alert exposing (AlertType(..), view)
 
 import Component.CloseButton as CloseButton
+import FeatherIcons
 import Html exposing (Html)
 import Html.Attributes as Attr
 
@@ -23,8 +24,8 @@ view config =
         (List.filterMap identity
             [ Just
                 (Html.div [ Attr.class "flex" ]
-                    [ Html.div [ Attr.class "flex-shrink-0 text-lg leading-6" ]
-                        [ Html.text (icon config.alertType) ]
+                    [ Html.div [ Attr.class "flex-shrink-0 leading-none" ]
+                        [ icon config.alertType ]
                     , Html.div [ Attr.class "ml-3" ]
                         (List.filterMap identity
                             [ Maybe.map
@@ -81,20 +82,23 @@ containerClasses alertType =
            )
 
 
-icon : AlertType -> String
+icon : AlertType -> Html msg
 icon alertType =
-    case alertType of
+    (case alertType of
         Info ->
-            "ℹ"
+            FeatherIcons.info
 
         Success ->
-            "✓"
+            FeatherIcons.checkCircle
 
         Warning ->
-            "⚠"
+            FeatherIcons.alertTriangle
 
         Error ->
-            "✕"
+            FeatherIcons.xCircle
+    )
+        |> FeatherIcons.withSize 18
+        |> FeatherIcons.toHtml []
 
 
 titleClass : AlertType -> String

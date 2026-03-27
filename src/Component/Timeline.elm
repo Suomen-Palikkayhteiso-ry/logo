@@ -30,7 +30,7 @@ viewItem config =
                     [ Attr.class "mb-1 block text-xs font-normal leading-none text-gray-400" ]
                     [ Html.text config.date ]
                 , Html.h3
-                    [ Attr.class "text-sm font-semibold text-brand" ]
+                    [ Attr.class "type-body-small text-brand" ]
                     [ Html.text config.title ]
                 , Html.div
                     [ Attr.class "mt-1 text-sm leading-6 text-gray-600" ]

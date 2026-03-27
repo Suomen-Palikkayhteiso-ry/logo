@@ -1,5 +1,6 @@
 module Component.Pricing exposing (Tier, view)
 
+import FeatherIcons
 import Html exposing (Html)
 import Html.Attributes as Attr
 
@@ -60,13 +61,13 @@ viewFeature highlighted feature =
         [ Html.span
             [ Attr.class
                 (if highlighted then
-                    "text-brand-yellow text-base"
+                    "text-brand-yellow"
 
                  else
-                    "text-brand text-base"
+                    "text-brand"
                 )
             ]
-            [ Html.text "✓" ]
+            [ FeatherIcons.check |> FeatherIcons.withSize 16 |> FeatherIcons.toHtml [] ]
         , Html.span
             [ Attr.class
                 (if highlighted then

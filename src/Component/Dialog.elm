@@ -1,5 +1,6 @@
 module Component.Dialog exposing (view)
 
+import FeatherIcons
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Events as Events
@@ -38,8 +39,7 @@ view config =
                         , Attr.attribute "autofocus" ""
                         , Events.onClick config.onClose
                         ]
-                        [ Html.span [ Attr.attribute "aria-hidden" "true", Attr.class "text-lg leading-none" ]
-                            [ Html.text "×" ]
+                        [ FeatherIcons.x |> FeatherIcons.withSize 18 |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
                         ]
                     ]
                 , Html.div [ Attr.class "px-6 py-4 flex-1" ] config.body

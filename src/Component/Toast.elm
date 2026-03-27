@@ -1,5 +1,6 @@
 module Component.Toast exposing (Variant(..), view)
 
+import FeatherIcons
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Events as Events
@@ -23,10 +24,10 @@ view config =
     Html.div
         [ Attr.class ("flex items-start gap-3 w-80 rounded-lg border p-4 shadow-lg bg-white " ++ borderClass config.variant) ]
         [ Html.div
-            [ Attr.class ("mt-0.5 flex-shrink-0 text-lg " ++ iconColorClass config.variant) ]
-            [ Html.text (icon config.variant) ]
+            [ Attr.class ("mt-0.5 flex-shrink-0 leading-none " ++ iconColorClass config.variant) ]
+            [ icon config.variant ]
         , Html.div [ Attr.class "flex-1 min-w-0" ]
-            [ Html.p [ Attr.class "text-sm font-medium text-gray-900" ] [ Html.text config.title ]
+            [ Html.p [ Attr.class "type-body-small text-gray-900" ] [ Html.text config.title ]
             , Html.p [ Attr.class "mt-0.5 text-sm text-gray-500" ] [ Html.text config.body ]
             ]
         , case config.onClose of
@@ -37,7 +38,7 @@ view config =
                     , Attr.attribute "aria-label" "Sulje"
                     , Events.onClick onClose
                     ]
-                    [ Html.text "×" ]
+                    [ FeatherIcons.x |> FeatherIcons.withSize 16 |> FeatherIcons.toHtml [] ]
 
             Nothing ->
                 Html.text ""
@@ -76,17 +77,20 @@ iconColorClass variant =
             "text-red-500"
 
 
-icon : Variant -> String
+icon : Variant -> Html msg
 icon variant =
-    case variant of
+    (case variant of
         Default ->
-            "ℹ"
+            FeatherIcons.info
 
         Success ->
-            "✓"
+            FeatherIcons.checkCircle
 
         Warning ->
-            "⚠"
+            FeatherIcons.alertTriangle
 
         Danger ->
-            "✕"
+            FeatherIcons.xCircle
+    )
+        |> FeatherIcons.withSize 18
+        |> FeatherIcons.toHtml []

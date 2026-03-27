@@ -22,7 +22,7 @@ view config =
             ]
             []
         , Html.div [ Attr.class "space-y-1" ]
-            [ Html.div [ Attr.class "font-semibold text-sm text-brand" ]
+            [ Html.div [ Attr.class "type-body-small text-brand" ]
                 [ Html.text config.name ]
             , Html.div [ Attr.class "font-mono text-xs text-gray-500" ]
                 [ Html.text config.hex ]
