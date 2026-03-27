@@ -1,4 +1,4 @@
-# STYLE.md — Suomen Palikkaharrastajat ry Design System
+# Suomen Palikkaharrastajat ry Design System
 
 Agent/developer reference for the brand CSS. Read this before authoring or modifying any consumer project's CSS.
 
