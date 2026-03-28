@@ -53,7 +53,7 @@ viewOverlay : { isOpen : Bool, onClose : msg, breakpoint : Breakpoint } -> Html 
 viewOverlay config =
     if config.isOpen then
         Html.div
-            [ Attr.class (breakpointClass config.breakpoint ++ "fixed inset-0 z-40")
+            [ Attr.class (breakpointClass config.breakpoint ++ "fixed inset-0 z-40 bg-black/50")
             , Html.Events.onClick config.onClose
             ]
             []
