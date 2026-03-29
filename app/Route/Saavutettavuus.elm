@@ -2,6 +2,7 @@ module Route.Saavutettavuus exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
 import Component.Alert as Alert
+import FeatherIcons
 import Component.SectionHeader as SectionHeader
 import FatalError exposing (FatalError)
 import Head
@@ -578,11 +579,21 @@ viewCodeComparison : String -> String -> String -> String -> Html msg
 viewCodeComparison badLabel badSrc goodLabel goodSrc =
     Html.div [ Attr.class "grid grid-cols-1 sm:grid-cols-2 gap-3" ]
         [ Html.div [ Attr.class "space-y-1" ]
-            [ Html.p [ Attr.class "text-xs font-semibold text-red-600" ] [ Html.text ("✗ " ++ badLabel) ]
+            [ Html.p [ Attr.class "text-xs font-semibold text-red-600 flex items-center gap-1" ]
+                [ FeatherIcons.x
+                    |> FeatherIcons.withSize 12
+                    |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
+                , Html.text badLabel
+                ]
             , viewCodeBlock badSrc
             ]
         , Html.div [ Attr.class "space-y-1" ]
-            [ Html.p [ Attr.class "text-xs font-semibold text-green-600" ] [ Html.text ("✓ " ++ goodLabel) ]
+            [ Html.p [ Attr.class "text-xs font-semibold text-green-600 flex items-center gap-1" ]
+                [ FeatherIcons.check
+                    |> FeatherIcons.withSize 12
+                    |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
+                , Html.text goodLabel
+                ]
             , viewCodeBlock goodSrc
             ]
         ]

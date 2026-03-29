@@ -726,7 +726,12 @@ viewCloseButton model =
         (Html.div [ Attr.class "flex items-center gap-4" ]
             [ CloseButton.view { onClick = SelectTab "CloseButton" PreviewTab, label = "Sulje" }
                 |> Html.map PagesMsg.fromMsg
-            , Html.span [ Attr.class "text-sm text-gray-400" ] [ Html.text "← Klikkaa (ei virhettä = OK)" ]
+            , Html.span [ Attr.class "text-sm text-gray-400 inline-flex items-center gap-1" ]
+                [ FeatherIcons.arrowLeft
+                    |> FeatherIcons.withSize 14
+                    |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
+                , Html.text "Klikkaa (ei virhettä = OK)"
+                ]
             ]
         )
         """import Component.CloseButton as CloseButton
@@ -1379,8 +1384,12 @@ viewDarkToolbar =
                     , Html.span [ Attr.class "text-white/80 hover:text-white font-medium text-sm cursor-pointer" ] [ Html.text "Tapahtumat" ]
                     ]
                 ]
-            , Html.div [ Attr.class "bg-white p-4 text-sm text-gray-500" ]
-                [ Html.text "↑ Esikatselu — h-14, bg-brand (#05131D), neliölogo 32×32 px, linkit text-white/80" ]
+            , Html.div [ Attr.class "bg-white p-4 text-sm text-gray-500 flex items-center gap-1" ]
+                [ FeatherIcons.arrowUp
+                    |> FeatherIcons.withSize 14
+                    |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
+                , Html.text "Esikatselu — h-14, bg-brand (#05131D), neliölogo 32×32 px, linkit text-white/80"
+                ]
             ]
         , Html.div [ Attr.class "space-y-2" ]
             [ Html.p [ Attr.class "text-xs font-semibold text-gray-500 uppercase tracking-wider" ] [ Html.text "HTML" ]
@@ -1431,8 +1440,12 @@ viewLightToolbar =
                     [ Html.span [ Attr.class "text-white/80 font-medium text-sm cursor-pointer" ] [ Html.text "Etusivu" ]
                     ]
                 ]
-            , Html.div [ Attr.class "bg-white p-4 text-sm text-gray-500" ]
-                [ Html.text "↑ Esikatselu — h-14, bg-brand, vaakalogo h-10, picture-elementti (SVG + PNG)" ]
+            , Html.div [ Attr.class "bg-white p-4 text-sm text-gray-500 flex items-center gap-1" ]
+                [ FeatherIcons.arrowUp
+                    |> FeatherIcons.withSize 14
+                    |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
+                , Html.text "Esikatselu — h-14, bg-brand, vaakalogo h-10, picture-elementti (SVG + PNG)"
+                ]
             ]
         , Html.div [ Attr.class "space-y-2" ]
             [ Html.p [ Attr.class "text-xs font-semibold text-gray-500 uppercase tracking-wider" ] [ Html.text "HTML" ]

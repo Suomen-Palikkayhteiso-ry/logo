@@ -1,5 +1,6 @@
 module Component.ColorSwatch exposing (ColorSwatchConfig, view)
 
+import FeatherIcons
 import Html exposing (Html)
 import Html.Attributes as Attr
 
@@ -81,24 +82,38 @@ viewContrastInfo hex =
                 fmt ratio =
                     String.fromFloat (toFloat (round (ratio * 100)) / 100)
 
-                grade ratio =
+                gradeLabel ratio =
                     if ratio >= 7.0 then
-                        "AAA ✓"
+                        "AAA"
 
                     else if ratio >= 4.5 then
-                        "AA ✓"
+                        "AA"
 
                     else if ratio >= 3.0 then
-                        "AA-large ✓"
+                        "AA-large"
 
                     else
-                        "✗"
+                        "Fail"
+
+                gradeIcon ratio =
+                    (if ratio >= 3.0 then
+                        FeatherIcons.check
+
+                     else
+                        FeatherIcons.x
+                    )
+                        |> FeatherIcons.withSize 12
+                        |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
             in
             Html.div [ Attr.class "space-y-0.5 mt-1" ]
-                [ Html.div [ Attr.class "text-xs font-mono text-gray-400" ]
-                    [ Html.text ("vs #FFF: " ++ fmt ratioVsWhite ++ " " ++ grade ratioVsWhite) ]
-                , Html.div [ Attr.class "text-xs font-mono text-gray-400" ]
-                    [ Html.text ("vs #1A1A2E: " ++ fmt ratioVsDark ++ " " ++ grade ratioVsDark) ]
+                [ Html.div [ Attr.class "text-xs font-mono text-gray-400 flex items-center gap-1" ]
+                    [ Html.text ("vs #FFF: " ++ fmt ratioVsWhite ++ " " ++ gradeLabel ratioVsWhite)
+                    , gradeIcon ratioVsWhite
+                    ]
+                , Html.div [ Attr.class "text-xs font-mono text-gray-400 flex items-center gap-1" ]
+                    [ Html.text ("vs #1A1A2E: " ++ fmt ratioVsDark ++ " " ++ gradeLabel ratioVsDark)
+                    , gradeIcon ratioVsDark
+                    ]
                 ]
 
 

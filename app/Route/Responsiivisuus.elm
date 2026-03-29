@@ -1,6 +1,7 @@
 module Route.Responsiivisuus exposing (ActionData, Data, Model, Msg, route)
 
 import BackendTask exposing (BackendTask)
+import FeatherIcons
 import Guide.Tokens as Tokens
 import Component.Alert as Alert
 import Component.SectionHeader as SectionHeader
@@ -541,19 +542,21 @@ viewTouchExample title isGood paddingLabel btnClass btnText =
             [ Html.span
                 [ Attr.class
                     (if isGood then
-                        "text-green-600 font-semibold text-sm"
+                        "text-green-600 font-semibold text-sm flex items-center gap-1"
 
                      else
-                        "text-orange-500 font-semibold text-sm"
+                        "text-orange-500 font-semibold text-sm flex items-center gap-1"
                     )
                 ]
-                [ Html.text
-                    (if isGood then
-                        "✓ " ++ title
+                [ (if isGood then
+                    FeatherIcons.check
 
-                     else
-                        "⚠ " ++ title
-                    )
+                   else
+                    FeatherIcons.alertTriangle
+                  )
+                    |> FeatherIcons.withSize 14
+                    |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
+                , Html.text title
                 ]
             ]
         , Html.div [ Attr.class "flex items-center gap-3" ]
@@ -626,13 +629,21 @@ viewEasingDemo model { name, label, easingValue, description } =
         ]
         [ Html.div [ Attr.class "flex items-center justify-between" ]
             [ Html.p [ Attr.class "text-sm font-semibold text-brand" ] [ Html.text label ]
-            , Html.span [ Attr.class "text-xs text-gray-400" ]
-                [ Html.text
+            , Html.span [ Attr.class "text-xs text-gray-400 flex items-center gap-1" ]
+                [ (if isPlaying then
+                    FeatherIcons.refreshCw
+
+                   else
+                    FeatherIcons.play
+                  )
+                    |> FeatherIcons.withSize 12
+                    |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
+                , Html.text
                     (if isPlaying then
-                        "Nollaa ↺"
+                        "Nollaa"
 
                      else
-                        "Toista ▶"
+                        "Toista"
                     )
                 ]
             ]

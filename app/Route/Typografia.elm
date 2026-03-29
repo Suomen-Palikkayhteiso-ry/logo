@@ -279,7 +279,12 @@ viewDosDontsSection =
 viewDoCard : Html msg
 viewDoCard =
     Html.div [ Attr.class "rounded-xl border border-green-200 bg-green-50 p-6 space-y-4" ]
-        [ Html.h3 [ Attr.class "type-h4 text-green-800" ] [ Html.text "✓ Tee näin" ]
+        [ Html.h3 [ Attr.class "type-h4 text-green-800 flex items-center gap-2" ]
+            [ FeatherIcons.check
+                |> FeatherIcons.withSize 18
+                |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
+            , Html.text "Tee näin"
+            ]
         , Html.ul [ Attr.class "space-y-2 text-sm text-green-900 list-disc list-inside" ]
             [ Html.li [] [ Html.text "Käytä ", codeInline "type-h2", Html.text " osion otsikoihin" ]
             , Html.li [] [ Html.text "Käytä ", codeInline "type-body", Html.text " oletustekstiin" ]
@@ -294,7 +299,12 @@ viewDoCard =
 viewDontCard : Html msg
 viewDontCard =
     Html.div [ Attr.class "rounded-xl border border-red-200 bg-red-50 p-6 space-y-4" ]
-        [ Html.h3 [ Attr.class "type-h4 text-red-800" ] [ Html.text "✗ Älä tee näin" ]
+        [ Html.h3 [ Attr.class "type-h4 text-red-800 flex items-center gap-2" ]
+            [ FeatherIcons.x
+                |> FeatherIcons.withSize 18
+                |> FeatherIcons.toHtml [ Attr.attribute "aria-hidden" "true" ]
+            , Html.text "Älä tee näin"
+            ]
         , Html.ul [ Attr.class "space-y-2 text-sm text-red-900 list-disc list-inside" ]
             [ Html.li [] [ Html.text "Älä käytä raa'oitaTailwind-luokkia kuten ", codeInlineDont "text-2xl font-bold" ]
             , Html.li [] [ Html.text "Älä ohita hierarkiatasoja (esim. H1 → H3)" ]
