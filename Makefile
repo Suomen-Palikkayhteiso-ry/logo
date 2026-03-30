@@ -460,6 +460,8 @@ render: $(ALL_SQ_OUTPUTS) $(ALL_HZ_OUTPUTS) $(ALL_ANIMATIONS) design-guide.json 
 
 # ── elm-pages site ────────────────────────────────────────────────────────────
 
+ELM_TAILWIND_GEN := node_modules/.bin/elm-tailwind-classes gen
+
 install: ## Install npm deps and resolve Elm packages (run once after checkout)
 	npm install
 
@@ -470,9 +472,11 @@ assets: render ## Copy generated assets into public/ for elm-pages
 	cp -r logo favicon fonts design-guide.json design-guide public/
 
 dev: assets ## Dev server: pipeline -> copy assets -> elm-pages dev (hot reload)
+	$(ELM_TAILWIND_GEN)
 	elm-pages dev
 
 site: assets ## Production build: pipeline -> copy assets -> elm-pages build -> dist/
+	$(ELM_TAILWIND_GEN)
 	elm-pages build
 
 deploy: ## Push main branch to trigger GitHub Actions deploy
@@ -497,12 +501,14 @@ format: ## Auto-format Haskell and Elm source files
 # ── Watching ──────────────────────────────────────────────────────────────────
 
 dev-watch: assets ## Build all static assets, then watch with elm-pages dev
+	$(ELM_TAILWIND_GEN)
 	elm-pages dev
 
 watch: ## Re-run render on .hs/.cabal changes (requires entr)
 	find src app tests -name '*.hs' -o -name '*.cabal' | entr -r $(MAKE) render
 
 watch-elm: ## elm-pages dev server only (assumes assets already in public/)
+	$(ELM_TAILWIND_GEN)
 	elm-pages dev
 
 # ── REPL ──────────────────────────────────────────────────────────────────────
@@ -515,7 +521,7 @@ repl: ## Open GHCi REPL
 clean: ## Remove all generated files, build artifacts, and dist/
 	$(CABAL) clean
 	rm -rf logo/ favicon/ design-guide.json design-guide/ __pycache__
-	rm -rf dist/ .elm-pages/
+	rm -rf dist/ .elm-pages/ .elm-tailwind/
 	rm -f src/Brand/Generated.elm src/Brand/Tokens.elm
 	rm -rf public/design-guide.json public/design-guide public/logo public/favicon public/fonts
 
