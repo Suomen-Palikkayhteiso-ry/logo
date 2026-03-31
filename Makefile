@@ -462,8 +462,8 @@ render: $(ALL_SQ_OUTPUTS) $(ALL_HZ_OUTPUTS) $(ALL_ANIMATIONS) design-guide.json 
 
 ELM_TAILWIND_GEN := node_modules/.bin/elm-tailwind-classes gen
 
-install: ## Install npm deps and resolve Elm packages (run once after checkout)
-	npm install
+install: ## Install pnpm deps and resolve Elm packages (run once after checkout)
+	pnpm install
 
 assets-from-blay: assets ## CI alias: render .blay files then copy assets to public/
 

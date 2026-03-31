@@ -11,8 +11,9 @@ devenv.local.yaml
 __pycache__/
 *.py[cod]
 
-# Node / npm
+# Node / pnpm
 node_modules/
+.pnpm-store/
 
 # Elm
 elm-stuff/
