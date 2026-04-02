@@ -488,8 +488,9 @@ test: ## Run Haskell test suite and hlint
 	$(CABAL) test --offline
 	$(MAKE) check
 
-check: ## Run hlint static analysis
+check: ## Run hlint static analysis and elm-review
 	hlint src tests
+	elm-review
 
 cabal-check: ## Check the package for common errors
 	$(CABAL) check
