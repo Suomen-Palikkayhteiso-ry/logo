@@ -1,0 +1,157 @@
+# Spacing tokens — base unit, scale, breakpoints, layout, and responsive grids.
+# Conforms to W3C Design Tokens 2025.10 when processed by brand-gen.
+
+[spacing]
+base-unit = 4
+content-width-px = 1024
+content-width-tailwind = "max-w-5xl"
+page-padding-x-px = 16
+page-padding-x-tailwind = "px-4"
+page-wrapper-class = "max-w-5xl mx-auto px-4"
+
+responsive-rules = [
+  "Design mobile-first: write base styles for mobile, then override with sm:, md:, lg: prefixes.",
+  "All page content wraps at max-w-5xl (1024px) with px-4 (16px) horizontal padding on all screens.",
+  "Stack layouts vertically on mobile; switch to horizontal/grid at sm (640px) or md (768px).",
+  "Tables wider than the viewport must use overflow-x-auto.",
+  "Never rely on hover-only interactions; provide touch-friendly tap targets (min 44x44px).",
+  "Use the prefers-reduced-motion media query for all animations.",
+  "The Display type style is recommended for screens >= md (768px). Use Heading1 on smaller screens.",
+  "Minimum tap target size: 44x44px (WCAG 2.5.5 AAA). Use py-3 px-4 as a minimum for interactive elements.",
+]
+
+[[spacing.scale]]
+name = "space-1"
+multiplier = 1
+px = 4
+rem = 0.25
+tailwind-class = "p-1 / m-1"
+description = "Tight: icon padding, inline gaps."
+
+[[spacing.scale]]
+name = "space-2"
+multiplier = 2
+px = 8
+rem = 0.5
+tailwind-class = "p-2 / m-2"
+description = "Compact: button padding, tag gaps."
+
+[[spacing.scale]]
+name = "space-3"
+multiplier = 3
+px = 12
+rem = 0.75
+tailwind-class = "p-3 / m-3"
+description = "Small: input padding, list item gaps."
+
+[[spacing.scale]]
+name = "space-4"
+multiplier = 4
+px = 16
+rem = 1.0
+tailwind-class = "p-4 / m-4"
+description = "Base: card padding, form field gaps."
+
+[[spacing.scale]]
+name = "space-6"
+multiplier = 6
+px = 24
+rem = 1.5
+tailwind-class = "p-6 / m-6"
+description = "Medium: section sub-divisions."
+
+[[spacing.scale]]
+name = "space-8"
+multiplier = 8
+px = 32
+rem = 2.0
+tailwind-class = "p-8 / m-8"
+description = "Large: card body padding, section gaps."
+
+[[spacing.scale]]
+name = "space-12"
+multiplier = 12
+px = 48
+rem = 3.0
+tailwind-class = "p-12 / m-12"
+description = "XL: page section vertical margins."
+
+[[spacing.scale]]
+name = "space-16"
+multiplier = 16
+px = 64
+rem = 4.0
+tailwind-class = "p-16 / m-16"
+description = "2XL: hero and feature block spacing."
+
+[[spacing.breakpoint]]
+name = "sm"
+px = 640
+
+[[spacing.breakpoint]]
+name = "md"
+px = 768
+
+[[spacing.breakpoint]]
+name = "lg"
+px = 1024
+
+[[spacing.breakpoint]]
+name = "xl"
+px = 1280
+
+[[spacing.border-radius]]
+name = "sm"
+px = 4
+tailwind-class = "rounded"
+
+[[spacing.border-radius]]
+name = "md"
+px = 8
+tailwind-class = "rounded-lg"
+
+[[spacing.border-radius]]
+name = "lg"
+px = 12
+tailwind-class = "rounded-xl"
+
+[[spacing.border-radius]]
+name = "full"
+px = 9999
+tailwind-class = "rounded-full"
+
+[[spacing.responsive-grid]]
+name = "colorSwatches"
+description = "Colour swatch grid"
+mobile = 1
+sm = 2
+md = 2
+lg = 3
+xl = 4
+
+[[spacing.responsive-grid]]
+name = "logoCards"
+description = "Logo card grid"
+mobile = 1
+sm = 2
+md = 2
+lg = 3
+xl = 3
+
+[[spacing.responsive-grid]]
+name = "componentPreviews"
+description = "Component preview cards"
+mobile = 1
+sm = 1
+md = 2
+lg = 2
+xl = 3
+
+[[spacing.responsive-grid]]
+name = "statCards"
+description = "Stats / metric cards"
+mobile = 1
+sm = 2
+md = 2
+lg = 4
+xl = 4

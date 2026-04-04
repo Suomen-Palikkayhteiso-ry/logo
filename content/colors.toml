@@ -1,0 +1,217 @@
+# Color tokens — brand primitives, skin tones, rainbow, and semantic aliases.
+# Conforms to W3C Design Tokens 2025.10 when processed by brand-gen.
+
+# ── Brand colors (primitive) ─────────────────────────────────────────────────
+
+[[color.brand]]
+id = "lego-black"
+name = "Black"
+hex = "#05131D"
+description = "Primary brand color."
+usage = ["features", "text", "dark background"]
+
+  [[color.brand.wcag]]
+  on = "onWhite"
+  ratio = 17.3
+  rating = "AAA"
+
+  [[color.brand.wcag]]
+  on = "onYellow"
+  ratio = 11.5
+  rating = "AAA"
+
+[[color.brand]]
+id = "lego-white"
+name = "White"
+hex = "#FFFFFF"
+description = "Use for eye highlights and text on dark/brand-colored backgrounds."
+usage = ["eye highlights", "text on dark background"]
+
+  [[color.brand.wcag]]
+  on = "onBrand"
+  ratio = 17.3
+  rating = "AAA"
+
+[[color.brand]]
+id = "red"
+name = "Red"
+hex = "#C91A09"
+description = "Accent colour from the Blacktron series. Use for highlights, danger states, and emphasis."
+usage = ["accent", "danger", "highlights"]
+
+  [[color.brand.wcag]]
+  on = "onWhite"
+  ratio = 5.0
+  rating = "AA"
+
+  [[color.brand.wcag]]
+  on = "onBlack"
+  ratio = 4.2
+  rating = "AA"
+
+# ── Skin tones ───────────────────────────────────────────────────────────────
+
+[[color.skin-tone]]
+id = "yellow"
+name = "Yellow"
+hex = "#FAC80A"
+description = "Classic LEGO minifig yellow. Brand accent color."
+
+  [[color.skin-tone.wcag]]
+  on = "onWhite"
+  ratio = 1.5
+  rating = "fail"
+
+  [[color.skin-tone.wcag]]
+  on = "onBlack"
+  ratio = 11.5
+  rating = "AAA"
+
+[[color.skin-tone]]
+id = "light-nougat"
+name = "Light Nougat"
+hex = "#F6D7B3"
+description = "Light skin tone. Contrast on white: 1.4:1 — decorative only."
+
+  [[color.skin-tone.wcag]]
+  on = "onWhite"
+  ratio = 1.4
+  rating = "fail"
+
+  [[color.skin-tone.wcag]]
+  on = "onBlack"
+  ratio = 12.4
+  rating = "AAA"
+
+[[color.skin-tone]]
+id = "nougat"
+name = "Nougat"
+hex = "#D09168"
+description = "Medium skin tone. Contrast on black: 6.7:1 (AA)."
+
+  [[color.skin-tone.wcag]]
+  on = "onWhite"
+  ratio = 2.6
+  rating = "fail"
+
+  [[color.skin-tone.wcag]]
+  on = "onBlack"
+  ratio = 6.7
+  rating = "AA"
+
+[[color.skin-tone]]
+id = "dark-nougat"
+name = "Dark Nougat"
+hex = "#AD6140"
+description = "Dark skin tone. Contrast on white: 4.4:1 (AA large text)."
+
+  [[color.skin-tone.wcag]]
+  on = "onWhite"
+  ratio = 4.4
+  rating = "AA"
+
+  [[color.skin-tone.wcag]]
+  on = "onBlack"
+  ratio = 4.0
+  rating = "AA"
+
+# ── Rainbow colors ───────────────────────────────────────────────────────────
+
+[[color.rainbow]]
+id = "salmon"
+name = "Salmon"
+hex = "#F2705E"
+description = "Red"
+
+[[color.rainbow]]
+id = "light-orange"
+name = "Light Orange"
+hex = "#F9BA61"
+description = "Orange"
+
+[[color.rainbow]]
+id = "yellow"
+name = "Yellow"
+hex = "#FAC80A"
+description = "Yellow"
+
+[[color.rainbow]]
+id = "medium-green"
+name = "Medium Green"
+hex = "#73DCA1"
+description = "Green"
+
+[[color.rainbow]]
+id = "bright-light-blue"
+name = "Bright Light Blue"
+hex = "#9FC3E9"
+description = "Blue"
+
+[[color.rainbow]]
+id = "light-lilac"
+name = "Light Lilac"
+hex = "#9195CA"
+description = "Indigo"
+
+[[color.rainbow]]
+id = "medium-lavender"
+name = "Medium Lavender"
+hex = "#AC78BA"
+description = "Violet"
+
+# ── Semantic colors ──────────────────────────────────────────────────────────
+
+[[color.semantic]]
+id = "text-primary"
+hex = "#05131D"
+description = "Primary body text; use on white or light-gray backgrounds."
+
+[[color.semantic]]
+id = "text-on-dark"
+hex = "#FFFFFF"
+description = "Text on dark or brand-colored backgrounds."
+
+[[color.semantic]]
+id = "text-muted"
+hex = "#6B7280"
+description = "Secondary labels, captions, helper text on light backgrounds."
+
+[[color.semantic]]
+id = "text-subtle"
+hex = "#9CA3AF"
+description = "De-emphasised metadata; use only for large text."
+
+[[color.semantic]]
+id = "background-page"
+hex = "#FFFFFF"
+description = "Default page/document background."
+
+[[color.semantic]]
+id = "background-dark"
+hex = "#05131D"
+description = "Dark section backgrounds. Pair with text-on-dark."
+
+[[color.semantic]]
+id = "background-subtle"
+hex = "#F9FAFB"
+description = "Light card and section backgrounds."
+
+[[color.semantic]]
+id = "background-accent"
+hex = "#FAC80A"
+description = "Brand accent CTA color. Always pair with text-primary."
+
+[[color.semantic]]
+id = "border-default"
+hex = "#E5E7EB"
+description = "Standard card and section divider borders."
+
+[[color.semantic]]
+id = "border-brand"
+hex = "#05131D"
+description = "Brand-colored borders, left-accent rules, focus rings."
+
+[[color.semantic]]
+id = "brand-red"
+hex = "#C91A09"
+description = "Error states, destructive actions, required field indicators."

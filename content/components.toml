@@ -1,0 +1,162 @@
+# Component token mappings — maps UI components to their design token dependencies.
+# Following W3C Design Tokens Color Module §7.1.3 (Component tokens).
+#
+# These are NOT Elm implementations — they document which tokens each
+# component in the known-good set consumes, so the token pipeline can
+# trace token usage from base → alias → component level.
+
+[[component]]
+name = "Button"
+description = "Action button or link-button. Variants: Primary, Secondary, Ghost, Danger."
+props = ["label", "variant", "size", "onClick"]
+token-deps = ["color.semantic.background-accent", "color.semantic.text-primary", "spacing.space-2", "spacing.space-4", "typography.Body"]
+
+[[component]]
+name = "Card"
+description = "Content container with optional header, footer, image, shadow."
+props = ["body", "header", "footer", "image", "shadow"]
+token-deps = ["color.semantic.border-default", "spacing.space-4", "spacing.space-6"]
+
+[[component]]
+name = "Alert"
+description = "Contextual feedback message. Types: Info, Success, Warning, Error."
+props = ["alertType", "title", "body"]
+token-deps = ["color.semantic.text-primary", "color.semantic.background-subtle", "spacing.space-4"]
+
+[[component]]
+name = "Badge"
+description = "Small inline label. Colors: Gray, Blue, Green, Yellow, Red, Purple, Indigo."
+props = ["label", "color"]
+token-deps = ["typography.Caption", "spacing.space-1", "spacing.space-2"]
+
+[[component]]
+name = "Accordion"
+description = "Collapsible sections using native <details>."
+props = ["items"]
+token-deps = ["color.semantic.border-default", "spacing.space-4"]
+
+[[component]]
+name = "Breadcrumb"
+description = "Navigation breadcrumb trail."
+props = ["items"]
+token-deps = ["color.semantic.text-muted", "typography.BodySmall"]
+
+[[component]]
+name = "ButtonGroup"
+description = "Horizontally grouped buttons."
+props = ["buttons"]
+token-deps = ["color.semantic.border-default"]
+
+[[component]]
+name = "CloseButton"
+description = "Accessible close / dismiss button."
+props = ["onClick", "label"]
+token-deps = ["color.semantic.text-muted"]
+
+[[component]]
+name = "Collapse"
+description = "Single collapsible section using <details>."
+props = ["title", "body", "open"]
+token-deps = ["color.semantic.border-default"]
+
+[[component]]
+name = "ColorSwatch"
+description = "Color token display with hex, name, description, usage tags."
+props = ["hex", "name", "description", "usageTags"]
+token-deps = ["color.semantic.text-primary"]
+
+[[component]]
+name = "Dialog"
+description = "Modal dialog overlay."
+props = ["title", "body", "onClose"]
+token-deps = ["color.semantic.background-page", "color.semantic.border-default", "spacing.space-6"]
+
+[[component]]
+name = "Dropdown"
+description = "Disclosure dropdown using <details>/<summary>."
+props = ["trigger", "items"]
+token-deps = ["color.semantic.border-default", "color.semantic.background-page"]
+
+[[component]]
+name = "ListGroup"
+description = "Vertical list with optional active/disabled states."
+props = ["items"]
+token-deps = ["color.semantic.border-default"]
+
+[[component]]
+name = "Navbar"
+description = "Top navigation bar with logo and links."
+props = ["logo", "links", "action"]
+token-deps = ["color.brand.lego-black", "color.brand.lego-white", "spacing.space-4"]
+
+[[component]]
+name = "Pagination"
+description = "Page navigation control."
+props = ["current", "total", "onPage"]
+token-deps = ["color.semantic.text-muted", "color.semantic.border-default"]
+
+[[component]]
+name = "Placeholder"
+description = "Animated loading skeleton."
+props = ["lines", "withImage"]
+token-deps = ["color.semantic.background-subtle"]
+
+[[component]]
+name = "Progress"
+description = "Horizontal progress bar."
+props = ["value", "label", "color"]
+token-deps = ["color.semantic.background-subtle", "color.semantic.background-accent"]
+
+[[component]]
+name = "SectionHeader"
+description = "Section heading with optional description."
+props = ["title", "description"]
+token-deps = ["typography.Heading2", "color.semantic.text-primary"]
+
+[[component]]
+name = "Spinner"
+description = "Loading spinner animation."
+props = ["size", "label"]
+token-deps = ["motion.duration.base"]
+
+[[component]]
+name = "Stats"
+description = "Metric display grid."
+props = ["items"]
+token-deps = ["color.semantic.text-muted", "typography.Heading3"]
+
+[[component]]
+name = "Tabs"
+description = "Tab navigation strip (stateless — host provides active index)."
+props = ["tabs", "activeIndex", "onTabClick"]
+token-deps = ["color.semantic.border-brand", "color.semantic.text-muted"]
+
+[[component]]
+name = "Tag"
+description = "Removable tag / chip label."
+props = ["label", "onRemove"]
+token-deps = ["typography.Caption", "spacing.space-1"]
+
+[[component]]
+name = "Timeline"
+description = "Vertical timeline for changelogs."
+props = ["items"]
+token-deps = ["color.semantic.border-default", "spacing.space-4"]
+
+[[component]]
+name = "Toast"
+description = "Notification message bar."
+props = ["message", "toastType"]
+token-deps = ["color.semantic.text-primary", "color.semantic.background-page", "motion.duration.base"]
+
+[[component]]
+name = "Toggle"
+description = "On/off toggle switch."
+props = ["checked", "onChange", "label"]
+token-deps = ["color.semantic.background-accent", "color.brand.lego-white"]
+
+[[component]]
+name = "Tooltip"
+description = "Hover/focus tooltip."
+props = ["text", "position"]
+token-deps = ["color.semantic.background-dark", "color.semantic.text-on-dark", "typography.Caption"]

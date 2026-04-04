@@ -1,0 +1,58 @@
+# Opacity tokens — transparency scale for overlays and disabled states.
+# Conforms to W3C Design Tokens 2025.10 when processed by design-tokens-gen.
+
+[opacity]
+usage-rules = [
+  "Use opacity-0 for hidden elements that will animate in (e.g. fade-in transitions).",
+  "Use opacity-50 for disabled interactive elements.",
+  "Use opacity-75 for modal backdrop overlays on dark backgrounds.",
+  "Never use opacity on text — use semantic color tokens (text-muted, text-subtle) instead.",
+  "Prefer bg-opacity or Tailwind's color/opacity syntax over element-level opacity when possible.",
+]
+
+# ── Opacity scale ────────────────────────────────────────────────────────────
+
+[[opacity.scale]]
+name = "opacity-0"
+value = 0
+description = "Invisible — hidden before animation."
+
+[[opacity.scale]]
+name = "opacity-5"
+value = 5
+description = "Near-invisible — subtle hover backgrounds."
+
+[[opacity.scale]]
+name = "opacity-10"
+value = 10
+description = "Very faint — light overlays."
+
+[[opacity.scale]]
+name = "opacity-25"
+value = 25
+description = "Quarter — skeleton loading shimmers."
+
+[[opacity.scale]]
+name = "opacity-50"
+value = 50
+description = "Half — disabled elements, backdrop filters."
+
+[[opacity.scale]]
+name = "opacity-75"
+value = 75
+description = "Three-quarter — modal backdrops."
+
+[[opacity.scale]]
+name = "opacity-90"
+value = 90
+description = "Near-opaque — frosted-glass panels."
+
+[[opacity.scale]]
+name = "opacity-95"
+value = 95
+description = "Almost opaque — dropdown backgrounds."
+
+[[opacity.scale]]
+name = "opacity-100"
+value = 100
+description = "Fully opaque — default."

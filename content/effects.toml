@@ -1,0 +1,81 @@
+# Effects tokens — box shadows and z-index layering.
+# Conforms to W3C Design Tokens 2025.10 when processed by design-tokens-gen.
+
+[effects]
+usage-rules = [
+  "Use shadows to indicate elevation; higher elevation = deeper shadow.",
+  "Cards and dropdowns use shadow-md; modals use shadow-xl.",
+  "Avoid stacking multiple shadows on the same element.",
+  "Z-index values are fixed; never use arbitrary z-index numbers outside this scale.",
+  "Combine z-index with position: relative/absolute/fixed as needed.",
+]
+
+# ── Box shadows ──────────────────────────────────────────────────────────────
+
+[[effects.shadow]]
+name = "shadow-sm"
+value = "0 1px 2px 0 rgb(0 0 0 / 0.05)"
+tailwind-class = "shadow-sm"
+description = "Subtle: inputs, small cards."
+
+[[effects.shadow]]
+name = "shadow-md"
+value = "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"
+tailwind-class = "shadow-md"
+description = "Default: cards, dropdowns."
+
+[[effects.shadow]]
+name = "shadow-lg"
+value = "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
+tailwind-class = "shadow-lg"
+description = "Elevated: popovers, floating panels."
+
+[[effects.shadow]]
+name = "shadow-xl"
+value = "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
+tailwind-class = "shadow-xl"
+description = "High: modals, dialogs."
+
+[[effects.shadow]]
+name = "shadow-2xl"
+value = "0 25px 50px -12px rgb(0 0 0 / 0.25)"
+tailwind-class = "shadow-2xl"
+description = "Highest: full-screen overlays."
+
+[[effects.shadow]]
+name = "shadow-none"
+value = "0 0 #0000"
+tailwind-class = "shadow-none"
+description = "No shadow — reset or disabled state."
+
+# ── Z-index layering ────────────────────────────────────────────────────────
+
+[[effects.z-index]]
+name = "z-dropdown"
+value = 10
+description = "Dropdown menus, select popups."
+
+[[effects.z-index]]
+name = "z-sticky"
+value = 20
+description = "Sticky headers, floating action buttons."
+
+[[effects.z-index]]
+name = "z-fixed"
+value = 30
+description = "Fixed navbars, tab bars."
+
+[[effects.z-index]]
+name = "z-modal"
+value = 40
+description = "Modal dialogs and drawer overlays."
+
+[[effects.z-index]]
+name = "z-popover"
+value = 50
+description = "Popovers, tooltips above modals."
+
+[[effects.z-index]]
+name = "z-tooltip"
+value = 60
+description = "Highest interactive layer — tooltips."

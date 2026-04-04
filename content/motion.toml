@@ -1,0 +1,51 @@
+# Motion tokens — durations and easing functions.
+# Conforms to W3C Design Tokens 2025.10 when processed by brand-gen.
+
+[motion]
+usage-rules = [
+  "Always provide a prefers-reduced-motion alternative.",
+  "Animate transform and opacity only; never animate layout properties.",
+  "Use duration.fast for hover/focus, duration.base for reveals, duration.slow for page transitions.",
+]
+
+[[motion.duration]]
+name = "fast"
+ms = 150
+css-variable = "--duration-fast"
+description = "Hover states, focus rings, button fills."
+
+[[motion.duration]]
+name = "base"
+ms = 300
+css-variable = "--duration-base"
+description = "Default: card lift, menu open, accordion expand."
+
+[[motion.duration]]
+name = "slow"
+ms = 500
+css-variable = "--duration-slow"
+description = "Page-level transitions, large content reveals."
+
+[[motion.easing]]
+name = "standard"
+p1x = 0.4
+p1y = 0.0
+p2x = 0.2
+p2y = 1.0
+description = "Default easing for elements that both enter and exit."
+
+[[motion.easing]]
+name = "decelerate"
+p1x = 0.0
+p1y = 0.0
+p2x = 0.2
+p2y = 1.0
+description = "Elements entering the screen."
+
+[[motion.easing]]
+name = "accelerate"
+p1x = 0.4
+p1y = 0.0
+p2x = 1.0
+p2y = 1.0
+description = "Elements leaving the screen."

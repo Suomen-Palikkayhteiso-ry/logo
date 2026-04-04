@@ -1,0 +1,14 @@
+# Organization metadata and branding constants.
+# Part of the design token pipeline — processed by brand-gen.
+
+[meta]
+version = "2025.10"
+organization = "Suomen Palikkaharrastajat ry"
+canonical-url = "https://palikkaharrastajat.fi"
+brand-guide-url = "https://logo.palikkaharrastajat.fi"
+feature-color = "#05131D"
+highlight-color = "#FFFFFF"
+dark-bg = "#05131D"
+subtitle-on-light = "#05131D"
+subtitle-on-dark = "#FFFFFF"
+head-svg-face-color = "#f8c70b"

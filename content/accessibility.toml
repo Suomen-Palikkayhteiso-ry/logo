@@ -1,0 +1,39 @@
+# Accessibility tokens — focus rings and interactive affordances.
+# Conforms to W3C Design Tokens 2025.10 when processed by design-tokens-gen.
+
+[accessibility]
+usage-rules = [
+  "Every interactive element must have a visible focus indicator (WCAG 2.4.7).",
+  "Use ring-brand as the default focus ring for buttons, links, and inputs.",
+  "Use ring-accent for CTA focus states on dark backgrounds.",
+  "Use ring-error for form fields with validation errors.",
+  "Never remove outline/ring on :focus-visible — only restyle it with these tokens.",
+  "Provide a skip-to-content link as the first focusable element on every page.",
+  "Minimum tap target size: 44x44px (WCAG 2.5.5 AAA).",
+]
+
+# ── Focus ring tokens ────────────────────────────────────────────────────────
+
+[[accessibility.focus-ring]]
+name = "ring-brand"
+width-px = 2
+offset-px = 2
+color = "#05131D"
+tailwind-class = "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand"
+description = "Default focus ring — brand-colored. Use for most interactive elements."
+
+[[accessibility.focus-ring]]
+name = "ring-accent"
+width-px = 2
+offset-px = 2
+color = "#FAC80A"
+tailwind-class = "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-yellow"
+description = "Accent focus ring — yellow. Use for CTAs on dark backgrounds."
+
+[[accessibility.focus-ring]]
+name = "ring-error"
+width-px = 2
+offset-px = 2
+color = "#C91A09"
+tailwind-class = "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-red"
+description = "Error focus ring — red. Use for invalid form fields."

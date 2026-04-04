@@ -1,5 +1,0 @@
-ignoredBuiltDependencies:
-  - esbuild
-  - lamdera
-onlyBuiltDependencies:
-  - "elm-tailwind-classes"
