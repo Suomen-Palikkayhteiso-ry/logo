@@ -23,7 +23,7 @@ build: ## Compile all Haskell executables
 
 .PHONY: gen
 gen: build ## Generate dist/ design tokens (JSON + Elm package)
-	$(CABAL) run --offline design-tokens-gen
+	LANG=C.UTF-8 $(CABAL) run --offline design-tokens-gen
 
 dist: gen
 
