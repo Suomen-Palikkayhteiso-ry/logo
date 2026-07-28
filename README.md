@@ -79,6 +79,6 @@ src/DesignTokensGen/
   ElmGen.hs       Elm package generator
   Main.hs         Executable entry point
 tests/            Tasty test suite
-review/           elm-review config (3 LLM-friendly rules)
+review/           elm-review config (shared LlmAgent rules fetched from master-builder)
 dist/             Generated output (gitignored)
 ```

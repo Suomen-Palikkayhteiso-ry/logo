@@ -36,8 +36,14 @@ test: ## Run Haskell test suite and hlint
 	$(CABAL) test --offline
 	$(MAKE) check
 
+# The LlmAgent elm-review rules are maintained in master-builder (single
+# source of truth); fetch a shallow checkout for the review config to use.
+review/vendor/master-builder:
+	mkdir -p review/vendor
+	git clone --depth 1 https://github.com/Suomen-Palikkaharrastajat-ry/master-builder review/vendor/master-builder
+
 .PHONY: check
-check: ## Run hlint + elm-review on generated code
+check: review/vendor/master-builder ## Run hlint + elm-review on generated code
 	hlint src tests
 	cd dist/design-tokens-elm && elm-review --config ../../review
 

@@ -25,7 +25,8 @@ Key directories:
 - `content/` — TOML source of truth (9 files)
 - `src/DesignTokensGen/` — Haskell pipeline: Types, Toml, Json, ElmGen, Main
 - `tests/` — Tasty test suite
-- `review/` — elm-review config with 3 LLM-friendly rules
+- `review/` — elm-review config; the shared LlmAgent rules live in master-builder (fetched into gitignored `review/vendor/`)
+- `reference/` — LEGO color catalog (`allowed-colors.csv`) that the brand color tokens derive from
 
 ## Content directory
 
@@ -69,7 +70,7 @@ Key directories:
 
 ## elm-review
 
-Three custom rules in `review/src/LlmAgent/` enforce LLM-friendly generated code:
+Three shared rules from master-builder's `review/src/LlmAgent/` (single source of truth, fetched by `make check` into `review/vendor/`) enforce LLM-friendly generated code:
 - `NoExposingEverything` — require explicit export lists
 - `RequireModuleDoc` — require module documentation comments
 - `RequireTypeAnnotation` — require type annotations on all top-level values
@@ -81,4 +82,4 @@ Run: `make check` (after `make dist` to ensure dist/ exists).
 - Do **not** commit `TODO.md` or any `TODO-*.md` files
 - `content/*.toml` files ARE committed (source of truth)
 - `dist/` is gitignored (generated build output)
-- `review/elm-stuff/` is gitignored
+- `review/elm-stuff/` and `review/vendor/` are gitignored (`review/vendor/` is the fetched master-builder checkout)

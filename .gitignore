@@ -15,6 +15,7 @@ dist/
 # --- Elm ---
 elm-stuff/
 review/elm-stuff/
+review/vendor/
 
 # --- Editor & OS ---
 .DS_Store

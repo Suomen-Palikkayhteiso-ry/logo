@@ -1,5 +1,8 @@
 # Color tokens — brand primitives, skin tones, rainbow, and semantic aliases.
 # Conforms to W3C Design Tokens 2025.10 when processed by brand-gen.
+#
+# Brand primitives are derived from the LEGO color catalog in
+# ../reference/allowed-colors.csv (see reference/README.md).
 
 # ── Brand colors (primitive) ─────────────────────────────────────────────────
 
